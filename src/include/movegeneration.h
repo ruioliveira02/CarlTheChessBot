@@ -21,6 +21,8 @@ std::vector<Move> generatePromotions(Position, Square);
 std::vector<Move> generateEnPassant(Position, Square);
 
 
+std::vector<Move> convertBitBoardToMoves(BitBoard, Square, Piece);
+
 bool inCheck(Position,Color);
 
 #endif // MOVEGENERATION_H_
