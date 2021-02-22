@@ -5,6 +5,7 @@
 
 
 typedef unsigned long long BitBoard;
+typedef short Square;
 
 enum Color
 {
@@ -22,6 +23,33 @@ enum Piece
     King
 };
 
+
+enum MoveType
+{
+    Normal,
+    EnPassant,
+    Castling,
+    Promotion
+};
+
+
+struct Move
+{
+    MoveType type;
+    Square origin;
+    Square destiny;
+    Square enpassant;
+    Piece promotedTo;
+
+    Move(MoveType t, Square o, Square d, Square en, Piece p)
+    {
+        type = t;
+        origin = o;
+        destiny = d;
+        enpassant = en;
+        promotedTo = p;
+    }
+};
 
 
 class Position
@@ -61,7 +89,7 @@ class Position
 
     public:
         //First argument is the piece type; second one is the color, as per the enums above
-        std::vector<short> PieceLocations[6][2];
+        std::vector<Square> PieceLocations[6][2];
 
         BitBoard WhiteOccupancy;
         BitBoard BlackOccupancy;
