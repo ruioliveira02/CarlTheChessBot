@@ -86,7 +86,7 @@ std::vector<Move> generateBishopMoves(Position position, Square square)
 
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
 
-    BitBoard result = Bmagic(square,occupancy) & !ownPieces;
+    BitBoard result = Bmagic(square,occupancy) & ~ownPieces;
 
     return convertBitBoardToMoves(result, square, Piece::Bishop);
 }
@@ -169,8 +169,8 @@ std::vector<Move> generateEnPassant(Position position, Square square)
 {
     std::vector<Move> answer = std::vector<Move>();
 
-    if((position.ToMove == Color::White && (position.EnPassant + 7 == square || position.EnPassant + 9 == square))
-        || (position.ToMove == Color::Black && (position.EnPassant - 7 == square || position.EnPassant - 9 == square)))
+    if(position.EnPassant != -1 && ((position.ToMove == Color::White && (position.EnPassant + 7 == square || position.EnPassant + 9 == square))
+        || (position.ToMove == Color::Black && (position.EnPassant - 7 == square || position.EnPassant - 9 == square))))
     {
         answer.push_back(Move(MoveType::EnPassant, square, position.EnPassant, Piece::Pawn));
     }
@@ -187,10 +187,10 @@ std::vector<Move> generatePawnPushes(Position position, Square square)
 
     if(position.ToMove == Color::White)
     {
-        if(square / 8 == 1 && !(occupancy & (1 << (square + 8))) && !(occupancy & (1 << (square + 16))))
+        if(square / 8 == 1 && !(occupancy & (1ULL << (square + 8))) && !(occupancy & (1ULL << (square + 16))))
             answer.push_back(Move(MoveType::Normal, square, square + 16, Piece::Pawn));
 
-        if(!(occupancy & (1 << (square + 8))))
+        if(!(occupancy & (1ULL << (square + 8))))
         {
             if(square / 8 == 6)
             {
@@ -207,10 +207,10 @@ std::vector<Move> generatePawnPushes(Position position, Square square)
     else
     {
 
-        if(square / 8 == 6 && !(occupancy & (1 << (square - 8))) && !(occupancy & (1 << (square - 16))))
+        if(square / 8 == 6 && !(occupancy & (1ULL << (square - 8))) && !(occupancy & (1ULL << (square - 16))))
             answer.push_back(Move(MoveType::Normal, square, square - 16, Piece::Pawn));
 
-        if(!(occupancy & (1 << (square - 8))))
+        if(!(occupancy & (1ULL << (square - 8))))
         {
             if(square / 8 == 1)
             {
@@ -234,7 +234,7 @@ std::vector<Move> generatePawnCaptures(Position position, Square square)
 
     if(position.ToMove == Color::White)
     {
-        if(position.BlackOccupancy & (1 << (square + 7)))
+        if(position.BlackOccupancy & (1ULL << (square + 7)))
         {
             if(square / 8 == 6)
             {
@@ -247,7 +247,7 @@ std::vector<Move> generatePawnCaptures(Position position, Square square)
             }
         }
 
-        if(position.BlackOccupancy & (1 << (square + 9)))
+        if(position.BlackOccupancy & (1ULL << (square + 9)))
         {
             if(square / 8 == 6)
             {
@@ -262,7 +262,7 @@ std::vector<Move> generatePawnCaptures(Position position, Square square)
     }
     else
     {
-        if(position.WhiteOccupancy & (1 << (square - 7)))
+        if(position.WhiteOccupancy & (1ULL << (square - 7)))
         {
             if(square / 8 == 1)
             {
@@ -275,7 +275,7 @@ std::vector<Move> generatePawnCaptures(Position position, Square square)
             }
         }
 
-        if(position.WhiteOccupancy & (1 << (square - 9)))
+        if(position.WhiteOccupancy & (1ULL << (square - 9)))
         {
             if(square / 8 == 1)
             {
@@ -331,21 +331,21 @@ void initializeKnightBitBoard()
         int file = i % 8;
 
         if(rank + 2 <= 7 && file + 1 <= 7)
-            knightMoves[i] |= (1 << (i + 17));
+            knightMoves[i] |= (1ULL << (i + 17));
         if(rank + 2 <= 7 && file - 1 >= 0)
-            knightMoves[i] |= (1 << (i + 15));
+            knightMoves[i] |= (1ULL << (i + 15));
         if(rank - 2 >= 0 && file + 1 <= 7)
-            knightMoves[i] |= (1 << (i - 15));
+            knightMoves[i] |= (1ULL << (i - 15));
         if(rank - 2 >= 0 && file - 1 >= 0)
-            knightMoves[i] |= (1 << (i - 17));
+            knightMoves[i] |= (1ULL << (i - 17));
         if(rank + 1 <= 7 && file + 2 <= 7)
-            knightMoves[i] |= (1 << (i + 10));
+            knightMoves[i] |= (1ULL << (i + 10));
         if(rank + 1 <= 7 && file - 2 >= 0)
-            knightMoves[i] |= (1 << (i + 6));
+            knightMoves[i] |= (1ULL << (i + 6));
         if(rank - 1 >= 0 && file + 2 <= 7)
-            knightMoves[i] |= (1 << (i - 6));
+            knightMoves[i] |= (1ULL << (i - 6));
         if(rank - 1 >= 0 && file - 2 >= 0)
-            knightMoves[i] |= (1 << (i - 10));
+            knightMoves[i] |= (1ULL << (i - 10));
     }
 }
 
@@ -360,21 +360,21 @@ void initializeKingBitBoard()
         int file = i % 8;
 
         if(rank + 1 <= 7 && file + 1 <= 7)
-            kingMoves[i] |= (1 << (i + 9));
+            kingMoves[i] |= (1ULL << (i + 9));
         if(rank + 1 <= 7)
-            kingMoves[i] |= (1 << (i + 8));
+            kingMoves[i] |= (1ULL << (i + 8));
         if(rank + 1 <= 7 && file - 1 >= 0)
-            kingMoves[i] |= (1 << (i - 7));
+            kingMoves[i] |= (1ULL << (i + 7));
         if(file - 1 >= 0)
-            kingMoves[i] |= (1 << (i - 1));
+            kingMoves[i] |= (1ULL << (i - 1));
         if(file + 1 <= 7)
-            kingMoves[i] |= (1 << (i + 1));
+            kingMoves[i] |= (1ULL << (i + 1));
         if(rank - 1 >= 0 && file - 1 >= 0)
-            kingMoves[i] |= (1 << (i - 9));
+            kingMoves[i] |= (1ULL << (i - 9));
         if(rank - 1 >= 0 && file + 1 <= 7)
-            kingMoves[i] |= (1 << (i - 7));
+            kingMoves[i] |= (1ULL << (i - 7));
         if(rank - 1 >= 0)
-            kingMoves[i] |= (1 << (i - 8));
+            kingMoves[i] |= (1ULL << (i - 8));
     }
 }
 
@@ -389,11 +389,17 @@ bool inCheck(Position position, Color color, Square square)
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
-    BitBoard moves = knightMoves[square] | Rmagic(square, occupancy) | Bmagic(square, occupancy);
+    int opponentIndex = (position.ToMove == Color::White) ? 1 : 0;
 
-    moves = moves & ~ownPieces;
+    if((knightMoves[square] & ~ownPieces) & position.PieceBitBoards[Piece::Knight][opponentIndex])
+        return false;
 
-    BitBoard opponentOccupancy = (color == Color::White) ? position.BlackOccupancy : position.WhiteOccupancy;
+     if((Rmagic(square, occupancy) & ~ownPieces) & position.PieceBitBoards[Piece::Rook][opponentIndex])
+        return false;
 
-    return moves & opponentOccupancy;
+
+    if((Bmagic(square, occupancy) & ~ownPieces) & position.PieceBitBoards[Piece::Bishop][opponentIndex])
+        return false;
+
+    return true;
 }

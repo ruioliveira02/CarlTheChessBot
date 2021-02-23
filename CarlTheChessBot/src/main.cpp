@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int main()
+/*int main()
 {
     Position p1 = Position();
     p1.WhiteOccupancy = 0;
@@ -28,4 +28,4 @@ int main()
         cout << moves[i].origin << " " << moves[i].destiny << endl;
     }
     return 0;
-}
+}*/

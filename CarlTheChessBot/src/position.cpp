@@ -4,11 +4,10 @@
 
 Position::Position()
 {
-    setStartingPosition();
 }
 
 
-Position::Position(std::vector<Square>** pieces ,BitBoard white, BitBoard black ,Color color,bool** castling, short enpassant,short halfMoves,short totalMoves)
+Position::Position(std::vector<Square> pieces [6][2],BitBoard white, BitBoard black ,Color color,bool castling[2][2], short enpassant,short halfMoves,short totalMoves)
 {
     EnPassant = enpassant;
     ToMove = color;
@@ -25,6 +24,17 @@ Position::Position(std::vector<Square>** pieces ,BitBoard white, BitBoard black 
     for(int i = 0; i < 6; i++)
         for(int j = 0; j < 2; j++)
             PieceLocations[i][j] = pieces[i][j];
+
+    for(int i = 0; i < 6; i++)
+        for(int j = 0; j < 2; j++)
+            PieceBitBoards[i][j] = 0ULL;
+
+
+
+    for(int i = 0; i < 6; i++)
+        for(int j = 0; j < 2; j++)
+            for(int k = 0; k < PieceLocations[i][k].size(); k++)
+                PieceBitBoards[i][j] |= (1ULL << (PieceLocations[i][j][k]));
 }
 
 Position::Position(const Position& pos)
@@ -52,36 +62,3 @@ Position::~Position()
     //dtor
 }
 
-void Position::setStartingPosition()
-{
-    EnPassant = -1;
-    HalfMoves = 0;
-    TotalMoves = 0;
-
-    ToMove = Color::White;
-
-    for(int i = 0; i < 2; i++)
-        for(int j = 0; j < 2; j++)
-            Castling[i][j] = true;
-
-    WhiteOccupancy = 65535;
-    BlackOccupancy = 18446462598732840960;
-
-    PieceLocations[Piece::Rook][Color::White] = std::vector<short>({0,7});
-    PieceLocations[Piece::Rook][Color::Black] = std::vector<short>({56,63});
-
-    PieceLocations[Piece::Bishop][Color::White] = std::vector<short>({2,5});
-    PieceLocations[Piece::Bishop][Color::Black] = std::vector<short>({58,61});
-
-    PieceLocations[Piece::Knight][Color::White] = std::vector<short>({1,6});
-    PieceLocations[Piece::Knight][Color::Black] = std::vector<short>({57,62});
-
-    PieceLocations[Piece::Queen][Color::White] = std::vector<short>({3});
-    PieceLocations[Piece::Queen][Color::Black] = std::vector<short>({59});
-
-    PieceLocations[Piece::King][Color::White] = std::vector<short>({4});
-    PieceLocations[Piece::King][Color::Black] = std::vector<short>({60});
-
-    PieceLocations[Piece::Pawn][Color::White] = std::vector<short>({8,9,10,11,12,13,14,15});
-    PieceLocations[Piece::Pawn][Color::Black] = std::vector<short>({48,49,50,51,52,53,54,55});
-}

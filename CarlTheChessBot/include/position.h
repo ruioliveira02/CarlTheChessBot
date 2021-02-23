@@ -55,10 +55,8 @@ class Position
     public:
         Position();
         Position(const Position&);
-        Position(std::vector<Square>**,BitBoard,BitBoard,Color,bool**,short,short,short);
+        Position(std::vector<Square>[6][2],BitBoard,BitBoard,Color,bool[2][2],short,short,short);
         virtual ~Position();
-
-        void setStartingPosition();
 
 
         bool operator < (const Position& a)
@@ -90,9 +88,11 @@ class Position
     public:
         //First argument is the piece type; second one is the color, as per the enums above
         std::vector<Square> PieceLocations[6][2];
+        BitBoard PieceBitBoards[6][2];
 
         BitBoard WhiteOccupancy;
         BitBoard BlackOccupancy;
+
 
         Color ToMove;
 
