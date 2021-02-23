@@ -24,6 +24,7 @@ std::vector<Move> generateEnPassant(Position, Square);
 std::vector<Move> convertBitBoardToMoves(BitBoard, Square, Piece);
 
 bool inCheck(Position,Color);
+bool inCheck(Position,Color,Square);
 
 extern BitBoard knightMoves[64];
 extern BitBoard kingMoves[64];

@@ -107,8 +107,45 @@ std::vector<Move> generateKnightMoves(Position position, Square square)
 
 std::vector<Move> generateKingMoves(Position position, Square square)
 {
-    return std::vector<Move>();
+    BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
+    BitBoard result = kingMoves[square] & ~ownPieces;
+
+    std::vector<Move> answer = convertBitBoardToMoves(result, square, Piece::King);
+    std::vector<Move> castling = generateCastling(position, square);
+
+    castling.insert(castling.end(), answer.begin(), answer.end());
+
+    return castling;
 }
+
+std::vector<Move> generateCastling(Position position, Square square)
+{
+    std::vector<Move> answer = std::vector<Move>();
+
+    if(inCheck(position, position.ToMove, square))
+        return answer;
+
+    bool kingside = (position.ToMove == Color::White) ? position.Castling[0][0] : position.Castling[0][1];
+    bool queenside = (position.ToMove == Color::White) ? position.Castling[1][0] : position.Castling[1][1];
+
+    Bitboard occupancy = position.WhiteOccupancy && position.BlackOccupancy;
+
+    if(kingside && !(occupancy & (1 << (square + 1))) && !(occupancy & (1 << (square + 2)))
+        && !inCheck(position, position.ToMove, square + 1) && !inCheck(position, position.ToMove, square + 2))
+    {
+        answer.push_back(Move(MoveType::Castling, square, square + 2, -1, Piece::King));
+    }
+
+    if(queenside && !(occupancy & (1 << (square - 1))) && !(occupancy & (1 << (square - 2))) && !(occupancy & (1 << (square - 3)))
+        && !inCheck(position, position.ToMove, square - 1) && !inCheck(position, position.ToMove, square - 2))
+    {
+        answer.push_back(Move(MoveType::Castling, square, square - 2, -1, Piece::King));
+    }
+
+    return answer;
+}
+
+
 
 std::vector<Move> convertBitBoardToMoves(BitBoard bitboard, Square square, Piece piece)
 {
@@ -188,4 +225,19 @@ void initializeKingBitBoard()
         if(rank - 1 >= 0)
             kingMoves[i] |= (1 << (i - 8));
     }
+}
+
+
+bool inCheck(Position position, Color color)
+{
+    return inCheck(position, color, position.PieceLocations[Piece::King][color]);
+}
+
+bool inCheck(Position position, Color color, Square square)
+{
+    BitBoard moves = generateQueenMoves(position, square) | generateKnightMoves(position, square);
+
+    Bitboar opponentOccupancy = (color == Color::White) ? position.BlackOccupancy : position.WhiteOccupancy;
+
+    return moves & opponentOccupancy;
 }
