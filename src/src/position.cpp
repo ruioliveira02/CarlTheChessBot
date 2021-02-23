@@ -7,6 +7,46 @@ Position::Position()
     setStartingPosition();
 }
 
+
+Position::Position(std::vector<Square>** pieces ,BitBoard white, BitBoard black ,Color color,bool** castling, short enpassant,short halfMoves,short totalMoves)
+{
+    EnPassant = enpassant;
+    ToMove = color;
+    HalfMoves = halfMoves;
+    TotalMoves = totalMoves;
+
+    WhiteOccupancy = white;
+    BlackOccupancy = black;
+
+    for(int i = 0; i < 2; i++)
+        for(int j = 0; j < 2; j++)
+            Castling[i][j] = castling[i][j];
+
+    for(int i = 0; i < 6; i++)
+        for(int j = 0; j < 2; j++)
+            PieceLocations[i][j] = pieces[i][j];
+}
+
+Position::Position(const Position& pos)
+{
+    EnPassant = pos.EnPassant;
+    ToMove = pos.ToMove;
+    HalfMoves = pos.HalfMoves;
+    TotalMoves = pos.TotalMoves;
+
+    WhiteOccupancy = pos.WhiteOccupancy;
+    BlackOccupancy = pos.BlackOccupancy;
+
+    for(int i = 0; i < 2; i++)
+        for(int j = 0; j < 2; j++)
+            Castling[i][j] = pos.Castling[i][j];
+
+    for(int i = 0; i < 6; i++)
+        for(int j = 0; j < 2; j++)
+            PieceLocations[i][j] = pos.PieceLocations[i][j];
+}
+
+
 Position::~Position()
 {
     //dtor

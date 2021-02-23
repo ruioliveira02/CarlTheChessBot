@@ -54,6 +54,8 @@ class Position
 {
     public:
         Position();
+        Position(const Position&);
+        Position(std::vector<Square>**,BitBoard,BitBoard,Color,bool**,short,short,short);
         virtual ~Position();
 
         void setStartingPosition();
