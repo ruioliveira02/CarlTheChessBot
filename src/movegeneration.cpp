@@ -119,3 +119,66 @@ std::vector<Move> convertBitBoardToMoves(BitBoard bitboard, Square square, Piece
 
     return answer;
 }
+
+void initializeBitBoards()
+{
+    initializeKnightBitBoard();
+    initializeKingBitBoard();
+}
+
+void initializeKnightBitBoard()
+{
+    for(int i = 0; i < 64; i++)
+    {
+        knightMoves[i] = 0ULL;
+
+        int rank = i / 8;
+        int file = i % 8;
+
+        if(rank + 2 <= 7 && file + 1 <= 7)
+            knightMoves[i] |= (1 << (i + 17));
+        if(rank + 2 <= 7 && file - 1 >= 0)
+            knightMoves[i] |= (1 << (i + 15));
+        if(rank - 2 >= 0 && file + 1 <= 7)
+            knightMoves[i] |= (1 << (i - 15));
+        if(rank - 2 >= 0 && file - 1 >= 0)
+            knightMoves[i] |= (1 << (i - 17));
+        if(rank + 1 <= 7 && file + 2 <= 7)
+            knightMoves[i] |= (1 << (i + 10));
+        if(rank + 1 <= 7 && file - 2 >= 0)
+            knightMoves[i] |= (1 << (i + 6));
+        if(rank - 1 >= 0 && file + 2 <= 7)
+            knightMoves[i] |= (1 << (i - 6));
+        if(rank - 1 >= 0 && file - 2 >= 0)
+            knightMoves[i] |= (1 << (i - 10));
+    }
+}
+
+
+void initializeKingBitBoard()
+{
+    for(int i = 0; i < 64; i++)
+    {
+        kingMoves[i] = 0ULL;
+
+        int rank = i / 8;
+        int file = i % 8;
+
+        if(rank + 1 <= 7 && file + 1 <= 7)
+            kingMoves[i] |= (1 << (i + 9));
+        if(rank + 1 <= 7)
+            kingMoves[i] |= (1 << (i + 8));
+        if(rank + 1 <= 7 && file - 1 >= 0)
+            kingMoves[i] |= (1 << (i - 7));
+        if(file - 1 >= 0)
+            kingMoves[i] |= (1 << (i - 1));
+        if(file + 1 <= 7)
+            kingMoves[i] |= (1 << (i + 1));
+        if(rank - 1 >= 0 && file - 1 >= 0)
+            kingMoves[i] |= (1 << (i - 9));
+        if(rank - 1 >= 0 && file + 1 <= 7)
+            kingMoves[i] |= (1 << (i - 7));
+        if(rank - 1 >= 0)
+            kingMoves[i] |= (1 << (i - 8));
+    }
+}

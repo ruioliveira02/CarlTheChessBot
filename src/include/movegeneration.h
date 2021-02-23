@@ -25,4 +25,12 @@ std::vector<Move> convertBitBoardToMoves(BitBoard, Square, Piece);
 
 bool inCheck(Position,Color);
 
+BitBoard knightMoves[64];
+BitBoard kingMoves[64];
+
+void initializeBitBoards();
+
+void initializeKnightBitBoard();
+void initializeKingBitBoard();
+
 #endif // MOVEGENERATION_H_
