@@ -1,6 +1,9 @@
 #include "movegeneration.h"
 #include "MagicMoves.hpp"
 
+BitBoard knightMoves[64];
+BitBoard kingMoves[64];
+
 std::vector<Move> generateAllMoves(Position position)
 {
     Color color = position.ToMove;
@@ -96,7 +99,10 @@ std::vector<Move> generatePawnMoves(Position position, Square square)
 
 std::vector<Move> generateKnightMoves(Position position, Square square)
 {
-    return std::vector<Move>();
+    BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
+    BitBoard result = knightMoves[square] & ~ownPieces;
+
+    return convertBitBoardToMoves(result, square, Piece::Knight);
 }
 
 std::vector<Move> generateKingMoves(Position position, Square square)
@@ -120,10 +126,11 @@ std::vector<Move> convertBitBoardToMoves(BitBoard bitboard, Square square, Piece
     return answer;
 }
 
-void initializeBitBoards()
+
+void initializeAllBitBoards()
 {
-    initializeKnightBitBoard();
     initializeKingBitBoard();
+    initializeKnightBitBoard();
 }
 
 void initializeKnightBitBoard()
