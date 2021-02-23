@@ -39,7 +39,7 @@ struct Move
     Square origin;
     Square destiny;
     Square enpassant;
-    Piece promotedTo;
+    Piece piece;
 
     Move(MoveType t, Square o, Square d, Square en, Piece p)
     {
@@ -47,7 +47,7 @@ struct Move
         origin = o;
         destiny = d;
         enpassant = en;
-        promotedTo = p;
+        piece = p;
     }
 };
 
