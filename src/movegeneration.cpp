@@ -94,7 +94,14 @@ std::vector<Move> generateBishopMoves(Position position, Square square)
 
 std::vector<Move> generatePawnMoves(Position position, Square square)
 {
-    return std::vector<Move>();
+    std::vector<Move> pushes = generatePawnPushes(position, square);
+    std::vector<Move> captures = generatePawnCaptures(position, square);
+    std::vector<Move> enpassant = generateEnPassant(position, square);
+
+    pushes.insert(pushes.end(), captures.begin(), captures.end());
+    pushes.insert(pushes.end(), enpassant.begin(), enpassant.end());
+
+    return pushes;
 }
 
 std::vector<Move> generateKnightMoves(Position position, Square square)
@@ -128,22 +135,166 @@ std::vector<Move> generateCastling(Position position, Square square)
     bool kingside = (position.ToMove == Color::White) ? position.Castling[0][0] : position.Castling[0][1];
     bool queenside = (position.ToMove == Color::White) ? position.Castling[1][0] : position.Castling[1][1];
 
-    Bitboard occupancy = position.WhiteOccupancy && position.BlackOccupancy;
+    BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
     if(kingside && !(occupancy & (1 << (square + 1))) && !(occupancy & (1 << (square + 2)))
         && !inCheck(position, position.ToMove, square + 1) && !inCheck(position, position.ToMove, square + 2))
     {
-        answer.push_back(Move(MoveType::Castling, square, square + 2, -1, Piece::King));
+        answer.push_back(Move(MoveType::Castling, square, square + 2, Piece::King));
     }
 
     if(queenside && !(occupancy & (1 << (square - 1))) && !(occupancy & (1 << (square - 2))) && !(occupancy & (1 << (square - 3)))
         && !inCheck(position, position.ToMove, square - 1) && !inCheck(position, position.ToMove, square - 2))
     {
-        answer.push_back(Move(MoveType::Castling, square, square - 2, -1, Piece::King));
+        answer.push_back(Move(MoveType::Castling, square, square - 2, Piece::King));
     }
 
     return answer;
 }
+
+std::vector<Move> generatePromotions(Square origin, Square destiny)
+{
+    std::vector<Move> answer = std::vector<Move>();
+
+    answer.push_back(Move(MoveType::Promotion, origin, destiny, Piece::Queen));
+    answer.push_back(Move(MoveType::Promotion, origin, destiny, Piece::Rook));
+    answer.push_back(Move(MoveType::Promotion, origin, destiny, Piece::Knight));
+    answer.push_back(Move(MoveType::Promotion, origin, destiny, Piece::Bishop));
+
+    return answer;
+}
+
+
+std::vector<Move> generateEnPassant(Position position, Square square)
+{
+    std::vector<Move> answer = std::vector<Move>();
+
+    if((position.ToMove == Color::White && (position.EnPassant + 7 == square || position.EnPassant + 9 == square))
+        || (position.ToMove == Color::Black && (position.EnPassant - 7 == square || position.EnPassant - 9 == square)))
+    {
+        answer.push_back(Move(MoveType::EnPassant, square, position.EnPassant, Piece::Pawn));
+    }
+
+    return answer;
+}
+
+
+std::vector<Move> generatePawnPushes(Position position, Square square)
+{
+    std::vector<Move> answer = std::vector<Move>();
+    BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
+
+
+    if(position.ToMove == Color::White)
+    {
+        if(square / 8 == 1 && !(occupancy & (1 << (square + 8))) && !(occupancy & (1 << (square + 16))))
+            answer.push_back(Move(MoveType::Normal, square, square + 16, Piece::Pawn));
+
+        if(!(occupancy & (1 << (square + 8))))
+        {
+            if(square / 8 == 6)
+            {
+                std::vector<Move> promotions = generatePromotions(square, square + 8);
+                answer.insert(answer.end(), promotions.begin(), promotions.end());
+            }
+            else
+            {
+                answer.push_back(Move(MoveType::Normal, square, square + 8, Piece::Pawn));;
+            }
+        }
+
+    }
+    else
+    {
+
+        if(square / 8 == 6 && !(occupancy & (1 << (square - 8))) && !(occupancy & (1 << (square - 16))))
+            answer.push_back(Move(MoveType::Normal, square, square - 16, Piece::Pawn));
+
+        if(!(occupancy & (1 << (square - 8))))
+        {
+            if(square / 8 == 1)
+            {
+                std::vector<Move> promotions = generatePromotions(square, square - 8);
+                answer.insert(answer.end(), promotions.begin(), promotions.end());
+            }
+            else
+            {
+                answer.push_back(Move(MoveType::Normal, square, square - 8, Piece::Pawn));
+            }
+        }
+    }
+
+    return answer;
+}
+
+
+std::vector<Move> generatePawnCaptures(Position position, Square square)
+{
+    std::vector<Move> answer = std::vector<Move>();
+
+    if(position.ToMove == Color::White)
+    {
+        if(position.BlackOccupancy & (1 << (square + 7)))
+        {
+            if(square / 8 == 6)
+            {
+                std::vector<Move> promotions = generatePromotions(square, square + 7);
+                answer.insert(answer.end(), promotions.begin(), promotions.end());
+            }
+            else
+            {
+                answer.push_back(Move(MoveType::Normal, square, square + 7, Piece::Pawn));
+            }
+        }
+
+        if(position.BlackOccupancy & (1 << (square + 9)))
+        {
+            if(square / 8 == 6)
+            {
+                std::vector<Move> promotions = generatePromotions(square, square + 9);
+                answer.insert(answer.end(), promotions.begin(), promotions.end());
+            }
+            else
+            {
+                answer.push_back(Move(MoveType::Normal, square, square + 9, Piece::Pawn));
+            }
+        }
+    }
+    else
+    {
+        if(position.WhiteOccupancy & (1 << (square - 7)))
+        {
+            if(square / 8 == 1)
+            {
+                std::vector<Move> promotions = generatePromotions(square, square - 7);
+                answer.insert(answer.end(), promotions.begin(), promotions.end());
+            }
+            else
+            {
+                answer.push_back(Move(MoveType::Normal, square, square - 7, Piece::Pawn));
+            }
+        }
+
+        if(position.WhiteOccupancy & (1 << (square - 9)))
+        {
+            if(square / 8 == 1)
+            {
+                std::vector<Move> promotions = generatePromotions(square, square - 9);
+                answer.insert(answer.end(), promotions.begin(), promotions.end());
+            }
+            else
+            {
+                answer.push_back(Move(MoveType::Normal, square, square - 9, Piece::Pawn));
+            }
+        }
+    }
+
+    return answer;
+}
+
+
+
+
 
 
 
@@ -156,7 +307,7 @@ std::vector<Move> convertBitBoardToMoves(BitBoard bitboard, Square square, Piece
         //Check if i-th bit is set
         if(bitboard & (1ULL << i))
         {
-            answer.push_back(Move(MoveType::Normal, square, i, -1, piece));
+            answer.push_back(Move(MoveType::Normal, square, i, piece));
         }
     }
 
@@ -230,14 +381,19 @@ void initializeKingBitBoard()
 
 bool inCheck(Position position, Color color)
 {
-    return inCheck(position, color, position.PieceLocations[Piece::King][color]);
+    return inCheck(position, color, position.PieceLocations[Piece::King][color][0]);
 }
 
 bool inCheck(Position position, Color color, Square square)
 {
-    BitBoard moves = generateQueenMoves(position, square) | generateKnightMoves(position, square);
+    BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
+    BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
-    Bitboar opponentOccupancy = (color == Color::White) ? position.BlackOccupancy : position.WhiteOccupancy;
+    BitBoard moves = knightMoves[square] | Rmagic(square, occupancy) | Bmagic(square, occupancy);
+
+    moves = moves & ~ownPieces;
+
+    BitBoard opponentOccupancy = (color == Color::White) ? position.BlackOccupancy : position.WhiteOccupancy;
 
     return moves & opponentOccupancy;
 }

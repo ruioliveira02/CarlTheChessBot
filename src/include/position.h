@@ -38,15 +38,13 @@ struct Move
     MoveType type;
     Square origin;
     Square destiny;
-    Square enpassant;
     Piece piece;
 
-    Move(MoveType t, Square o, Square d, Square en, Piece p)
+    Move(MoveType t, Square o, Square d, Piece p)
     {
         type = t;
         origin = o;
         destiny = d;
-        enpassant = en;
         piece = p;
     }
 };

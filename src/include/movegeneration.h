@@ -17,8 +17,10 @@ std::vector<Move> generateQueenMoves(Position,Square);
 
 
 std::vector<Move> generateCastling(Position, Square);
-std::vector<Move> generatePromotions(Position, Square);
+std::vector<Move> generatePromotions(Square, Square);
 std::vector<Move> generateEnPassant(Position, Square);
+std::vector<Move> generatePawnPushes(Position, Square);
+std::vector<Move> generatePawnCaptures(Position, Square);
 
 
 std::vector<Move> convertBitBoardToMoves(BitBoard, Square, Piece);
