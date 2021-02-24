@@ -1,0 +1,79 @@
+\hypertarget{structMove}{}\doxysection{Move Struct Reference}
+\label{structMove}\index{Move@{Move}}
+
+
+{\ttfamily \#include $<$position.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structMove_a399bd8d67e506e70a64592cfd2712fed}{Move}} (Move\+Type t, Square o, Square d, Piece p)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Move\+Type \mbox{\hyperlink{structMove_a88fb2c25370b1e62a52399ddef5d3449}{type}}
+\item 
+Square \mbox{\hyperlink{structMove_a20ff93e31eed83446f85b06b91f5c329}{origin}}
+\item 
+Square \mbox{\hyperlink{structMove_a7192868fbbec3ba7c4a011a83964d5ff}{destiny}}
+\item 
+Piece \mbox{\hyperlink{structMove_a22ee503f9edc5488269f948418b89ce4}{piece}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing a chess move. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structMove_a399bd8d67e506e70a64592cfd2712fed}\label{structMove_a399bd8d67e506e70a64592cfd2712fed}} 
+\index{Move@{Move}!Move@{Move}}
+\index{Move@{Move}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{Move()}{Move()}}
+{\footnotesize\ttfamily Move\+::\+Move (\begin{DoxyParamCaption}\item[{Move\+Type}]{t,  }\item[{Square}]{o,  }\item[{Square}]{d,  }\item[{Piece}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Standard constructor
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & The type of move \\
+\hline
+{\em o} & The origin square \\
+\hline
+{\em d} & The destiny square \\
+\hline
+{\em p} & The moved piece \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structMove_a7192868fbbec3ba7c4a011a83964d5ff}\label{structMove_a7192868fbbec3ba7c4a011a83964d5ff}} 
+\index{Move@{Move}!destiny@{destiny}}
+\index{destiny@{destiny}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{destiny}{destiny}}
+{\footnotesize\ttfamily Square Move\+::destiny}
+
+The destiny square of the piece (in case of enpassant, it is the square the pawn lands in) \mbox{\Hypertarget{structMove_a20ff93e31eed83446f85b06b91f5c329}\label{structMove_a20ff93e31eed83446f85b06b91f5c329}} 
+\index{Move@{Move}!origin@{origin}}
+\index{origin@{origin}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{origin}{origin}}
+{\footnotesize\ttfamily Square Move\+::origin}
+
+The origin square of the piece \mbox{\Hypertarget{structMove_a22ee503f9edc5488269f948418b89ce4}\label{structMove_a22ee503f9edc5488269f948418b89ce4}} 
+\index{Move@{Move}!piece@{piece}}
+\index{piece@{piece}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{piece}{piece}}
+{\footnotesize\ttfamily Piece Move\+::piece}
+
+The moved piece or, if the move is a promotion, the piece the pawn was promoted to \mbox{\Hypertarget{structMove_a88fb2c25370b1e62a52399ddef5d3449}\label{structMove_a88fb2c25370b1e62a52399ddef5d3449}} 
+\index{Move@{Move}!type@{type}}
+\index{type@{type}!Move@{Move}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily Move\+Type Move\+::type}
+
+The type of move 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/position.\+h\end{DoxyCompactItemize}

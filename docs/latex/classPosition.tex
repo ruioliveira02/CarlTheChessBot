@@ -1,0 +1,179 @@
+\hypertarget{classPosition}{}\doxysection{Position Class Reference}
+\label{classPosition}\index{Position@{Position}}
+
+
+{\ttfamily \#include $<$position.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPosition_a369a577425f8ba02e8750d04b6a088db}{Position}} ()
+\item 
+\mbox{\hyperlink{classPosition_a63750e368482cc5ef45180d3672b1c55}{Position}} (const \mbox{\hyperlink{classPosition}{Position}} \&)
+\item 
+\mbox{\hyperlink{classPosition_a366a3bf077f6bc80f9ce53fc0370517b}{Position}} (std\+::vector$<$ Square $>$\mbox{[}6\mbox{]}\mbox{[}2\mbox{]}, Bit\+Board, Bit\+Board, Color, bool\mbox{[}2\mbox{]}\mbox{[}2\mbox{]}, short, short, short)
+\item 
+virtual \mbox{\hyperlink{classPosition_abe83df4cab7af756636b4e39e4378f4a}{$\sim$\+Position}} ()
+\item 
+bool \mbox{\hyperlink{classPosition_a08dcd414365c243f0270c2779a198774}{operator$<$}} (const \mbox{\hyperlink{classPosition}{Position}} \&a)
+\item 
+bool \mbox{\hyperlink{classPosition_abb4c72505d132da1d06fefa189663338}{operator==}} (const \mbox{\hyperlink{classPosition}{Position}} \&a)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ Square $>$ \mbox{\hyperlink{classPosition_ae82b950d77a3a9d0e081f1bde3bc0185}{Piece\+Locations}} \mbox{[}6\mbox{]}\mbox{[}2\mbox{]}
+\item 
+Bit\+Board \mbox{\hyperlink{classPosition_a4806535434c0b17df8ea5d3fd02c4058}{Piece\+Bit\+Boards}} \mbox{[}6\mbox{]}\mbox{[}2\mbox{]}
+\item 
+Bit\+Board \mbox{\hyperlink{classPosition_ae502c4ab61b56fc6d2414ee7a8d136b1}{White\+Occupancy}}
+\item 
+Bit\+Board \mbox{\hyperlink{classPosition_ac6f740c74732b9b8666da9a559992f1e}{Black\+Occupancy}}
+\item 
+Color \mbox{\hyperlink{classPosition_a466d79b3a5195b22374e24c6fd031081}{To\+Move}}
+\item 
+bool \mbox{\hyperlink{classPosition_a0cda3c9f0d61b535c220d39201fc65d3}{Castling}} \mbox{[}2\mbox{]}\mbox{[}2\mbox{]}
+\item 
+short \mbox{\hyperlink{classPosition_a4f33ce856ab2de94316091f86af6bb46}{En\+Passant}}
+\item 
+short \mbox{\hyperlink{classPosition_abb72dafc36ea59b90d5b6587b55437fa}{Half\+Moves}}
+\item 
+short \mbox{\hyperlink{classPosition_aa7d55a78df65852f06bfccafa25685ad}{Total\+Moves}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class used to store data regarding a chess position 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPosition_a369a577425f8ba02e8750d04b6a088db}\label{classPosition_a369a577425f8ba02e8750d04b6a088db}} 
+\index{Position@{Position}!Position@{Position}}
+\index{Position@{Position}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{Position()}{Position()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Position\+::\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Standard constructor \mbox{\Hypertarget{classPosition_a63750e368482cc5ef45180d3672b1c55}\label{classPosition_a63750e368482cc5ef45180d3672b1c55}} 
+\index{Position@{Position}!Position@{Position}}
+\index{Position@{Position}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{Position()}{Position()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Position\+::\+Position (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classPosition}{Position}} \&}]{pos }\end{DoxyParamCaption})}
+
+Copy constructor \mbox{\Hypertarget{classPosition_a366a3bf077f6bc80f9ce53fc0370517b}\label{classPosition_a366a3bf077f6bc80f9ce53fc0370517b}} 
+\index{Position@{Position}!Position@{Position}}
+\index{Position@{Position}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{Position()}{Position()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Position\+::\+Position (\begin{DoxyParamCaption}\item[{std\+::vector$<$ Square $>$}]{pieces\mbox{[}6\mbox{]}\mbox{[}2\mbox{]},  }\item[{Bit\+Board}]{white,  }\item[{Bit\+Board}]{black,  }\item[{Color}]{color,  }\item[{bool}]{castling\mbox{[}2\mbox{]}\mbox{[}2\mbox{]},  }\item[{short}]{enpassant,  }\item[{short}]{half\+Moves,  }\item[{short}]{total\+Moves }\end{DoxyParamCaption})}
+
+Constructor
+
+
+\begin{DoxyParams}{Parameters}
+{\em piece\+Locations} & The location of the pieces \\
+\hline
+{\em white\+Occupancy} & The bitboard corresponding to the squares occupied by white pieces \\
+\hline
+{\em black\+Occupancy} & The bitboard corresponding to the squares occupied by black pieces \\
+\hline
+{\em to\+Move} & The color of the side to move \\
+\hline
+{\em castling} & Castling rights of the players (first coordinate is the side to castle on (0\+: kingside, 1\+: queenside), and the second one is the color (0\+:White, 1\+:Black) \\
+\hline
+{\em enpassant} & The square to which a pawn can enpassant to (same as in F\+EN notation) (-\/1 if there is no pawn that can be captured enpassant) \\
+\hline
+{\em half\+Moves} & The number of half moves since the last pawn push or capture (to account to fifty move rule) \\
+\hline
+{\em total\+Moves} & The number of total moves in the game \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classPosition_abe83df4cab7af756636b4e39e4378f4a}\label{classPosition_abe83df4cab7af756636b4e39e4378f4a}} 
+\index{Position@{Position}!````~Position@{$\sim$Position}}
+\index{````~Position@{$\sim$Position}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{$\sim$Position()}{~Position()}}
+{\footnotesize\ttfamily Position\+::$\sim$\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Virtual destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPosition_a08dcd414365c243f0270c2779a198774}\label{classPosition_a08dcd414365c243f0270c2779a198774}} 
+\index{Position@{Position}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily bool Position\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classPosition}{Position}} \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Comparator used to sort positions. They are sorted by the value of the White\+Occupancy property. \mbox{\Hypertarget{classPosition_abb4c72505d132da1d06fefa189663338}\label{classPosition_abb4c72505d132da1d06fefa189663338}} 
+\index{Position@{Position}!operator==@{operator==}}
+\index{operator==@{operator==}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool Position\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classPosition}{Position}} \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Comparator to check for position equality.
+
+Two positions are considered equal if the pieces are on the same squares, it is the same player to move, and the enpassant and castling rights are the same-\/ 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classPosition_ac6f740c74732b9b8666da9a559992f1e}\label{classPosition_ac6f740c74732b9b8666da9a559992f1e}} 
+\index{Position@{Position}!BlackOccupancy@{BlackOccupancy}}
+\index{BlackOccupancy@{BlackOccupancy}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{BlackOccupancy}{BlackOccupancy}}
+{\footnotesize\ttfamily Bit\+Board Position\+::\+Black\+Occupancy}
+
+The bitboard corresponding to the squares occupied by the black pieces. \mbox{\Hypertarget{classPosition_a0cda3c9f0d61b535c220d39201fc65d3}\label{classPosition_a0cda3c9f0d61b535c220d39201fc65d3}} 
+\index{Position@{Position}!Castling@{Castling}}
+\index{Castling@{Castling}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{Castling}{Castling}}
+{\footnotesize\ttfamily bool Position\+::\+Castling\mbox{[}2\mbox{]}\mbox{[}2\mbox{]}}
+
+The castling rights in the position. Does not mean that castling is legal, but that no pieces have been moved such that castling would be forever illegal.
+
+First coordinate is kingside/queenside, the second one is white/black \mbox{\Hypertarget{classPosition_a4f33ce856ab2de94316091f86af6bb46}\label{classPosition_a4f33ce856ab2de94316091f86af6bb46}} 
+\index{Position@{Position}!EnPassant@{EnPassant}}
+\index{EnPassant@{EnPassant}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{EnPassant}{EnPassant}}
+{\footnotesize\ttfamily short Position\+::\+En\+Passant}
+
+Square of the pawn that can be captured en passant (-\/1 if there is no such pawn) \mbox{\Hypertarget{classPosition_abb72dafc36ea59b90d5b6587b55437fa}\label{classPosition_abb72dafc36ea59b90d5b6587b55437fa}} 
+\index{Position@{Position}!HalfMoves@{HalfMoves}}
+\index{HalfMoves@{HalfMoves}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{HalfMoves}{HalfMoves}}
+{\footnotesize\ttfamily short Position\+::\+Half\+Moves}
+
+Number of half-\/moves since last capture or pawn push (50 move rule) \mbox{\Hypertarget{classPosition_a4806535434c0b17df8ea5d3fd02c4058}\label{classPosition_a4806535434c0b17df8ea5d3fd02c4058}} 
+\index{Position@{Position}!PieceBitBoards@{PieceBitBoards}}
+\index{PieceBitBoards@{PieceBitBoards}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{PieceBitBoards}{PieceBitBoards}}
+{\footnotesize\ttfamily Bit\+Board Position\+::\+Piece\+Bit\+Boards\mbox{[}6\mbox{]}\mbox{[}2\mbox{]}}
+
+The Bitboards with the occupancies of pieces divided by color and type.
+
+The first coordinate is the piece type (as in the Piece enum order); second one is the color, as per the Color enum \mbox{\Hypertarget{classPosition_ae82b950d77a3a9d0e081f1bde3bc0185}\label{classPosition_ae82b950d77a3a9d0e081f1bde3bc0185}} 
+\index{Position@{Position}!PieceLocations@{PieceLocations}}
+\index{PieceLocations@{PieceLocations}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{PieceLocations}{PieceLocations}}
+{\footnotesize\ttfamily std\+::vector$<$Square$>$ Position\+::\+Piece\+Locations\mbox{[}6\mbox{]}\mbox{[}2\mbox{]}}
+
+The location of the pieces on the board.
+
+The first coordinate is the piece type (as in the Piece enum order); second one is the color, as per the Color enum \mbox{\Hypertarget{classPosition_a466d79b3a5195b22374e24c6fd031081}\label{classPosition_a466d79b3a5195b22374e24c6fd031081}} 
+\index{Position@{Position}!ToMove@{ToMove}}
+\index{ToMove@{ToMove}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{ToMove}{ToMove}}
+{\footnotesize\ttfamily Color Position\+::\+To\+Move}
+
+Color of the player to move \mbox{\Hypertarget{classPosition_aa7d55a78df65852f06bfccafa25685ad}\label{classPosition_aa7d55a78df65852f06bfccafa25685ad}} 
+\index{Position@{Position}!TotalMoves@{TotalMoves}}
+\index{TotalMoves@{TotalMoves}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{TotalMoves}{TotalMoves}}
+{\footnotesize\ttfamily short Position\+::\+Total\+Moves}
+
+Total number of moves in the game \mbox{\Hypertarget{classPosition_ae502c4ab61b56fc6d2414ee7a8d136b1}\label{classPosition_ae502c4ab61b56fc6d2414ee7a8d136b1}} 
+\index{Position@{Position}!WhiteOccupancy@{WhiteOccupancy}}
+\index{WhiteOccupancy@{WhiteOccupancy}!Position@{Position}}
+\doxysubsubsection{\texorpdfstring{WhiteOccupancy}{WhiteOccupancy}}
+{\footnotesize\ttfamily Bit\+Board Position\+::\+White\+Occupancy}
+
+The bitboard corresponding to the squares occupied by the white pieces. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/position.\+h\item 
+src/position.\+cpp\end{DoxyCompactItemize}
