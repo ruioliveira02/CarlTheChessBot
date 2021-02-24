@@ -33,7 +33,7 @@ Position::Position(std::vector<Square> pieces [6][2],BitBoard white, BitBoard bl
 
     for(int i = 0; i < 6; i++)
         for(int j = 0; j < 2; j++)
-            for(int k = 0; k < PieceLocations[i][k].size(); k++)
+            for(int k = 0; k < PieceLocations[i][j].size(); k++)
                 PieceBitBoards[i][j] |= (1ULL << (PieceLocations[i][j][k]));
 }
 
@@ -54,6 +54,10 @@ Position::Position(const Position& pos)
     for(int i = 0; i < 6; i++)
         for(int j = 0; j < 2; j++)
             PieceLocations[i][j] = pos.PieceLocations[i][j];
+
+    for(int i = 0; i < 6; i++)
+        for(int j = 0; j < 2; j++)
+            PieceBitBoards[i][j] = pos.PieceBitBoards[i][j];
 }
 
 

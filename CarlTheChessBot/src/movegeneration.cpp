@@ -137,13 +137,13 @@ std::vector<Move> generateCastling(Position position, Square square)
 
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
-    if(kingside && !(occupancy & (1 << (square + 1))) && !(occupancy & (1 << (square + 2)))
+    if(kingside && !(occupancy & (1ULL << (square + 1))) && !(occupancy & (1ULL << (square + 2)))
         && !inCheck(position, position.ToMove, square + 1) && !inCheck(position, position.ToMove, square + 2))
     {
         answer.push_back(Move(MoveType::Castling, square, square + 2, Piece::King));
     }
 
-    if(queenside && !(occupancy & (1 << (square - 1))) && !(occupancy & (1 << (square - 2))) && !(occupancy & (1 << (square - 3)))
+    if(queenside && !(occupancy & (1ULL << (square - 1))) && !(occupancy & (1ULL << (square - 2))) && !(occupancy & (1ULL << (square - 3)))
         && !inCheck(position, position.ToMove, square - 1) && !inCheck(position, position.ToMove, square - 2))
     {
         answer.push_back(Move(MoveType::Castling, square, square - 2, Piece::King));
@@ -169,8 +169,8 @@ std::vector<Move> generateEnPassant(Position position, Square square)
 {
     std::vector<Move> answer = std::vector<Move>();
 
-    if(position.EnPassant != -1 && ((position.ToMove == Color::White && (position.EnPassant + 7 == square || position.EnPassant + 9 == square))
-        || (position.ToMove == Color::Black && (position.EnPassant - 7 == square || position.EnPassant - 9 == square))))
+    if(position.EnPassant != -1 && ((position.ToMove == Color::Black && (position.EnPassant + 7 == square || position.EnPassant + 9 == square))
+        || (position.ToMove == Color::White && (position.EnPassant - 7 == square || position.EnPassant - 9 == square))))
     {
         answer.push_back(Move(MoveType::EnPassant, square, position.EnPassant, Piece::Pawn));
     }
@@ -182,7 +182,7 @@ std::vector<Move> generateEnPassant(Position position, Square square)
 std::vector<Move> generatePawnPushes(Position position, Square square)
 {
     std::vector<Move> answer = std::vector<Move>();
-    BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
+    BitBoard occupancy = (uint64_t)position.WhiteOccupancy + (uint64_t)position.BlackOccupancy;
 
 
     if(position.ToMove == Color::White)
@@ -392,14 +392,14 @@ bool inCheck(Position position, Color color, Square square)
     int opponentIndex = (position.ToMove == Color::White) ? 1 : 0;
 
     if((knightMoves[square] & ~ownPieces) & position.PieceBitBoards[Piece::Knight][opponentIndex])
-        return false;
+        return true;
 
      if((Rmagic(square, occupancy) & ~ownPieces) & position.PieceBitBoards[Piece::Rook][opponentIndex])
-        return false;
+        return true;
 
 
     if((Bmagic(square, occupancy) & ~ownPieces) & position.PieceBitBoards[Piece::Bishop][opponentIndex])
-        return false;
+        return true;
 
-    return true;
+    return false;
 }

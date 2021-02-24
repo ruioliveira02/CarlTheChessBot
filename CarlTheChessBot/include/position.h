@@ -2,9 +2,11 @@
 #define POSITION_H
 
 #include <vector>
+#include <cstdint>
+
+#define BitBoard uint64_t
 
 
-typedef unsigned long long BitBoard;
 typedef short Square;
 
 enum Color
