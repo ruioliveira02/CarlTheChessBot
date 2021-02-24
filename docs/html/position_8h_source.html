@@ -69,7 +69,7 @@ $(function() {
 <div class="title">position.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<a href="position_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifndef POSITION_H</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define POSITION_H</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
@@ -78,14 +78,14 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define BitBoard uint64_t</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">short</span> Square; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">enum</span> Color</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="position_8h.html#aea36cb320045b9a24ec74b798982e5fc">   17</a></span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">short</span> <a class="code" href="position_8h.html#aea36cb320045b9a24ec74b798982e5fc">Square</a>; </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="position_8h.html#ab87bacfdad76e61b9412d7124be44c1c">   25</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="position_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    White,</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    Black</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;};</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">enum</span> Piece</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="position_8h.html#ade35c903123b92bed5cc7b84e6a1314e">   34</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="position_8h.html#ade35c903123b92bed5cc7b84e6a1314e">Piece</a></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    Pawn,</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    Knight,</div>
@@ -96,22 +96,22 @@ $(function() {
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;};</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">enum</span> MoveType</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="position_8h.html#ab152e38addc9865a033ed991583c1395">   48</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="position_8h.html#ab152e38addc9865a033ed991583c1395">MoveType</a></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    Normal, </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    EnPassant,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    Castling, </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    Promotion </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="position_8h.html#ab152e38addc9865a033ed991583c1395a5ecbcf0afce98b042f35ec71ba03fa4b">   50</a></span>&#160;    <a class="code" href="position_8h.html#ab152e38addc9865a033ed991583c1395a5ecbcf0afce98b042f35ec71ba03fa4b">Normal</a>, </div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="position_8h.html#ab152e38addc9865a033ed991583c1395a0c4d271802420d33598458d05f29b2b0">   51</a></span>&#160;    <a class="code" href="position_8h.html#ab152e38addc9865a033ed991583c1395a0c4d271802420d33598458d05f29b2b0">EnPassant</a>,</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="position_8h.html#ab152e38addc9865a033ed991583c1395a71fdfd49860bcf9e092ca81c77fb1633">   52</a></span>&#160;    <a class="code" href="position_8h.html#ab152e38addc9865a033ed991583c1395a71fdfd49860bcf9e092ca81c77fb1633">Castling</a>, </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="position_8h.html#ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f">   53</a></span>&#160;    <a class="code" href="position_8h.html#ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f">Promotion</a> </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="structMove.html">   60</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structMove.html">Move</a></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structMove.html#a88fb2c25370b1e62a52399ddef5d3449">   62</a></span>&#160;    MoveType <a class="code" href="structMove.html#a88fb2c25370b1e62a52399ddef5d3449">type</a>; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structMove.html#a20ff93e31eed83446f85b06b91f5c329">   63</a></span>&#160;    Square <a class="code" href="structMove.html#a20ff93e31eed83446f85b06b91f5c329">origin</a>; </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structMove.html#a7192868fbbec3ba7c4a011a83964d5ff">   64</a></span>&#160;    Square <a class="code" href="structMove.html#a7192868fbbec3ba7c4a011a83964d5ff">destiny</a>; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structMove.html#a22ee503f9edc5488269f948418b89ce4">   65</a></span>&#160;    Piece <a class="code" href="structMove.html#a22ee503f9edc5488269f948418b89ce4">piece</a>; </div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structMove.html#a399bd8d67e506e70a64592cfd2712fed">   75</a></span>&#160;    <a class="code" href="structMove.html#a399bd8d67e506e70a64592cfd2712fed">Move</a>(MoveType t, Square o, Square d, Piece p)</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structMove.html#a88fb2c25370b1e62a52399ddef5d3449">   62</a></span>&#160;    <a class="code" href="position_8h.html#ab152e38addc9865a033ed991583c1395">MoveType</a> <a class="code" href="structMove.html#a88fb2c25370b1e62a52399ddef5d3449">type</a>; </div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structMove.html#a20ff93e31eed83446f85b06b91f5c329">   63</a></span>&#160;    <a class="code" href="position_8h.html#aea36cb320045b9a24ec74b798982e5fc">Square</a> <a class="code" href="structMove.html#a20ff93e31eed83446f85b06b91f5c329">origin</a>; </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structMove.html#a7192868fbbec3ba7c4a011a83964d5ff">   64</a></span>&#160;    <a class="code" href="position_8h.html#aea36cb320045b9a24ec74b798982e5fc">Square</a> <a class="code" href="structMove.html#a7192868fbbec3ba7c4a011a83964d5ff">destiny</a>; </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structMove.html#a22ee503f9edc5488269f948418b89ce4">   65</a></span>&#160;    <a class="code" href="position_8h.html#ade35c903123b92bed5cc7b84e6a1314e">Piece</a> <a class="code" href="structMove.html#a22ee503f9edc5488269f948418b89ce4">piece</a>; </div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structMove.html#a399bd8d67e506e70a64592cfd2712fed">   75</a></span>&#160;    <a class="code" href="structMove.html#a399bd8d67e506e70a64592cfd2712fed">Move</a>(<a class="code" href="position_8h.html#ab152e38addc9865a033ed991583c1395">MoveType</a> t, <a class="code" href="position_8h.html#aea36cb320045b9a24ec74b798982e5fc">Square</a> o, <a class="code" href="position_8h.html#aea36cb320045b9a24ec74b798982e5fc">Square</a> d, <a class="code" href="position_8h.html#ade35c903123b92bed5cc7b84e6a1314e">Piece</a> p)</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    {</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="structMove.html#a88fb2c25370b1e62a52399ddef5d3449">type</a> = t;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="structMove.html#a20ff93e31eed83446f85b06b91f5c329">origin</a> = o;</div>
@@ -128,7 +128,7 @@ $(function() {
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="code" href="classPosition.html#a369a577425f8ba02e8750d04b6a088db">Position</a>(<span class="keyword">const</span> <a class="code" href="classPosition.html">Position</a>&amp;);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="classPosition.html#a369a577425f8ba02e8750d04b6a088db">Position</a>(std::vector&lt;Square&gt;[6][2],BitBoard,BitBoard,Color,<span class="keywordtype">bool</span>[2][2],<span class="keywordtype">short</span>,<span class="keywordtype">short</span>,<span class="keywordtype">short</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="classPosition.html#a369a577425f8ba02e8750d04b6a088db">Position</a>(std::vector&lt;Square&gt;[6][2],BitBoard,BitBoard,<a class="code" href="position_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a>,<span class="keywordtype">bool</span>[2][2],<span class="keywordtype">short</span>,<span class="keywordtype">short</span>,<span class="keywordtype">short</span>);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classPosition.html#abe83df4cab7af756636b4e39e4378f4a">~Position</a>();</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
@@ -168,7 +168,7 @@ $(function() {
 <div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="classPosition.html#ac6f740c74732b9b8666da9a559992f1e">  177</a></span>&#160;        BitBoard <a class="code" href="classPosition.html#ac6f740c74732b9b8666da9a559992f1e">BlackOccupancy</a>;</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="classPosition.html#a466d79b3a5195b22374e24c6fd031081">  181</a></span>&#160;        Color <a class="code" href="classPosition.html#a466d79b3a5195b22374e24c6fd031081">ToMove</a>;</div>
+<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="classPosition.html#a466d79b3a5195b22374e24c6fd031081">  181</a></span>&#160;        <a class="code" href="position_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> <a class="code" href="classPosition.html#a466d79b3a5195b22374e24c6fd031081">ToMove</a>;</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
 <div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="classPosition.html#a0cda3c9f0d61b535c220d39201fc65d3">  189</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classPosition.html#a0cda3c9f0d61b535c220d39201fc65d3">Castling</a>[2][2];</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
@@ -185,26 +185,34 @@ $(function() {
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="preprocessor">#endif // POSITION_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="aposition_8h_html_ab152e38addc9865a033ed991583c1395a0c4d271802420d33598458d05f29b2b0"><div class="ttname"><a href="position_8h.html#ab152e38addc9865a033ed991583c1395a0c4d271802420d33598458d05f29b2b0">EnPassant</a></div><div class="ttdeci">@ EnPassant</div><div class="ttdef"><b>Definition:</b> position.h:51</div></div>
 <div class="ttc" id="aclassPosition_html"><div class="ttname"><a href="classPosition.html">Position</a></div><div class="ttdef"><b>Definition:</b> position.h:88</div></div>
 <div class="ttc" id="astructMove_html"><div class="ttname"><a href="structMove.html">Move</a></div><div class="ttdef"><b>Definition:</b> position.h:60</div></div>
 <div class="ttc" id="aclassPosition_html_a4806535434c0b17df8ea5d3fd02c4058"><div class="ttname"><a href="classPosition.html#a4806535434c0b17df8ea5d3fd02c4058">Position::PieceBitBoards</a></div><div class="ttdeci">BitBoard PieceBitBoards[6][2]</div><div class="ttdef"><b>Definition:</b> position.h:167</div></div>
 <div class="ttc" id="aclassPosition_html_a4f33ce856ab2de94316091f86af6bb46"><div class="ttname"><a href="classPosition.html#a4f33ce856ab2de94316091f86af6bb46">Position::EnPassant</a></div><div class="ttdeci">short EnPassant</div><div class="ttdef"><b>Definition:</b> position.h:192</div></div>
+<div class="ttc" id="aposition_8h_html_ab152e38addc9865a033ed991583c1395a71fdfd49860bcf9e092ca81c77fb1633"><div class="ttname"><a href="position_8h.html#ab152e38addc9865a033ed991583c1395a71fdfd49860bcf9e092ca81c77fb1633">Castling</a></div><div class="ttdeci">@ Castling</div><div class="ttdef"><b>Definition:</b> position.h:52</div></div>
 <div class="ttc" id="aclassPosition_html_ae82b950d77a3a9d0e081f1bde3bc0185"><div class="ttname"><a href="classPosition.html#ae82b950d77a3a9d0e081f1bde3bc0185">Position::PieceLocations</a></div><div class="ttdeci">std::vector&lt; Square &gt; PieceLocations[6][2]</div><div class="ttdef"><b>Definition:</b> position.h:160</div></div>
 <div class="ttc" id="aclassPosition_html_a369a577425f8ba02e8750d04b6a088db"><div class="ttname"><a href="classPosition.html#a369a577425f8ba02e8750d04b6a088db">Position::Position</a></div><div class="ttdeci">Position()</div><div class="ttdef"><b>Definition:</b> position.cpp:5</div></div>
 <div class="ttc" id="astructMove_html_a399bd8d67e506e70a64592cfd2712fed"><div class="ttname"><a href="structMove.html#a399bd8d67e506e70a64592cfd2712fed">Move::Move</a></div><div class="ttdeci">Move(MoveType t, Square o, Square d, Piece p)</div><div class="ttdef"><b>Definition:</b> position.h:75</div></div>
 <div class="ttc" id="aclassPosition_html_ac6f740c74732b9b8666da9a559992f1e"><div class="ttname"><a href="classPosition.html#ac6f740c74732b9b8666da9a559992f1e">Position::BlackOccupancy</a></div><div class="ttdeci">BitBoard BlackOccupancy</div><div class="ttdef"><b>Definition:</b> position.h:177</div></div>
+<div class="ttc" id="aposition_8h_html_ab152e38addc9865a033ed991583c1395"><div class="ttname"><a href="position_8h.html#ab152e38addc9865a033ed991583c1395">MoveType</a></div><div class="ttdeci">MoveType</div><div class="ttdef"><b>Definition:</b> position.h:48</div></div>
 <div class="ttc" id="aclassPosition_html_a466d79b3a5195b22374e24c6fd031081"><div class="ttname"><a href="classPosition.html#a466d79b3a5195b22374e24c6fd031081">Position::ToMove</a></div><div class="ttdeci">Color ToMove</div><div class="ttdef"><b>Definition:</b> position.h:181</div></div>
 <div class="ttc" id="aclassPosition_html_abb4c72505d132da1d06fefa189663338"><div class="ttname"><a href="classPosition.html#abb4c72505d132da1d06fefa189663338">Position::operator==</a></div><div class="ttdeci">bool operator==(const Position &amp;a)</div><div class="ttdef"><b>Definition:</b> position.h:133</div></div>
+<div class="ttc" id="aposition_8h_html_aea36cb320045b9a24ec74b798982e5fc"><div class="ttname"><a href="position_8h.html#aea36cb320045b9a24ec74b798982e5fc">Square</a></div><div class="ttdeci">short Square</div><div class="ttdef"><b>Definition:</b> position.h:17</div></div>
 <div class="ttc" id="aclassPosition_html_abb72dafc36ea59b90d5b6587b55437fa"><div class="ttname"><a href="classPosition.html#abb72dafc36ea59b90d5b6587b55437fa">Position::HalfMoves</a></div><div class="ttdeci">short HalfMoves</div><div class="ttdef"><b>Definition:</b> position.h:195</div></div>
 <div class="ttc" id="aclassPosition_html_ae502c4ab61b56fc6d2414ee7a8d136b1"><div class="ttname"><a href="classPosition.html#ae502c4ab61b56fc6d2414ee7a8d136b1">Position::WhiteOccupancy</a></div><div class="ttdeci">BitBoard WhiteOccupancy</div><div class="ttdef"><b>Definition:</b> position.h:172</div></div>
 <div class="ttc" id="aclassPosition_html_a08dcd414365c243f0270c2779a198774"><div class="ttname"><a href="classPosition.html#a08dcd414365c243f0270c2779a198774">Position::operator&lt;</a></div><div class="ttdeci">bool operator&lt;(const Position &amp;a)</div><div class="ttdef"><b>Definition:</b> position.h:123</div></div>
 <div class="ttc" id="astructMove_html_a22ee503f9edc5488269f948418b89ce4"><div class="ttname"><a href="structMove.html#a22ee503f9edc5488269f948418b89ce4">Move::piece</a></div><div class="ttdeci">Piece piece</div><div class="ttdef"><b>Definition:</b> position.h:65</div></div>
 <div class="ttc" id="aclassPosition_html_a0cda3c9f0d61b535c220d39201fc65d3"><div class="ttname"><a href="classPosition.html#a0cda3c9f0d61b535c220d39201fc65d3">Position::Castling</a></div><div class="ttdeci">bool Castling[2][2]</div><div class="ttdef"><b>Definition:</b> position.h:189</div></div>
 <div class="ttc" id="astructMove_html_a7192868fbbec3ba7c4a011a83964d5ff"><div class="ttname"><a href="structMove.html#a7192868fbbec3ba7c4a011a83964d5ff">Move::destiny</a></div><div class="ttdeci">Square destiny</div><div class="ttdef"><b>Definition:</b> position.h:64</div></div>
+<div class="ttc" id="aposition_8h_html_ab152e38addc9865a033ed991583c1395a5ecbcf0afce98b042f35ec71ba03fa4b"><div class="ttname"><a href="position_8h.html#ab152e38addc9865a033ed991583c1395a5ecbcf0afce98b042f35ec71ba03fa4b">Normal</a></div><div class="ttdeci">@ Normal</div><div class="ttdef"><b>Definition:</b> position.h:50</div></div>
+<div class="ttc" id="aposition_8h_html_ade35c903123b92bed5cc7b84e6a1314e"><div class="ttname"><a href="position_8h.html#ade35c903123b92bed5cc7b84e6a1314e">Piece</a></div><div class="ttdeci">Piece</div><div class="ttdef"><b>Definition:</b> position.h:34</div></div>
 <div class="ttc" id="aclassPosition_html_aa7d55a78df65852f06bfccafa25685ad"><div class="ttname"><a href="classPosition.html#aa7d55a78df65852f06bfccafa25685ad">Position::TotalMoves</a></div><div class="ttdeci">short TotalMoves</div><div class="ttdef"><b>Definition:</b> position.h:198</div></div>
+<div class="ttc" id="aposition_8h_html_ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f"><div class="ttname"><a href="position_8h.html#ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f">Promotion</a></div><div class="ttdeci">@ Promotion</div><div class="ttdef"><b>Definition:</b> position.h:53</div></div>
 <div class="ttc" id="astructMove_html_a88fb2c25370b1e62a52399ddef5d3449"><div class="ttname"><a href="structMove.html#a88fb2c25370b1e62a52399ddef5d3449">Move::type</a></div><div class="ttdeci">MoveType type</div><div class="ttdef"><b>Definition:</b> position.h:62</div></div>
 <div class="ttc" id="aclassPosition_html_abe83df4cab7af756636b4e39e4378f4a"><div class="ttname"><a href="classPosition.html#abe83df4cab7af756636b4e39e4378f4a">Position::~Position</a></div><div class="ttdeci">virtual ~Position()</div><div class="ttdef"><b>Definition:</b> position.cpp:64</div></div>
 <div class="ttc" id="astructMove_html_a20ff93e31eed83446f85b06b91f5c329"><div class="ttname"><a href="structMove.html#a20ff93e31eed83446f85b06b91f5c329">Move::origin</a></div><div class="ttdeci">Square origin</div><div class="ttdef"><b>Definition:</b> position.h:63</div></div>
+<div class="ttc" id="aposition_8h_html_ab87bacfdad76e61b9412d7124be44c1c"><div class="ttname"><a href="position_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a></div><div class="ttdeci">Color</div><div class="ttdef"><b>Definition:</b> position.h:25</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

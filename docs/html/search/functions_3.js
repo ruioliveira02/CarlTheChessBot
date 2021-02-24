@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7eposition_24',['~Position',['../classPosition.html#abe83df4cab7af756636b4e39e4378f4a',1,'Position']]]
+  ['move_71',['Move',['../structMove.html#a399bd8d67e506e70a64592cfd2712fed',1,'Move']]]
 ];

@@ -1,4 +1,11 @@
 /**
+    \file magicmoves.h
+
+    \brief Header file for magic move bitboard generation.
+*/
+
+
+/**
  *magicmoves.h
  *
  *Header file for magic move bitboard generation.  Include this in any files
@@ -27,7 +34,7 @@
  *Occupancy is any unsigned 64-bit integer that describes which squares on
  *the board are occupied.
  *
- *The following macros are identical to Rmagic and Bmagic except that the 
+ *The following macros are identical to Rmagic and Bmagic except that the
  *occupancy is assumed to already have been "masked".  Look at the following
  *source or read up on the internet about magic bitboard move generation to
  *understand the usage of these macros and what it means by "an occupancy that

@@ -1,0 +1,139 @@
+\hypertarget{magicmoves_8h}{}\doxysection{include/magicmoves.h File Reference}
+\label{magicmoves_8h}\index{include/magicmoves.h@{include/magicmoves.h}}
+
+
+Header file for magic move bitboard generation.  
+
+
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{magicmoves_8h_a93e55434aedb0b88857b434926084db0}{M\+I\+N\+I\+M\+I\+Z\+E\+\_\+\+M\+A\+G\+IC}}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a3ecececa39cb540cd3f5909d6ddf7852}\label{magicmoves_8h_a3ecececa39cb540cd3f5909d6ddf7852}} 
+\#define {\bfseries U\+S\+E\+\_\+\+I\+N\+L\+I\+N\+I\+NG}~/$\ast$the M\+M\+I\+N\+L\+I\+NE keyword is assumed to be available$\ast$/
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a22fd34bbbe210f802808204475e7a493}\label{magicmoves_8h_a22fd34bbbe210f802808204475e7a493}} 
+\#define {\bfseries \+\_\+\+\_\+64\+\_\+\+B\+I\+T\+\_\+\+I\+N\+T\+E\+G\+E\+R\+\_\+\+D\+E\+F\+I\+N\+E\+D\+\_\+\+\_\+}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a6dcee18e6ec0d3e9986fd53d50fb6ad8}\label{magicmoves_8h_a6dcee18e6ec0d3e9986fd53d50fb6ad8}} 
+\#define {\bfseries M\+M\+I\+N\+L\+I\+NE}~inline
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a652ec828d9ef9e2fce07d75090e9c00d}\label{magicmoves_8h_a652ec828d9ef9e2fce07d75090e9c00d}} 
+\#define {\bfseries C64}(constant\+U64)~constant\+U64\#\#U\+LL
+\item 
+\mbox{\Hypertarget{magicmoves_8h_ae7f9d7f7eb55a7f3d15c2d185450c2d1}\label{magicmoves_8h_ae7f9d7f7eb55a7f3d15c2d185450c2d1}} 
+\#define {\bfseries M\+I\+N\+I\+M\+A\+L\+\_\+\+B\+\_\+\+B\+I\+T\+S\+\_\+\+S\+H\+I\+FT}(square)~55
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a821549eb534b67529285f199b8c510ca}\label{magicmoves_8h_a821549eb534b67529285f199b8c510ca}} 
+\#define {\bfseries M\+I\+N\+I\+M\+A\+L\+\_\+\+R\+\_\+\+B\+I\+T\+S\+\_\+\+S\+H\+I\+FT}(square)~52
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a24c386d3758eba951eb7532fdbb45804}\label{magicmoves_8h_a24c386d3758eba951eb7532fdbb45804}} 
+typedef unsigned long long {\bfseries U64}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_ad634272c1e3d7080287f010a008c5145}\label{magicmoves_8h_ad634272c1e3d7080287f010a008c5145}} 
+void {\bfseries initmagicmoves} (void)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a5ceb50892535efab9e021ebdf5f1414e}\label{magicmoves_8h_a5ceb50892535efab9e021ebdf5f1414e}} 
+const U64 {\bfseries magicmoves\+\_\+r\+\_\+magics} \mbox{[}64\mbox{]}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a351ebd1ef8f6844109df3d007a15b169}\label{magicmoves_8h_a351ebd1ef8f6844109df3d007a15b169}} 
+const U64 {\bfseries magicmoves\+\_\+r\+\_\+mask} \mbox{[}64\mbox{]}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_aab5cb0aba050d4ed8578b5a9f8c496b1}\label{magicmoves_8h_aab5cb0aba050d4ed8578b5a9f8c496b1}} 
+const U64 {\bfseries magicmoves\+\_\+b\+\_\+magics} \mbox{[}64\mbox{]}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a6ed377567452f4cd9acd149c0de54496}\label{magicmoves_8h_a6ed377567452f4cd9acd149c0de54496}} 
+const U64 {\bfseries magicmoves\+\_\+b\+\_\+mask} \mbox{[}64\mbox{]}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a26b7f4c6917eacac6b1718f2b3958f64}\label{magicmoves_8h_a26b7f4c6917eacac6b1718f2b3958f64}} 
+const unsigned int {\bfseries magicmoves\+\_\+b\+\_\+shift} \mbox{[}64\mbox{]}
+\item 
+const unsigned int \mbox{\hyperlink{magicmoves_8h_acda3c14f656ae22deb4faa680d665d6a}{magicmoves\+\_\+r\+\_\+shift}} \mbox{[}64\mbox{]}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_a283d568f28734d43774baf797d9c2832}\label{magicmoves_8h_a283d568f28734d43774baf797d9c2832}} 
+const U64 $\ast$ {\bfseries magicmoves\+\_\+b\+\_\+indices} \mbox{[}64\mbox{]}
+\item 
+\mbox{\Hypertarget{magicmoves_8h_abb063200b70e3b5b353a114d9a785b84}\label{magicmoves_8h_abb063200b70e3b5b353a114d9a785b84}} 
+const U64 $\ast$ {\bfseries magicmoves\+\_\+r\+\_\+indices} \mbox{[}64\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file for magic move bitboard generation. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{magicmoves_8h_a93e55434aedb0b88857b434926084db0}\label{magicmoves_8h_a93e55434aedb0b88857b434926084db0}} 
+\index{magicmoves.h@{magicmoves.h}!MINIMIZE\_MAGIC@{MINIMIZE\_MAGIC}}
+\index{MINIMIZE\_MAGIC@{MINIMIZE\_MAGIC}!magicmoves.h@{magicmoves.h}}
+\doxysubsubsection{\texorpdfstring{MINIMIZE\_MAGIC}{MINIMIZE\_MAGIC}}
+{\footnotesize\ttfamily \#define M\+I\+N\+I\+M\+I\+Z\+E\+\_\+\+M\+A\+G\+IC}
+
+\mbox{\hyperlink{magicmoves_8h}{magicmoves.\+h}}
+
+Header file for magic move bitboard generation. Include this in any files need this functionality.
+
+Usage\+: You must first initialize the generator with a call to initmagicmoves(). Then you can use the following macros for generating move bitboards by giving them a square and an occupancy. The macro will then \char`\"{}return\char`\"{} the correct move bitboard for that particular square and occupancy. It has been named Rmagic and Bmagic so that it will not conflict with any functions/macros in your chess program called Rmoves/\+Bmoves. You can macro Bmagic/\+Rmagic to Bmoves/\+Rmoves if you wish. If you want to minimize the size of the bitboards, make M\+I\+N\+I\+M\+I\+Z\+E\+\_\+\+M\+A\+G\+IC uncommented in this header (more info on this later). Where you typedef your unsigned 64-\/bit integer declare {\bfseries{64\+\_\+\+B\+I\+T\+\_\+\+I\+N\+T\+E\+G\+E\+R\+\_\+\+D\+E\+F\+I\+N\+ED}}. If U\+S\+E\+\_\+\+I\+N\+L\+I\+N\+I\+NG is uncommented, the macros will be expressed as M\+M\+I\+N\+L\+I\+N\+Ed functions. If P\+E\+R\+F\+E\+C\+T\+\_\+\+M\+A\+G\+I\+C\+\_\+\+H\+A\+SH is uncomment, the move generator will use an additional indrection to make the table sizes smaller \+: ($\sim$50kb+((original size)/sizeof(P\+E\+R\+F\+E\+C\+T\+\_\+\+M\+A\+G\+I\+C\+\_\+\+H\+A\+SH)). The size listed from here on out are the sizes without P\+E\+R\+F\+E\+C\+T\+\_\+\+M\+A\+G\+I\+C\+\_\+\+H\+A\+SH.
+
+Bmagic(square, occupancy) Rmagic(square, occupancy)
+
+Square is an integer that is greater than or equal to zero and less than 64. Occupancy is any unsigned 64-\/bit integer that describes which squares on the board are occupied.
+
+The following macros are identical to Rmagic and Bmagic except that the occupancy is assumed to already have been \char`\"{}masked\char`\"{}. Look at the following source or read up on the internet about magic bitboard move generation to understand the usage of these macros and what it means by \char`\"{}an occupancy that
+has already been masked\char`\"{}. Using the following macros when possible might be a tiny bit faster than using Rmagic and Bmagic because it avoids an array access and a 64-\/bit \& operation.
+
+Bmagic\+N\+O\+M\+A\+S\+K(square, occupancy) Rmagic\+N\+O\+M\+A\+S\+K(square, occupancy)
+
+Unsigned 64 bit integers are referenced by this generator as U64. Edit the beginning lines of this header for the defenition of a 64 bit integer if necessary.
+
+If M\+I\+N\+I\+M\+I\+Z\+E\+\_\+\+M\+A\+G\+IC is defined before including this file\+: The move bitboard generator will use up 841kb of memory. 41kb of memory is used for the bishop database and 800kb is used for the rook database. If you feel the 800kb rook database is too big, then comment it out and use a more traditional move bitboard generator in conjunction with the magic move bitboard generator for bishops.
+
+If M\+I\+N\+I\+M\+I\+A\+Z\+E\+\_\+\+M\+A\+G\+IC is not defined before including this file\+: The move bitboard generator will use up 2304kb of memory but might perform a bit faster.
+
+Copyright (C) 2007 Pradyumna Kannan.
+
+This code is provided \textquotesingle{}as-\/is\textquotesingle{}, without any expressed or implied warranty. In no event will the authors be held liable for any damages arising from the use of this code. Permission is granted to anyone to use this code for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions\+:
+
+
+\begin{DoxyEnumerate}
+\item The origin of this code must not be misrepresented; you must not claim that you wrote the original code. If you use this code in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+\item Altered source versions must be plainly marked as such, and must not be misrepresented as being the original code.
+\item This notice may not be removed or altered from any source distribution. 
+\end{DoxyEnumerate}
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{magicmoves_8h_acda3c14f656ae22deb4faa680d665d6a}\label{magicmoves_8h_acda3c14f656ae22deb4faa680d665d6a}} 
+\index{magicmoves.h@{magicmoves.h}!magicmoves\_r\_shift@{magicmoves\_r\_shift}}
+\index{magicmoves\_r\_shift@{magicmoves\_r\_shift}!magicmoves.h@{magicmoves.h}}
+\doxysubsubsection{\texorpdfstring{magicmoves\_r\_shift}{magicmoves\_r\_shift}}
+{\footnotesize\ttfamily const unsigned int magicmoves\+\_\+r\+\_\+shift\mbox{[}64\mbox{]}}
+
+\mbox{\hyperlink{magicmoves_8h}{magicmoves.\+h}}
+
+Source file for magic move bitboard generation.
+
+See header file for instructions on usage.
+
+The magic keys are not optimal for all squares but they are very close to optimal.
+
+Copyright (C) 2007 Pradyumna Kannan.
+
+This code is provided \textquotesingle{}as-\/is\textquotesingle{}, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this code. Permission is granted to anyone to use this code for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions\+:
+
+
+\begin{DoxyEnumerate}
+\item The origin of this code must not be misrepresented; you must not claim that you wrote the original code. If you use this code in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+\item Altered source versions must be plainly marked as such, and must not be misrepresented as being the original code.
+\item This notice may not be removed or altered from any source distribution. 
+\end{DoxyEnumerate}

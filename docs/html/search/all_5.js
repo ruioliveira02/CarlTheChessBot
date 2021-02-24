@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['move_5',['Move',['../structMove.html',1,'Move'],['../structMove.html#a399bd8d67e506e70a64592cfd2712fed',1,'Move::Move()']]]
+  ['halfmoves_19',['HalfMoves',['../classPosition.html#abb72dafc36ea59b90d5b6587b55437fa',1,'Position']]]
 ];

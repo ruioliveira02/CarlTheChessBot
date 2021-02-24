@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['move_20',['Move',['../structMove.html#a399bd8d67e506e70a64592cfd2712fed',1,'Move']]]
+  ['convertbitboardtomoves_53',['convertBitBoardToMoves',['../movegeneration_8h.html#acee6a557493c2c695457156b1b1ad6c8',1,'movegeneration.cpp']]]
 ];

@@ -11,7 +11,7 @@
 \item 
 \mbox{\hyperlink{classPosition_a63750e368482cc5ef45180d3672b1c55}{Position}} (const \mbox{\hyperlink{classPosition}{Position}} \&)
 \item 
-\mbox{\hyperlink{classPosition_a366a3bf077f6bc80f9ce53fc0370517b}{Position}} (std\+::vector$<$ Square $>$\mbox{[}6\mbox{]}\mbox{[}2\mbox{]}, Bit\+Board, Bit\+Board, Color, bool\mbox{[}2\mbox{]}\mbox{[}2\mbox{]}, short, short, short)
+\mbox{\hyperlink{classPosition_a366a3bf077f6bc80f9ce53fc0370517b}{Position}} (std\+::vector$<$ \mbox{\hyperlink{position_8h_aea36cb320045b9a24ec74b798982e5fc}{Square}} $>$\mbox{[}6\mbox{]}\mbox{[}2\mbox{]}, Bit\+Board, Bit\+Board, \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}, bool\mbox{[}2\mbox{]}\mbox{[}2\mbox{]}, short, short, short)
 \item 
 virtual \mbox{\hyperlink{classPosition_abe83df4cab7af756636b4e39e4378f4a}{$\sim$\+Position}} ()
 \item 
@@ -22,7 +22,7 @@ bool \mbox{\hyperlink{classPosition_abb4c72505d132da1d06fefa189663338}{operator=
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::vector$<$ Square $>$ \mbox{\hyperlink{classPosition_ae82b950d77a3a9d0e081f1bde3bc0185}{Piece\+Locations}} \mbox{[}6\mbox{]}\mbox{[}2\mbox{]}
+std\+::vector$<$ \mbox{\hyperlink{position_8h_aea36cb320045b9a24ec74b798982e5fc}{Square}} $>$ \mbox{\hyperlink{classPosition_ae82b950d77a3a9d0e081f1bde3bc0185}{Piece\+Locations}} \mbox{[}6\mbox{]}\mbox{[}2\mbox{]}
 \item 
 Bit\+Board \mbox{\hyperlink{classPosition_a4806535434c0b17df8ea5d3fd02c4058}{Piece\+Bit\+Boards}} \mbox{[}6\mbox{]}\mbox{[}2\mbox{]}
 \item 
@@ -30,7 +30,7 @@ Bit\+Board \mbox{\hyperlink{classPosition_ae502c4ab61b56fc6d2414ee7a8d136b1}{Whi
 \item 
 Bit\+Board \mbox{\hyperlink{classPosition_ac6f740c74732b9b8666da9a559992f1e}{Black\+Occupancy}}
 \item 
-Color \mbox{\hyperlink{classPosition_a466d79b3a5195b22374e24c6fd031081}{To\+Move}}
+\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}} \mbox{\hyperlink{classPosition_a466d79b3a5195b22374e24c6fd031081}{To\+Move}}
 \item 
 bool \mbox{\hyperlink{classPosition_a0cda3c9f0d61b535c220d39201fc65d3}{Castling}} \mbox{[}2\mbox{]}\mbox{[}2\mbox{]}
 \item 
@@ -62,7 +62,7 @@ Copy constructor \mbox{\Hypertarget{classPosition_a366a3bf077f6bc80f9ce53fc03705
 \index{Position@{Position}!Position@{Position}}
 \index{Position@{Position}!Position@{Position}}
 \doxysubsubsection{\texorpdfstring{Position()}{Position()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
-{\footnotesize\ttfamily Position\+::\+Position (\begin{DoxyParamCaption}\item[{std\+::vector$<$ Square $>$}]{pieces\mbox{[}6\mbox{]}\mbox{[}2\mbox{]},  }\item[{Bit\+Board}]{white,  }\item[{Bit\+Board}]{black,  }\item[{Color}]{color,  }\item[{bool}]{castling\mbox{[}2\mbox{]}\mbox{[}2\mbox{]},  }\item[{short}]{enpassant,  }\item[{short}]{half\+Moves,  }\item[{short}]{total\+Moves }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Position\+::\+Position (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{position_8h_aea36cb320045b9a24ec74b798982e5fc}{Square}} $>$}]{pieces\mbox{[}6\mbox{]}\mbox{[}2\mbox{]},  }\item[{Bit\+Board}]{white,  }\item[{Bit\+Board}]{black,  }\item[{\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}]{color,  }\item[{bool}]{castling\mbox{[}2\mbox{]}\mbox{[}2\mbox{]},  }\item[{short}]{enpassant,  }\item[{short}]{half\+Moves,  }\item[{short}]{total\+Moves }\end{DoxyParamCaption})}
 
 Constructor
 
@@ -149,7 +149,7 @@ The first coordinate is the piece type (as in the Piece enum order); second one 
 \index{Position@{Position}!PieceLocations@{PieceLocations}}
 \index{PieceLocations@{PieceLocations}!Position@{Position}}
 \doxysubsubsection{\texorpdfstring{PieceLocations}{PieceLocations}}
-{\footnotesize\ttfamily std\+::vector$<$Square$>$ Position\+::\+Piece\+Locations\mbox{[}6\mbox{]}\mbox{[}2\mbox{]}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{position_8h_aea36cb320045b9a24ec74b798982e5fc}{Square}}$>$ Position\+::\+Piece\+Locations\mbox{[}6\mbox{]}\mbox{[}2\mbox{]}}
 
 The location of the pieces on the board.
 
@@ -157,7 +157,7 @@ The first coordinate is the piece type (as in the Piece enum order); second one 
 \index{Position@{Position}!ToMove@{ToMove}}
 \index{ToMove@{ToMove}!Position@{Position}}
 \doxysubsubsection{\texorpdfstring{ToMove}{ToMove}}
-{\footnotesize\ttfamily Color Position\+::\+To\+Move}
+{\footnotesize\ttfamily \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}} Position\+::\+To\+Move}
 
 Color of the player to move \mbox{\Hypertarget{classPosition_aa7d55a78df65852f06bfccafa25685ad}\label{classPosition_aa7d55a78df65852f06bfccafa25685ad}} 
 \index{Position@{Position}!TotalMoves@{TotalMoves}}
@@ -175,5 +175,5 @@ The bitboard corresponding to the squares occupied by the white pieces.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-include/position.\+h\item 
+include/\mbox{\hyperlink{position_8h}{position.\+h}}\item 
 src/position.\+cpp\end{DoxyCompactItemize}

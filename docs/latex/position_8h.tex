@@ -1,0 +1,108 @@
+\hypertarget{position_8h}{}\doxysection{include/position.h File Reference}
+\label{position_8h}\index{include/position.h@{include/position.h}}
+
+
+File containing the definition of the \mbox{\hyperlink{classPosition}{Position}} class and the various enums used to describe a chess position.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+Include dependency graph for position.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structMove}{Move}}
+\item 
+class \mbox{\hyperlink{classPosition}{Position}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{position_8h_a1ac4529d9cfa2ab6cf25f353aba77394}\label{position_8h_a1ac4529d9cfa2ab6cf25f353aba77394}} 
+\#define {\bfseries Bit\+Board}~uint64\+\_\+t
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef short \mbox{\hyperlink{position_8h_aea36cb320045b9a24ec74b798982e5fc}{Square}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}} \{ {\bfseries White}, 
+{\bfseries Black}
+ \}
+\item 
+enum \mbox{\hyperlink{position_8h_ade35c903123b92bed5cc7b84e6a1314e}{Piece}} \{ \newline
+{\bfseries Pawn}, 
+{\bfseries Knight}, 
+{\bfseries Bishop}, 
+{\bfseries Rook}, 
+\newline
+{\bfseries Queen}, 
+{\bfseries King}
+ \}
+\item 
+enum \mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395}{Move\+Type}} \{ \mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395a5ecbcf0afce98b042f35ec71ba03fa4b}{Normal}}, 
+\mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395a0c4d271802420d33598458d05f29b2b0}{En\+Passant}}, 
+\mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395a71fdfd49860bcf9e092ca81c77fb1633}{Castling}}, 
+\mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f}{Promotion}}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File containing the definition of the \mbox{\hyperlink{classPosition}{Position}} class and the various enums used to describe a chess position. 
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{position_8h_aea36cb320045b9a24ec74b798982e5fc}\label{position_8h_aea36cb320045b9a24ec74b798982e5fc}} 
+\index{position.h@{position.h}!Square@{Square}}
+\index{Square@{Square}!position.h@{position.h}}
+\doxysubsubsection{\texorpdfstring{Square}{Square}}
+{\footnotesize\ttfamily typedef short \mbox{\hyperlink{position_8h_aea36cb320045b9a24ec74b798982e5fc}{Square}}}
+
+Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63. More formally, should a square correspond to the i-\/th rank (0 based, i.\+e., A is 0, B is 1, ..., H is 7) and on the j-\/th file (again 0-\/based), its corresponding number is $ 8i+j $ 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{position_8h_ab87bacfdad76e61b9412d7124be44c1c}\label{position_8h_ab87bacfdad76e61b9412d7124be44c1c}} 
+\index{position.h@{position.h}!Color@{Color}}
+\index{Color@{Color}!position.h@{position.h}}
+\doxysubsubsection{\texorpdfstring{Color}{Color}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}
+
+Enum containing the color of the pieces \mbox{\Hypertarget{position_8h_ab152e38addc9865a033ed991583c1395}\label{position_8h_ab152e38addc9865a033ed991583c1395}} 
+\index{position.h@{position.h}!MoveType@{MoveType}}
+\index{MoveType@{MoveType}!position.h@{position.h}}
+\doxysubsubsection{\texorpdfstring{MoveType}{MoveType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395}{Move\+Type}}}
+
+Enum containing the different types of moves the generation algorithm can produce \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Normal@{Normal}!position.h@{position.h}}\index{position.h@{position.h}!Normal@{Normal}}}\mbox{\Hypertarget{position_8h_ab152e38addc9865a033ed991583c1395a5ecbcf0afce98b042f35ec71ba03fa4b}\label{position_8h_ab152e38addc9865a033ed991583c1395a5ecbcf0afce98b042f35ec71ba03fa4b}} 
+Normal&A normal move. Can be a check or capture (except enpassant) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EnPassant@{EnPassant}!position.h@{position.h}}\index{position.h@{position.h}!EnPassant@{EnPassant}}}\mbox{\Hypertarget{position_8h_ab152e38addc9865a033ed991583c1395a0c4d271802420d33598458d05f29b2b0}\label{position_8h_ab152e38addc9865a033ed991583c1395a0c4d271802420d33598458d05f29b2b0}} 
+En\+Passant&Enpassant capture \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Castling@{Castling}!position.h@{position.h}}\index{position.h@{position.h}!Castling@{Castling}}}\mbox{\Hypertarget{position_8h_ab152e38addc9865a033ed991583c1395a71fdfd49860bcf9e092ca81c77fb1633}\label{position_8h_ab152e38addc9865a033ed991583c1395a71fdfd49860bcf9e092ca81c77fb1633}} 
+Castling&Player castled \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Promotion@{Promotion}!position.h@{position.h}}\index{position.h@{position.h}!Promotion@{Promotion}}}\mbox{\Hypertarget{position_8h_ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f}\label{position_8h_ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f}} 
+Promotion&Player promoted \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{position_8h_ade35c903123b92bed5cc7b84e6a1314e}\label{position_8h_ade35c903123b92bed5cc7b84e6a1314e}} 
+\index{position.h@{position.h}!Piece@{Piece}}
+\index{Piece@{Piece}!position.h@{position.h}}
+\doxysubsubsection{\texorpdfstring{Piece}{Piece}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{position_8h_ade35c903123b92bed5cc7b84e6a1314e}{Piece}}}
+
+Enum containing the different types of pieces 

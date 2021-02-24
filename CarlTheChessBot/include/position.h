@@ -1,7 +1,7 @@
 /**
-    position.h
+    \file position.h
 
-    File containing the definition of the  \code Position \endcode class and the various enums used to describe a chess position.
+    \brief File containing the definition of the Position class and the various enums used to describe a chess position.
 */
 
 
