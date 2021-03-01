@@ -151,6 +151,10 @@ class Position
             return true;
         }
 
+        Position makeMove(Move);
+
+        evaluation evaluate();
+
     public:
         /**
             The location of the pieces on the board.

@@ -14,6 +14,7 @@
 
 #include "position.h"
 
+bool hasLegalMoves(Position);
 
 /**
     Function that generates all the pseudo legal (not worrying about pins on the king or necessarily evading checks) moves in a position.

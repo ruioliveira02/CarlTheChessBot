@@ -66,3 +66,48 @@ Position::~Position()
     //dtor
 }
 
+Position makeMove(Move move)
+{
+    Position p(*this);
+    
+    switch (move.type)
+    {
+        //TODO
+    }
+
+    return p;
+
+}
+
+bool exists(Piece piece)
+{
+    return PieceBitBoards[piece][Color::White] != 0 || PieceBitBoards[piece][Color::Black] != 0;
+}
+
+evaluation Position::evaluate()
+{
+    //material insuficiente
+    if (!exists(Piece::Queen) && !exists(Piece::Rook) && !exists(Piece::Pawn))
+    {
+        //TODO: verificar material
+
+    }
+
+    //TODO: detetar dead position (?)
+
+    //mate
+    if (!hasLegalMoves(*this))
+    {
+        if (inCheck(*this, ToMove))
+            return evaluation(0, (ToMove + 1) % 2); //checkmate
+
+        return evaluation();                        //stalemate
+    }
+
+    //TODO: 50 moves rule (eu vi na wiki q há uma dos 75 moves tmb, qual é a diferença?)
+
+    //TODO: empate por repeticao...
+
+    //TODO: avaliação por score
+    return evaluation(42.0);
+}
