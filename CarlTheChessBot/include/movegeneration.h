@@ -12,7 +12,6 @@
 #define MOVEGENERATION_H_
 
 
-#include "position.h"
 #include "evaluation.h"
 
 bool hasLegalMoves(Position);
@@ -23,7 +22,7 @@ bool hasLegalMoves(Position);
     \param position The given position
     \return         The vector containing the requested moves
 */
-std::vector<Move> generateAllMoves(const Position&);
+std::vector<Move> generateAllMoves(Position);
 
 
 /**

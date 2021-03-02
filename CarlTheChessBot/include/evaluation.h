@@ -7,7 +7,7 @@
 
 using namespace std;
 
-struct evaluation
+class evaluation
 {
 	private:
 

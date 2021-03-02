@@ -4,7 +4,7 @@
 BitBoard knightMoves[64];
 BitBoard kingMoves[64];
 
-std::vector<Move> generateAllMoves(const Position& position)
+std::vector<Move> generateAllMoves(Position position)
 {
     Color color = position.ToMove;
 
@@ -24,7 +24,7 @@ std::vector<Move> generateAllMoves(const Position& position)
     return pawnMoves;
 }
 
-std::vector<Move> generateAllPieceMoves(const Position& position, Piece piece, Color color)
+std::vector<Move> generateAllPieceMoves(Position position, Piece piece, Color color)
 {
     std::vector<Move> moves = std::vector<Move>();
     for(int i = 0; i < position.PieceLocations[piece][color].size(); i++)
@@ -59,7 +59,7 @@ std::vector<Move> generateAllPieceMoves(const Position& position, Piece piece, C
     return moves;
 }
 
-std::vector<Move> generateQueenMoves(const Position& position, Square square)
+std::vector<Move> generateQueenMoves(Position position, Square square)
 {
     std::vector<Move> rookMoves = generateRookMoves(position, square);
     std::vector<Move> bishopMoves = generateBishopMoves(position, square);
@@ -69,7 +69,7 @@ std::vector<Move> generateQueenMoves(const Position& position, Square square)
     return rookMoves;
 }
 
-std::vector<Move> generateRookMoves(const Position& position, Square square)
+std::vector<Move> generateRookMoves(Position position, Square square)
 {
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
@@ -80,7 +80,7 @@ std::vector<Move> generateRookMoves(const Position& position, Square square)
     return convertBitBoardToMoves(result, square, Piece::Rook);
 }
 
-std::vector<Move> generateBishopMoves(const Position& position, Square square)
+std::vector<Move> generateBishopMoves(Position position, Square square)
 {
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
@@ -92,7 +92,7 @@ std::vector<Move> generateBishopMoves(const Position& position, Square square)
 }
 
 
-std::vector<Move> generatePawnMoves(const Position& position, Square square)
+std::vector<Move> generatePawnMoves(Position position, Square square)
 {
     std::vector<Move> pushes = generatePawnPushes(position, square);
     std::vector<Move> captures = generatePawnCaptures(position, square);
@@ -104,7 +104,7 @@ std::vector<Move> generatePawnMoves(const Position& position, Square square)
     return pushes;
 }
 
-std::vector<Move> generateKnightMoves(const Position& position, Square square)
+std::vector<Move> generateKnightMoves(Position position, Square square)
 {
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard result = knightMoves[square] & ~ownPieces;
@@ -112,7 +112,7 @@ std::vector<Move> generateKnightMoves(const Position& position, Square square)
     return convertBitBoardToMoves(result, square, Piece::Knight);
 }
 
-std::vector<Move> generateKingMoves(const Position& position, Square square)
+std::vector<Move> generateKingMoves(Position position, Square square)
 {
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard result = kingMoves[square] & ~ownPieces;
@@ -125,7 +125,7 @@ std::vector<Move> generateKingMoves(const Position& position, Square square)
     return castling;
 }
 
-std::vector<Move> generateCastling(const Position& position, Square square)
+std::vector<Move> generateCastling(Position position, Square square)
 {
     std::vector<Move> answer = std::vector<Move>();
 
@@ -165,7 +165,7 @@ std::vector<Move> generatePromotions(Square origin, Square destiny)
 }
 
 
-std::vector<Move> generateEnPassant(const Position& position, Square square)
+std::vector<Move> generateEnPassant(Position position, Square square)
 {
     std::vector<Move> answer = std::vector<Move>();
 
@@ -179,7 +179,7 @@ std::vector<Move> generateEnPassant(const Position& position, Square square)
 }
 
 
-std::vector<Move> generatePawnPushes(const Position& position, Square square)
+std::vector<Move> generatePawnPushes(Position position, Square square)
 {
     std::vector<Move> answer = std::vector<Move>();
     BitBoard occupancy = (uint64_t)position.WhiteOccupancy + (uint64_t)position.BlackOccupancy;
@@ -228,7 +228,7 @@ std::vector<Move> generatePawnPushes(const Position& position, Square square)
 }
 
 
-std::vector<Move> generatePawnCaptures(const Position& position, Square square)
+std::vector<Move> generatePawnCaptures(Position position, Square square)
 {
     std::vector<Move> answer = std::vector<Move>();
 
@@ -379,12 +379,12 @@ void initializeKingBitBoard()
 }
 
 
-bool inCheck(const Position& position, Color color)
+bool inCheck(Position position, Color color)
 {
     return inCheck(position, color, position.PieceLocations[Piece::King][color][0]);
 }
 
-bool inCheck(const Position& position, Color color, Square square)
+bool inCheck(Position position, Color color, Square square)
 {
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;

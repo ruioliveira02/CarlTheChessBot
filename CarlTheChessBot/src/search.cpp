@@ -1,15 +1,12 @@
-#include "position.h"
-#include "evaluation.h"
+#include "search.h"
 #include "game.h"
-#include <chrono>
-#include <tuple>
-#include <vector>
 
-using namepsace std;
-using namepsace std::chrono;
+using namespace std;
+using namespace std::chrono;
+
 
 //retorna o melhor movimento e a avaliação do game passado à função
-pair<Move, evaluation> search(const game& game, system_clock::time_point limit)
+pair<Move, evaluation> search(game game1)
 {
 	//TODO: tudo
 
@@ -19,51 +16,52 @@ pair<Move, evaluation> search(const game& game, system_clock::time_point limit)
 	//}
 	//while (system_clock::now() <= limit);
 
-	return minimax(game, 3, game.ToMove == Color::White ? evaluation::minimum : evaluation::maximum);
+	return minimax(game1, 3, evaluation());
 }
 
 //o Move que retorna pode não ter sido atribuído! (se não houver jogadas possíveis)
 //nesse caso a evaluation é mate in 0 ou stalemate (evaluation.end_of_game() é true) ou ilegal (evaluation.isIllegal() é true)
-pair<Move, evaluation> minimax(const game& game, int depth, evaluation minmax)
+pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 {
-	bool maximize = game.position.ToMove == Color::White;
-	Move best;
+	bool maximize = game1.position.ToMove == Color::White;
+	Move best = Move();
 
 	//checkmate
-	if (inCheck(game.position, (game.position.ToMove + 1) % 2))
-		return make_pair(best, evaluation::illegal);
+	if (inCheck(game1.position, oppositeColor(game1.position.ToMove)))
+		return make_pair(best, evaluation());
 
 	//draw (repetition, 50 moves, insufficient material, dead position...)
 	//basically everything except stalemate
-	if (game.isDraw())
-		return make_pair(best, evaluation());
+
+	if (game1.isDraw())
+		return make_pair(best, evaluation(0.0));
 
 	if (depth == 0)
-		return make_pair(best, game.evaluate());
+		return make_pair(best, game1.evaluate());
 
-	vector<Moves> moves = generateAllMoves(game.position);
-	vector<game> games(moves.length());
+	vector<Move> moves = generateAllMoves(game1.position);
+	std::vector<game> games = std::vector<game>(moves.size());
 
-	for (int i = 0; i < moves.length(); i++)
-		games[i] = game.makeMove(moves[i]);
+	for (int i = 0; i < moves.size(); i++)
+		games[i] = game1.makeMove(moves[i]);
 
 	bool empty = true;
-	evaluation minimax2 = maximize ? evaluation::minimum : evaluation::maximum;
+	evaluation minimax2 = maximize ? evaluation::minimum() : evaluation::maximum();
 
-	for (int i = 0; i < games.length(); i++)
+	for (int i = 0; i < games.size(); i++)
 	{
-		pair<Move, evaluation> p = minimax(games[i], depth - 1, minimax2);
+		pair<Move, evaluation> p = {Move(), evaluation()}; //minimax(games[i], depth - 1, minimax2);
 
 		if (p.second.isIllegal())
 			continue;
 
-		p.second.nextMove(game.position.ToMove);
+		p.second.nextMove(game1.position.ToMove);
 		empty = false;
 
-		if (maximize ? p.second >= minimax : p.second <= minimax)
+		if (maximize ? minmax < p.second : p.second < minmax)
 			return p;
 
-		if (maximize ? p.second > minimax2 : p.second < minimax2)
+		if (maximize ? minimax2 < p.second : p.second < minimax2)
 		{
 			minimax2 = p.second;
 			best = p.first;
@@ -71,7 +69,7 @@ pair<Move, evaluation> minimax(const game& game, int depth, evaluation minmax)
 	}
 
 	//stalemate
-	if (empty && !inCheck(game.position, game.position.ToMove))
+	if (empty && !inCheck(game1.position, game1.position.ToMove))
 		return make_pair(best, evaluation());
 
 	return make_pair(best, minimax2);

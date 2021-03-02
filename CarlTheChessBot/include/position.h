@@ -14,11 +14,12 @@
 
 #define BitBoard uint64_t
 
+#define oppositeColor(x) x == Color::White ? Color::Black : Color::White
+
 typedef short Square; /*!< Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63.
                         More formally, should a square correspond to the i-th rank (0 based, i.e., A is 0, B is 1, ..., H is 7) and on the j-th file (again 0-based),
                         its corresponding number is \f$ 8i+j \f$ */
 
-struct evaluation;
 
 /**
     Enum containing the color of the pieces
@@ -26,7 +27,7 @@ struct evaluation;
 enum Color
 {
     White,
-    Black
+    Black,
 };
 
 /**
@@ -79,6 +80,10 @@ struct Move
         origin = o;
         destiny = d;
         piece = p;
+    }
+
+    Move()
+    {
     }
 };
 
@@ -152,7 +157,6 @@ class Position
             return true;
         }
 
-        evaluation evaluate();
 
     public:
         /**
@@ -200,9 +204,6 @@ class Position
         /** Total number of moves in the game */
         short TotalMoves;
 };
-
-
-
 
 
 #endif // POSITION_H

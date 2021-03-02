@@ -66,10 +66,3 @@ Position::~Position()
     //dtor
 }
 
-
-//é garantido que a posicao é válida (o rei adversário não está em cheque)
-//e que não é empate (para definição de "empate", ver game::isDraw())
-evaluation Position::evaluate()
-{
-    return evaluation(42.0);
-}

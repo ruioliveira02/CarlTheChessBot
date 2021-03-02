@@ -12,8 +12,12 @@ class game
 
 		game makeMove(Move);
 
+		bool exists(Piece);
+
 		bool isDraw();
-}
+
+		evaluation evaluate();
+};
 
 
 #endif
