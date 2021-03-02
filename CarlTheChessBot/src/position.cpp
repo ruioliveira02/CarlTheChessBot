@@ -75,6 +75,7 @@ Position makeMove(Move move)
         //TODO
     }
 
+    p.ToMove = (p.ToMove + 1) % 2;
     return p;
 
 }

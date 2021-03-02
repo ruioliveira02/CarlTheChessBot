@@ -49,6 +49,12 @@ struct evaluation
 			return score < eval.score;
 		}
 
+		void nextMove(Color toMove)
+		{
+			if (mate_in >= 0 && toMove != color)
+				this->mate_in++;
+		}
+
 		double toScore()
 		{
 			if (mate_in >= 0)
@@ -71,5 +77,8 @@ struct evaluation
 			return to_string(score);
 		}
 }
+
+evaluation minimum_evaluation(0, Color::Black);
+evaluation maximum_evaluation(0, Color::White);
 
 #endif
