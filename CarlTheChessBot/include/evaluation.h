@@ -15,6 +15,7 @@ struct evaluation
 		int mate_in;
 		bool draw;   //TODO: draw_in ?
 		double score;
+		bool illegality;
 
 	public:
 
@@ -34,6 +35,24 @@ struct evaluation
 			this->score = score;
 		}
 
+
+		static evaluation minimum()
+		{
+			return evaluation(0, Color::Black);
+		}
+
+		static evaluation maximum()
+		{
+			return evaluation(0, Color::White);
+		}
+
+		static evaluation illegal()
+		{
+			evaluation e;
+			e.illegality = true;
+			return e;
+		}
+
 		//x < y se y é melhor para as brancas
 		bool operator<(const evaluation& eval)
 		{
@@ -41,7 +60,7 @@ struct evaluation
 				return eval.mate_in >= 0 && eval.mate_in < mate_in && eval.color == Color::White;
 
 			if (mate_in >= 0 && color == Color::Black)
-				return eval.mate_in < 0 || eval.olor == Color::White || eval.mate_in > mate_in;
+				return eval.mate_in < 0 || eval.color == Color::White || eval.mate_in > mate_in;
 
 			if (draw)
 				return eval.score > 0;	//TODO...
@@ -76,9 +95,17 @@ struct evaluation
 
 			return to_string(score);
 		}
-}
 
-evaluation minimum_evaluation(0, Color::Black);
-evaluation maximum_evaluation(0, Color::White);
+		bool isIllegal()
+		{
+			return illegality;
+		}
+
+		bool end_of_game()
+		{
+			return mate_in == 0 || draw;
+		}
+};
+
 
 #endif

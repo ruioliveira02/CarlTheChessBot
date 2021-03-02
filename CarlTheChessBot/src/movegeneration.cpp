@@ -4,18 +4,6 @@
 BitBoard knightMoves[64];
 BitBoard kingMoves[64];
 
-//TODO: otimizar (https://stackoverflow.com/questions/7213839/equivalent-in-c-of-yield-in-c)
-bool hasLegalMoves(const Position& position)
-{
-    std::vector<Move> moves = generateAllMoves(position);
-
-    foreach (Move m : moves)
-        if (!inCheck(position.MakeMove(m), position.ToMove))
-            return true;
-
-    return false;
-}
-
 std::vector<Move> generateAllMoves(const Position& position)
 {
     Color color = position.ToMove;

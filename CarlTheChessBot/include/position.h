@@ -18,6 +18,7 @@ typedef short Square; /*!< Squares are labeled as numbers from 0 to 63. A1 (bott
                         More formally, should a square correspond to the i-th rank (0 based, i.e., A is 0, B is 1, ..., H is 7) and on the j-th file (again 0-based),
                         its corresponding number is \f$ 8i+j \f$ */
 
+struct evaluation;
 
 /**
     Enum containing the color of the pieces
@@ -150,8 +151,6 @@ class Position
 
             return true;
         }
-
-        Position makeMove(Move);
 
         evaluation evaluate();
 

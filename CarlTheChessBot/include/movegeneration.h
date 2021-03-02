@@ -13,6 +13,7 @@
 
 
 #include "position.h"
+#include "evaluation.h"
 
 bool hasLegalMoves(Position);
 
