@@ -386,7 +386,7 @@ bool inCheck(Position position, Color color)
 
 bool inCheck(Position position, Color color, Square square)
 {
-    BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
+    BitBoard ownPieces = (color == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
     int opponentIndex = (position.ToMove == Color::White) ? 1 : 0;
