@@ -20,7 +20,7 @@ pair<Move, evaluation> search(game game1)
 	//}
 	//while (system_clock::now() <= limit);
 
-	initial_depth = 3;
+	initial_depth = 4;
 	pair<Move, evaluation> p = minimax(game1, initial_depth,
 		game1.position.ToMove == Color::White ? evaluation::maximum() : evaluation::minimum());
 
