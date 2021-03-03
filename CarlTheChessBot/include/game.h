@@ -19,6 +19,16 @@ class game
 		bool isDraw();
 
 		evaluation evaluate();
+
+
+    private:
+        void updateBitBoards(Move);
+        void assessCapture(Move);
+        void castle(Move);
+        void captureEnpassant(Move);
+        void promote(Move);
+        void updatePieces(Move);
+        void updateCastlingRights(Move);
 };
 
 
