@@ -389,16 +389,22 @@ bool inCheck(Position position, Color color, Square square)
     BitBoard ownPieces = (color == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
-    int opponentIndex = (position.ToMove == Color::White) ? 1 : 0;
+    int opponentIndex = (color == Color::White) ? 1 : 0;
 
     if((knightMoves[square] & ~ownPieces) & position.PieceBitBoards[Piece::Knight][opponentIndex])
         return true;
 
-     if((Rmagic(square, occupancy) & ~ownPieces) & position.PieceBitBoards[Piece::Rook][opponentIndex])
+     if((Rmagic(square, occupancy) & ~ownPieces) & (position.PieceBitBoards[Piece::Rook][opponentIndex] | position.PieceBitBoards[Piece::Queen][opponentIndex]))
         return true;
 
 
-    if((Bmagic(square, occupancy) & ~ownPieces) & position.PieceBitBoards[Piece::Bishop][opponentIndex])
+    if((Bmagic(square, occupancy) & ~ownPieces) & (position.PieceBitBoards[Piece::Bishop][opponentIndex] | position.PieceBitBoards[Piece::Queen][opponentIndex]))
+        return true;
+
+
+    BitBoard pawnChecks = (color == Color::White) ? ((1ULL << (square + 7)) | (1ULL << (square + 9))) : ((1ULL << (square - 7)) | (1ULL << (square - 9)));
+
+    if(pawnChecks & position.PieceBitBoards[Piece::Pawn][oppositeColor(color)])
         return true;
 
     return false;

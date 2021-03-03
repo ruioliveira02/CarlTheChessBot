@@ -35,7 +35,7 @@ void printPosition(const Position& position)
     cout.flush();
 }
 
-int main()
+int main1()
 {
     //r3k2r/1p1pppbp/8/pPp3pP/4Q3/2P1N1P1/P2PPP2/R3K2R w KQkq a6 0 1
     std::vector<Square> pieces[6][2];
