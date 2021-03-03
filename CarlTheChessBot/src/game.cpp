@@ -3,6 +3,13 @@
 
 
 
+void game::initialize()
+{
+    initializeAllBitBoards();
+    initmagicmoves();
+}
+
+
 
 game game::makeMove(Move move)
 {

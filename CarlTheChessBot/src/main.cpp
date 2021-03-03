@@ -58,10 +58,11 @@ int main()
     castling[0][0] = castling[1][0] = true;
     castling[0][1] = castling[1][1] = true;
 
-
     Position pos = Position(pieces,558619703697ULL,11671641680636805120ULL,Color::White, castling,(short)(40),(short)0,(short)1);
 
+
     game g = game();
+    g.initialize();
     g.position = pos;
 
     printPosition(pos);
@@ -69,6 +70,6 @@ int main()
 
     auto res = search(g);
     cout << endl;
-    
+
     return 0;
 }

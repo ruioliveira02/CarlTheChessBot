@@ -8,6 +8,8 @@ class game
 {
 	public:
 
+        void initialize();
+
 		Position position;
 
 		game makeMove(Move);
