@@ -50,7 +50,7 @@ game game::makeMove(Move move)
         g.position.PieceBitBoards[move.piece][g.position.ToMove] |= (1ULL << move.destiny);
         g.position.PieceLocations[move.piece][g.position.ToMove].push_back(move.destiny);
     }
-    else if(move.type == MoveType::Castling)
+    else if(move.type == MoveType::EnPassant)
     {
         g.position.PieceBitBoards[Piece::Pawn][g.position.ToMove] = g.position.PieceBitBoards[Piece::Pawn][g.position.ToMove] & ~(1ULL << move.origin);
         g.position.PieceBitBoards[Piece::Pawn][g.position.ToMove] |= (1ULL << move.destiny);
@@ -73,6 +73,8 @@ game game::makeMove(Move move)
     }
     else if(move.type == MoveType::Castling)
     {
+        g.position.Castling[0][g.position.ToMove] = g.position.Castling[1][g.position.ToMove] = false;
+
         int rookOrigin = 0, rookDestiny = 0;
 
         if(move.destiny == 2)
@@ -116,6 +118,30 @@ game game::makeMove(Move move)
         std::replace(g.position.PieceLocations[move.piece][g.position.ToMove].begin(), g.position.PieceLocations[move.piece][g.position.ToMove].end(), move.origin, move.destiny);
         g.position.PieceBitBoards[move.piece][g.position.ToMove] |= (1ULL << move.destiny);
         g.position.PieceBitBoards[move.piece][g.position.ToMove] = g.position.PieceBitBoards[move.piece][g.position.ToMove] & ~(1ULL << move.origin);
+
+        if(move.piece == Piece::Rook)
+        {
+            if(move.origin == 0)
+            {
+                g.position.Castling[1][0] = false;
+            }
+            else if(move.origin == 7)
+            {
+                g.position.Castling[0][0] = false;
+            }
+            else if(move.origin == 56)
+            {
+                g.position.Castling[1][1] = false;
+            }
+            else if(move.origin == 63)
+            {
+                g.position.Castling[0][1] = false;
+            }
+        }
+        else if(move.piece == Piece::King)
+        {
+            g.position.Castling[0][g.position.ToMove] = g.position.Castling[1][g.position.ToMove] = false;
+        }
     }
 
     g.position.ToMove = oppositeColor(g.position.ToMove);
