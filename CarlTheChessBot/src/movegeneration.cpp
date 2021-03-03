@@ -407,5 +407,8 @@ bool inCheck(Position position, Color color, Square square)
     if(pawnChecks & position.PieceBitBoards[Piece::Pawn][oppositeColor(color)])
         return true;
 
+    if(kingMoves[square] & position.PieceBitBoards[Piece::King][oppositeColor(color)])
+        return true;
+
     return false;
 }
