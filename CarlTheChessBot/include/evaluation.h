@@ -15,7 +15,6 @@ class evaluation
 		int mate_in;
 		bool draw;   //TODO: draw_in ?
 		double score;
-		bool illegality;
 
 	public:
 
@@ -23,7 +22,6 @@ class evaluation
 		{
 			draw = true;
 			mate_in = -1;
-			illegality = false;
 			score = 0;
 		}
 
@@ -32,7 +30,6 @@ class evaluation
 			this->color = color;
 			this->mate_in = mate_in;
 			draw = false;
-			illegality = false;
 		}
 
 		evaluation(double score)
@@ -40,7 +37,6 @@ class evaluation
 			this->score = score;
 			mate_in = -1;
 			draw = false;
-			illegality = false;
 		}
 
 
@@ -52,14 +48,6 @@ class evaluation
 		static evaluation maximum()
 		{
 			return evaluation(0, Color::White);
-		}
-
-		static evaluation illegal()
-		{
-			evaluation e;
-			e.draw = false;
-			e.illegality = true;
-			return e;
 		}
 
 		//x < y se y é melhor para as brancas
@@ -82,7 +70,7 @@ class evaluation
 
 		void nextMove(Color toMove)
 		{
-			if (mate_in >= 0 && toMove != color)
+			if (mate_in >= 0 && toMove == color)
 				this->mate_in++;
 		}
 
@@ -99,9 +87,6 @@ class evaluation
 
 		string toString()
 		{
-			if (illegality)
-				return ";";
-
 			if (mate_in >= 0)
 				return "#" + to_string(color == Color::White ? mate_in : -mate_in);
 
@@ -109,11 +94,6 @@ class evaluation
 				return "£";
 
 			return to_string(score);
-		}
-
-		bool isIllegal()
-		{
-			return illegality;
 		}
 
 		bool end_of_game()

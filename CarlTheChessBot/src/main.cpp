@@ -43,7 +43,7 @@ int main()
     pieces[Piece::Knight][Color::White] = vector<Square>();
     pieces[Piece::Bishop][Color::White] = vector<Square>();
     pieces[Piece::Rook][Color::White] = vector<Square>();
-    pieces[Piece::Queen][Color::White] = vector<Square>({55});
+    pieces[Piece::Queen][Color::White] = vector<Square>({7}); //55
     pieces[Piece::King][Color::White] = vector<Square>({44});
 
     pieces[Piece::Pawn][Color::Black] = vector<Square>();
@@ -51,7 +51,7 @@ int main()
     pieces[Piece::Bishop][Color::Black] = vector<Square>();
     pieces[Piece::Rook][Color::Black] = vector<Square>();
     pieces[Piece::Queen][Color::Black] = vector<Square>();
-    pieces[Piece::King][Color::Black] = vector<Square>({58});
+    pieces[Piece::King][Color::Black] = vector<Square>({49}); //58
 
     bool castling[2][2];
 
@@ -60,6 +60,11 @@ int main()
 
     Position pos = Position(pieces,36046389205008384ULL, 288230376151711744ULL,Color::White, castling,(short)(40),(short)0,(short)1);
 
+
+    //Mais um bug para ti :)
+    cout << inCheck(pos, Color::Black) << endl;
+    //devia dar true
+/*
 
     game g = game();
     g.initialize();
@@ -70,6 +75,6 @@ int main()
 
     auto res = search(g);
     cout << endl;
-
+*/
     return 0;
 }

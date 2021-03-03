@@ -66,6 +66,9 @@ std::vector<Move> generateQueenMoves(Position position, Square square)
 
     rookMoves.insert(rookMoves.end(), bishopMoves.begin(), bishopMoves.end());
 
+    for (int i = 0; i < rookMoves.size(); i++)
+        rookMoves[i].piece = Piece::Queen;
+
     return rookMoves;
 }
 
@@ -389,7 +392,7 @@ bool inCheck(Position position, Color color, Square square)
     BitBoard ownPieces = (color == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
-    int opponentIndex = (color == Color::White) ? 1 : 0;
+    int opponentIndex = oppositeColor(color);
 
     if((knightMoves[square] & ~ownPieces) & position.PieceBitBoards[Piece::Knight][opponentIndex])
         return true;

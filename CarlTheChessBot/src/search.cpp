@@ -8,6 +8,7 @@ using namespace std::chrono;
 #define DEBUG true
 
 int initial_depth = 10;
+long long total_positions_analysed = 0;
 
 //retorna o melhor movimento e a avaliação do game passado à função
 pair<Move, evaluation> search(game game1)
@@ -21,25 +22,25 @@ pair<Move, evaluation> search(game game1)
 	//while (system_clock::now() <= limit);
 
 	initial_depth = 4;
+	total_positions_analysed = 0;
 	pair<Move, evaluation> p = minimax(game1, initial_depth,
-		game1.position.ToMove == Color::White ? evaluation::maximum() : evaluation::minimum());
+		game1.position.ToMove == Color::White ? evaluation(1, Color::White) : evaluation(1, Color::Black));
 
 	if (DEBUG)
-		cout << "\nFINAL EVALUAITON: " << p.second.toString() << endl;
+		cout << "\nFINAL EVALUAITON: " << p.second.toString()
+			 << "\nTOTAL POSITIONS ANALYSED: " << total_positions_analysed << endl;
 
 	return p;
 }
 
+//recebe posições VÁLIDAS! comportamento indefinido para posições inválidas
 //o Move que retorna pode não ter sido atribuído! (se não houver jogadas possíveis)
-//nesse caso a evaluation é mate in 0 ou stalemate (evaluation.end_of_game() é true) ou ilegal (evaluation.isIllegal() é true)
+//nesse caso a evaluation é mate in 0 ou stalemate (evaluation.end_of_game() é true)
 pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 {
 	bool maximize = game1.position.ToMove == Color::White;
 	Move best = Move();
-
-	//checkmate (as in the position being analysed is illegal, since the oponent king didn't defend the attack)
-	if (inCheck(game1.position, oppositeColor(game1.position.ToMove)))
-		return make_pair(best, evaluation::illegal());
+	total_positions_analysed++;
 
 	//draw (repetition, 50 moves, insufficient material, dead position...)
 	//basically everything except stalemate
@@ -57,26 +58,31 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 		games[i] = game1.makeMove(moves[i]);
 
 	if (DEBUG)
-		cout << string(4 * (initial_depth - depth), ' ') << "FOUND " << games.size() << " POSSIBLE MOVES\n\n";
+		cout << string(4 * (initial_depth - depth), ' ') << "FOUND " << games.size() << " PSEUDOLEGAL MOVES\n\n";
 
 	bool empty = true;
 	evaluation minmax2 = maximize ? evaluation::minimum() : evaluation::maximum();
 
 	for (int i = 0; i < games.size(); i++)
 	{
+		//the position in invalid
+		if (inCheck(games[i].position, oppositeColor(game1.position.ToMove)))
+			continue;
+
 		if (DEBUG)
-			cout << string(4 * (initial_depth - depth), ' ') << "SEARCHING " << moves[i].toString() << "\n";
+			cout << string(4 * (initial_depth - depth), ' ') << "SEARCHING " << moves[i].toString(game1.position.ToMove) << "\n";
 
 		evaluation e = minimax(games[i], depth - 1, minmax2).second;
 
 		if (DEBUG)
 			cout << string(4 * (initial_depth - depth), ' ') << "EVALUATION: " << e.toString() << "\n\n";
 
-		if (e.isIllegal())
-			continue;
-
 		e.nextMove(game1.position.ToMove);
 		empty = false;
+
+		//guaranteed best move (checkmate in 1)
+		if (maximize ? !(e < evaluation(1, Color::White)) : !(evaluation(1, Color::Black) < e))
+			return make_pair(moves[i], e);
 
 		//alpha beta pruning
 		if (maximize ? !(e < minmax) : !(minmax < e))
@@ -84,7 +90,7 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 			if (DEBUG)
 				cout << string(4 * (initial_depth - depth), ' ') << "Alpha beta skip...\n";
 
-			return make_pair(best, e);
+			return make_pair(moves[i], e);
 		}
 
 		//new best move found

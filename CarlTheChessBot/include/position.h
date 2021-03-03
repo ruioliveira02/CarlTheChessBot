@@ -89,7 +89,7 @@ struct Move
     {
     }
 
-    std::string toString();
+    std::string toString(Color);
 };
 
 
