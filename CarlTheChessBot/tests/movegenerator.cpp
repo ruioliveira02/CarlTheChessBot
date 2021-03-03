@@ -79,7 +79,7 @@ void setupTests()
     tests.push_back(make_pair(Position(pieces,1154117953781268736ULL,2ULL,Color::White, castling,(short)(-1),(short)0,(short)1),102));
 }
 
-void runTests()
+void runMoveGenerationTests()
 {
     initializeAllBitBoards();
     initmagicmoves();
@@ -107,7 +107,7 @@ int testMoveGeneration()
 {
     setupTests();
 
-    runTests();
+    runMoveGenerationTests();
 
     return 0;
 }
