@@ -148,5 +148,5 @@ bool game::isDraw()
 
 evaluation game::evaluate()
 {
-    return evaluation();
+    return evaluation(42.0);
 }

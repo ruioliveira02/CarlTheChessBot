@@ -1,6 +1,48 @@
 #include "position.h"
 
 #include <vector>
+#include <iostream>
+
+char pieceChar(Piece piece, Color color)
+{
+    char c;
+    
+    switch (piece)
+    {
+        case Piece::Pawn:       c = 'p';    break;
+        case Piece::Knight:     c = 'n';    break;
+        case Piece::Bishop:     c = 'b';    break;
+        case Piece::Rook:       c = 'r';    break;
+        case Piece::Queen:      c = 'q';    break;
+        case Piece::King:       c = 'k';    break;
+        default:                c = '?';    break;
+    }
+
+    if (color == Color::White)
+        c += 'A' - 'a';
+
+    return c;
+}
+
+std::string Move::toString()
+{
+    switch (type)
+    {
+
+        case MoveType::Normal:
+        case MoveType::EnPassant:
+        return std::string() + (char)(origin % 8 + 'a') + (char)(origin / 8 + '1') + pieceChar(piece, Color::White)
+                  + (char)(destiny % 8 + 'a') + (char)(destiny / 8 + '1');
+
+        case MoveType::Castling:
+        return destiny % 8 == 6 ? "O-O" : "O-O-O";
+
+        case MoveType::Promotion:
+        return std::string() + (char)(origin % 8 + 'a') + (char)(origin / 8 + '1') + '=' + pieceChar(piece, Color::White);
+
+        default: return "^_^";
+    }
+}
 
 Position::Position()
 {

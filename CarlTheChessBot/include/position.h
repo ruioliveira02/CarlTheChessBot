@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <string>
 
 #define BitBoard uint64_t
 
@@ -42,6 +43,8 @@ enum Piece
     Queen,
     King
 };
+
+char pieceChar(Piece, Color);
 
 
 /**
@@ -85,6 +88,8 @@ struct Move
     Move()
     {
     }
+
+    std::string toString();
 };
 
 

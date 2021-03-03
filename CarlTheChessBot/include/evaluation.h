@@ -21,18 +21,26 @@ class evaluation
 
 		evaluation()
 		{
-			this->draw = true;
+			draw = true;
+			mate_in = -1;
+			illegality = false;
+			score = 0;
 		}
 
 		evaluation(int mate_in, Color color)
 		{
 			this->color = color;
 			this->mate_in = mate_in;
+			draw = false;
+			illegality = false;
 		}
 
 		evaluation(double score)
 		{
 			this->score = score;
+			mate_in = -1;
+			draw = false;
+			illegality = false;
 		}
 
 
@@ -49,6 +57,7 @@ class evaluation
 		static evaluation illegal()
 		{
 			evaluation e;
+			e.draw = false;
 			e.illegality = true;
 			return e;
 		}
@@ -61,6 +70,9 @@ class evaluation
 
 			if (mate_in >= 0 && color == Color::Black)
 				return eval.mate_in < 0 || eval.color == Color::White || eval.mate_in > mate_in;
+
+			if (eval.mate_in >= 0)
+				return eval.color == Color::White;
 
 			if (draw)
 				return eval.score > 0;	//TODO...
@@ -87,6 +99,9 @@ class evaluation
 
 		string toString()
 		{
+			if (illegality)
+				return ";";
+
 			if (mate_in >= 0)
 				return "#" + to_string(color == Color::White ? mate_in : -mate_in);
 

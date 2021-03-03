@@ -6,6 +6,35 @@
 
 using namespace std;
 
+void printPosition(const Position& position)
+{
+    for (int y = 7; y >= 0; y--)
+    {
+        for (int x = 0; x < 8; x++)
+        {
+            for (int p = 0; p < 6; p++)
+            {
+                for (int c = 0; c < 2; c++)
+                {
+                    if (position.PieceBitBoards[p][c] & (1ULL << (8 * y + x)))
+                    {
+                        cout << pieceChar((Piece)p, (Color)c);
+                        goto endstep;
+                    }
+                }
+            }
+
+            cout << ' ';
+            endstep:
+            continue;
+        }
+
+        cout << '\n';
+    }
+
+    cout.flush();
+}
+
 int main()
 {
     //r3k2r/1p1pppbp/8/pPp3pP/4Q3/2P1N1P1/P2PPP2/R3K2R w KQkq a6 0 1
@@ -22,7 +51,7 @@ int main()
     pieces[Piece::Bishop][Color::Black] = vector<Square>({54});
     pieces[Piece::Rook][Color::Black] = vector<Square>({56,63});
     pieces[Piece::Queen][Color::Black] = vector<Square>();
-    pieces[Piece::King][Color::Black] = vector<Square>({61});
+    pieces[Piece::King][Color::Black] = vector<Square>({60});
 
     bool castling[2][2];
 
@@ -35,7 +64,11 @@ int main()
     game g = game();
     g.position = pos;
 
-    auto res = search(g);
+    printPosition(pos);
+    cout << "\n\n";
 
+    auto res = search(g);
+    cout << endl;
+    
     return 0;
 }
