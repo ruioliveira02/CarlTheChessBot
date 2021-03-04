@@ -67,13 +67,6 @@ bool game::isDraw()
     return false;
 }
 
-evaluation game::evaluate()
-{
-    return evaluation(42.0);
-}
-
-
-
 void game::updateBitBoards(Move move)
 {
     if(position.ToMove == Color::White)
@@ -226,4 +219,22 @@ void game::updateCastlingRights(Move move)
     {
         position.Castling[0][position.ToMove] = position.Castling[1][position.ToMove] = false;
     }
+}
+
+
+
+evaluation game::evaluate()
+{
+    double res = material(Color::White) - material(Color::Black);
+
+    return evaluation(res);
+}
+
+
+double game::material(Color color)
+{
+    double res = position.PieceLocations[Piece::Pawn][color].size() + 3 * position.PieceLocations[Piece::Knight][color].size() + 3.25 * position.PieceLocations[Piece::Bishop][color].size()
+                + 5 * position.PieceLocations[Piece::Rook][color].size() + 9 * position.PieceLocations[Piece::Queen][color].size();
+
+    return res;
 }

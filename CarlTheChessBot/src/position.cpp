@@ -6,7 +6,7 @@
 char pieceChar(Piece piece, Color color)
 {
     char c;
-    
+
     switch (piece)
     {
         case Piece::Pawn:       c = 'p';    break;
@@ -107,4 +107,3 @@ Position::~Position()
 {
     //dtor
 }
-
