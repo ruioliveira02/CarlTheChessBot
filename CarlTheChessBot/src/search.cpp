@@ -5,7 +5,7 @@
 using namespace std;
 using namespace std::chrono;
 
-#define DEBUG false
+#define DEBUG true
 
 int initial_depth = 10;
 long long total_positions_analysed = 0;
@@ -21,7 +21,7 @@ pair<Move, evaluation> search(game game1)
 	//}
 	//while (system_clock::now() <= limit);
 
-	initial_depth = 6;
+	initial_depth = 7;
 	total_positions_analysed = 0;
 	pair<Move, evaluation> p = minimax(game1, initial_depth,
 		game1.position.ToMove == Color::White ? evaluation(1, Color::White) : evaluation(1, Color::Black));
@@ -52,22 +52,23 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 	if (depth == 0)
 		return make_pair(best, game1.evaluate());
 
-	vector<Move> moves = generateAllMoves(game1.position);
-	std::vector<game> games = std::vector<game>(moves.size());
 
-	for (int i = 0; i < moves.size(); i++)
-		games[i] = game1.makeMove(moves[i]);
+	auto aux = generateAllMoves(game1.position);
+	Move* moves = aux.first;
+	int size = aux.second;
 
 	if (DEBUG)
-		cout << string(4 * (initial_depth - depth), ' ') << "FOUND " << games.size() << " PSEUDOLEGAL MOVES\n\n";
+		cout << string(4 * (initial_depth - depth), ' ') << "FOUND " << size << " PSEUDOLEGAL MOVES\n\n";
 
 	bool empty = true;
 	evaluation minmax2 = maximize ? evaluation::minimum() : evaluation::maximum();
 
-	for (int i = 0; i < games.size(); i++)
+	for (int i = 0; i < size; i++)
 	{
+		game g = game1.makeMove(moves[i]);
+
 		//the position in invalid
-		if (inCheck(games[i].position, game1.position.ToMove))
+		if (inCheck(g.position, game1.position.ToMove))
 		{
 			if (DEBUG)
 				cout << string(4 * (initial_depth - depth), ' ') << "SKIPPING ILLEGAL MOVE " << moves[i].toString(game1.position.ToMove) << "\n";
@@ -78,7 +79,7 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 		if (DEBUG)
 			cout << string(4 * (initial_depth - depth), ' ') << "SEARCHING " << moves[i].toString(game1.position.ToMove) << "\n";
 
-		evaluation e = minimax(games[i], depth - 1, minmax2).second;
+		evaluation e = minimax(g, depth - 1, minmax2).second;
 
 		if (DEBUG)
 			cout << string(4 * (initial_depth - depth), ' ') << "EVALUATION: " << e.toString() << "\n\n";
@@ -88,7 +89,11 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 
 		//guaranteed best move (checkmate in 1)
 		if (maximize ? !(e < evaluation(1, Color::White)) : !(evaluation(1, Color::Black) < e))
-			return make_pair(moves[i], e);
+		{
+			auto ans = moves[i];
+			delete[] moves;
+			return make_pair(ans, e);
+		}
 
 		//alpha beta pruning
 		if (maximize ? !(e < minmax) : !(minmax < e))
@@ -96,7 +101,9 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 			if (DEBUG)
 				cout << string(4 * (initial_depth - depth), ' ') << "Alpha beta skip...\n";
 
-			return make_pair(moves[i], e);
+			auto ans = moves[i];
+			delete[] moves;
+			return make_pair(ans, e);
 		}
 
 		//new best move found
@@ -106,6 +113,8 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 			best = moves[i];
 		}
 	}
+
+	delete[] moves;
 
 	//stalemate
 	if (empty && !inCheck(game1.position, game1.position.ToMove))

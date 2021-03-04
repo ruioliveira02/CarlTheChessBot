@@ -147,6 +147,9 @@ int main()
     g.position = pos;
 
 
+    auto res = search(g);
+    return 0;
+
     while (1)
     {
         cout << "\n";

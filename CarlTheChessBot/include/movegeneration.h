@@ -22,8 +22,7 @@ bool hasLegalMoves(Position);
     \param position The given position
     \return         The vector containing the requested moves
 */
-std::vector<Move> generateAllMoves(Position);
-
+std::pair<Move*, int> generateAllMoves(const Position&);
 
 /**
     Function that generates all the pseudo legal moves all the pieces of a certain color and type (e.g. white rooks, black pawns) can make.
@@ -33,110 +32,7 @@ std::vector<Move> generateAllMoves(Position);
     \param color    The color of the pieces to generate moves for
     \return         The vector containing the requested moves
 */
-std::vector<Move> generateAllPieceMoves(Position,Piece,Color);
-
-
-/**
-    Function that generates all the pseudo legal moves the king on the given square can make.
-
-    \param position The given position
-    \param square   The square the king is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generateKingMoves(Position,Square);
-
-/**
-    Function that generates all the pseudo legal moves the pawn on the given square can make.
-
-    \param position The given position
-    \param square   The square the pawn is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generatePawnMoves(Position,Square);
-
-/**
-    Function that generates all the pseudo legal moves the knight on the given square can make.
-
-    \param position The given position
-    \param square   The square the knight is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generateKnightMoves(Position,Square);
-
-/**
-    Function that generates all the pseudo legal moves the bishop on the given square can make.
-
-    \param position The given position
-    \param square   The square the bishop is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generateBishopMoves(Position,Square);
-
-/**
-    Function that generates all the pseudo legal moves the rook on the given square can make.
-
-    \param position The given position
-    \param square   The square the rook is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generateRookMoves(Position,Square);
-
-
-/**
-    Function that generates all the pseudo legal moves the queen on the given square can make.
-
-    \param position The given position
-    \param square   The square the queen is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generateQueenMoves(Position,Square);
-
-
-/**
-    Function that generates all the legal (not pseudo legal) castling moves the king on the given square can make.
-
-    \param position The given position
-    \param square   The square the king is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generateCastling(Position, Square);
-
-/**
-    Function that generates all the pseudo legal promotions the pawn can be make going from the given squares.
-
-    \param position The given position
-    \param origin   The square the pawn is on
-    \param destiny   The square the pawn is going to promote on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generatePromotions(Square, Square);
-
-/**
-    Function that generates the pseudo legal enpassant capture the pawn on the given square can make (if there is no capture possible, returns the empty list).
-
-    \param position The given position
-    \param square   The square the pawn is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generateEnPassant(Position, Square);
-
-/**
-    Function that generates the pseudo legal pushes the pawn on the given square can make.
-
-    \param position The given position
-    \param square   The square the pawn is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generatePawnPushes(Position, Square);
-
-/**
-    Function that generates the pseudo legal captures the pawn on the given square can make .
-
-    \param position The given position
-    \param square   The square the pawn is on
-    \return         The vector containing the requested moves
-*/
-std::vector<Move> generatePawnCaptures(Position, Square);
+BitBoard* generateAllPieceMoves(const Position&,Piece,Color);
 
 /**
     Function that vector of pseudo legals move a piece on the given square can make, given a bitboard in which all the set bits correspond to squares said piece can move to.
@@ -146,7 +42,81 @@ std::vector<Move> generatePawnCaptures(Position, Square);
     \param piece    The type of piece
     \return         The vector containing the requested moves
 */
-std::vector<Move> convertBitBoardToMoves(BitBoard, Square, Piece);
+void convertBitBoardToMoves(BitBoard, Square, Piece, Move*&);
+
+
+/**
+    Function that generates all the pseudo legal moves the king on the given square can make.
+
+    \param position The given position
+    \param square   The square the king is on
+    \return         The vector containing the requested moves
+*/
+BitBoard generateKingMoves(const Position&,Square);
+
+/**
+    Function that generates all the pseudo legal moves the pawn on the given square can make.
+
+    \param position The given position
+    \param square   The square the pawn is on
+    \return         The vector containing the requested moves
+*/
+BitBoard generatePawnMoves(const Position&,Square);
+
+/**
+    Function that generates all the pseudo legal moves the knight on the given square can make.
+
+    \param position The given position
+    \param square   The square the knight is on
+    \return         The vector containing the requested moves
+*/
+BitBoard generateKnightMoves(const Position&,Square);
+
+/**
+    Function that generates all the pseudo legal moves the bishop on the given square can make.
+
+    \param position The given position
+    \param square   The square the bishop is on
+    \return         The vector containing the requested moves
+*/
+BitBoard generateBishopMoves(const Position&,Square);
+
+/**
+    Function that generates all the pseudo legal moves the rook on the given square can make.
+
+    \param position The given position
+    \param square   The square the rook is on
+    \return         The vector containing the requested moves
+*/
+BitBoard generateRookMoves(const Position&,Square);
+
+/**
+    Function that generates all the pseudo legal moves the queen on the given square can make.
+
+    \param position The given position
+    \param square   The square the queen is on
+    \return         The vector containing the requested moves
+*/
+BitBoard generateQueenMoves(const Position&,Square);
+
+
+/**
+    Function that generates all the legal (not pseudo legal) castling moves the king on the given square can make.
+
+    \param position The given position
+    \param square   The square the king is on
+    \return         The vector containing the requested moves
+*/
+Move* generateCastling(const Position&, Square);
+
+/**
+    Function that generates the pseudo legal enpassant capture the pawn on the given square can make (if there is no capture possible, returns the empty list).
+
+    \param position The given position
+    \param square   The square the pawn is on
+    \return         The vector containing the requested moves
+*/
+BitBoard generateEnPassant(const Position&);
 
 
 /**
@@ -156,7 +126,7 @@ std::vector<Move> convertBitBoardToMoves(BitBoard, Square, Piece);
     \param color    The color of the king
     \return         Whether the king of the given color is in check or not
 */
-bool inCheck(Position,Color);
+bool inCheck(const Position&,Color);
 
 
 /**
@@ -167,7 +137,7 @@ bool inCheck(Position,Color);
     \param square   The square the king is on
     \return         Whether the king of the given color is in check or not
 */
-bool inCheck(Position,Color,Square);
+bool inCheck(const Position&,Color,Square);
 
 
 /** The bitboards used to compute the movements of knights */
