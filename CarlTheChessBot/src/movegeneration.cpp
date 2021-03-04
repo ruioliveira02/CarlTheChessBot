@@ -76,7 +76,7 @@ std::pair<Move*, int> generateAllMoves(const Position& position)
             *(it++) = Move(MoveType::Promotion, position.PieceLocations[Piece::Pawn][color][i], j, Piece::Rook);
             *(it++) = Move(MoveType::Promotion, position.PieceLocations[Piece::Pawn][color][i], j, Piece::Knight);
             *(it++) = Move(MoveType::Promotion, position.PieceLocations[Piece::Pawn][color][i], j, Piece::Bishop);
-            enPassant &= ~(1ULL << j);
+            promotions &= ~(1ULL << j);
         }
     }
 
