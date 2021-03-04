@@ -5,7 +5,7 @@
 using namespace std;
 using namespace std::chrono;
 
-#define DEBUG true
+#define DEBUG false
 
 int initial_depth = 10;
 long long total_positions_analysed = 0;
@@ -21,14 +21,15 @@ pair<Move, evaluation> search(game game1)
 	//}
 	//while (system_clock::now() <= limit);
 
-	initial_depth = 4;
+	initial_depth = 6;
 	total_positions_analysed = 0;
 	pair<Move, evaluation> p = minimax(game1, initial_depth,
 		game1.position.ToMove == Color::White ? evaluation(1, Color::White) : evaluation(1, Color::Black));
 
 	if (DEBUG)
 		cout << "\nFINAL EVALUAITON: " << p.second.toString()
-			 << "\nTOTAL POSITIONS ANALYSED: " << total_positions_analysed << endl;
+			 << "\nTOTAL POSITIONS ANALYSED: " << total_positions_analysed 
+			 << "\nBEST MOVE: " << p.first.toString(game1.position.ToMove) << endl;
 
 	return p;
 }
@@ -66,8 +67,13 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 	for (int i = 0; i < games.size(); i++)
 	{
 		//the position in invalid
-		if (inCheck(games[i].position, oppositeColor(game1.position.ToMove)))
+		if (inCheck(games[i].position, game1.position.ToMove))
+		{
+			if (DEBUG)
+				cout << string(4 * (initial_depth - depth), ' ') << "SKIPPING ILLEGAL MOVE " << moves[i].toString(game1.position.ToMove) << "\n";
+
 			continue;
+		}
 
 		if (DEBUG)
 			cout << string(4 * (initial_depth - depth), ' ') << "SEARCHING " << moves[i].toString(game1.position.ToMove) << "\n";

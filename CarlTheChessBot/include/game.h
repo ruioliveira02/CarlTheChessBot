@@ -8,7 +8,7 @@ class game
 {
 	public:
 
-        void initialize();
+        static void initialize();
 
 		Position position;
 
