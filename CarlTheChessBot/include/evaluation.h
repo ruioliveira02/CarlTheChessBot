@@ -12,7 +12,7 @@ class evaluation
 	private:
 
 		Color color; //para que cor é o mate (i. e. quem é que ganha)
-		int mate_in;
+		int mateIn;
 		bool draw;   //TODO: draw_in ?
 		double score;
 
@@ -21,21 +21,21 @@ class evaluation
 		evaluation()
 		{
 			draw = true;
-			mate_in = -1;
+			mateIn = -1;
 			score = 0;
 		}
 
 		evaluation(int mate_in, Color color)
 		{
 			this->color = color;
-			this->mate_in = mate_in;
+			this->mateIn = mate_in;
 			draw = false;
 		}
 
 		evaluation(double score)
 		{
 			this->score = score;
-			mate_in = -1;
+			mateIn = -1;
 			draw = false;
 		}
 
@@ -50,16 +50,16 @@ class evaluation
 			return evaluation(0, Color::White);
 		}
 
-		//x < y se y é melhor para as brancas
+		//x < y if y is better for white
 		bool operator<(const evaluation& eval)
 		{
-			if (mate_in >= 0 && color == Color::White)
-				return eval.mate_in >= 0 && eval.mate_in < mate_in && eval.color == Color::White;
+			if (mateIn >= 0 && color == Color::White)
+				return eval.mateIn >= 0 && eval.mateIn < mateIn && eval.color == Color::White;
 
-			if (mate_in >= 0 && color == Color::Black)
-				return eval.mate_in < 0 || eval.color == Color::White || eval.mate_in > mate_in;
+			if (mateIn >= 0 && color == Color::Black)
+				return eval.mateIn < 0 || eval.color == Color::White || eval.mateIn > mateIn;
 
-			if (eval.mate_in >= 0)
+			if (eval.mateIn >= 0)
 				return eval.color == Color::White;
 
 			if (draw)
@@ -70,13 +70,13 @@ class evaluation
 
 		void nextMove(Color toMove)
 		{
-			if (mate_in >= 0 && toMove == color)
-				this->mate_in++;
+			if (mateIn >= 0 && toMove == color)
+				this->mateIn++;
 		}
 
 		double toScore()
 		{
-			if (mate_in >= 0)
+			if (mateIn >= 0)
 				return color == Color::White ? numeric_limits<double>::infinity() : -numeric_limits<double>::infinity();
 
 			if (draw)
@@ -87,8 +87,8 @@ class evaluation
 
 		string toString()
 		{
-			if (mate_in >= 0)
-				return "#" + to_string(color == Color::White ? mate_in : -mate_in);
+			if (mateIn >= 0)
+				return "#" + to_string(color == Color::White ? mateIn : -mateIn);
 
 			if (draw)
 				return "£";
@@ -96,9 +96,9 @@ class evaluation
 			return to_string(score);
 		}
 
-		bool end_of_game()
+		bool endOfGame()
 		{
-			return mate_in == 0 || draw;
+			return mateIn == 0 || draw;
 		}
 };
 

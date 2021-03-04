@@ -37,6 +37,8 @@ void printPosition(const Position& position)
 
 int main()
 {
+    initmagicmoves();
+    initializeAllBitBoards();
     //r3k2r/1p1pppbp/8/pPp3pP/4Q3/2P1N1P1/P2PPP2/R3K2R w KQkq a6 0 1
     std::vector<Square> pieces[6][2];
     pieces[Piece::Pawn][Color::White] = vector<Square>();
@@ -58,13 +60,7 @@ int main()
     castling[0][0] = castling[1][0] = false;
     castling[0][1] = castling[1][1] = false;
 
-    Position pos = Position(pieces,36046389205008384ULL, 288230376151711744ULL,Color::White, castling,(short)(40),(short)0,(short)1);
-
-
-    //Mais um bug para ti :)
-    cout << inCheck(pos, Color::Black) << endl;
-    //devia dar true
-/*
+    Position pos = Position(pieces,17592186044544ULL, 562949953421312ULL,Color::Black, castling,(short)(40),(short)0,(short)1);
 
     game g = game();
     g.initialize();
@@ -73,8 +69,8 @@ int main()
     printPosition(pos);
     cout << "\n\n";
 
-    auto res = search(g);
-    cout << endl;
-*/
+    auto res = g.evaluate();
+    cout << res.toString() << endl;
+
     return 0;
 }

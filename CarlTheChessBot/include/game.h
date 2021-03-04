@@ -29,6 +29,10 @@ class game
         void promote(Move);
         void updatePieces(Move);
         void updateCastlingRights(Move);
+
+
+
+        double material(Color);
 };
 
 

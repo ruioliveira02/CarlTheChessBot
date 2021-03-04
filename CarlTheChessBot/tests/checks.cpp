@@ -100,7 +100,7 @@ void runCheckTests()
 }
 
 
-int main()
+int testChecks()
 {
     initmagicmoves();
     initializeAllBitBoards();
