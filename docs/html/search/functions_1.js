@@ -1,16 +1,9 @@
 var searchData=
 [
-  ['generateallmoves_54',['generateAllMoves',['../movegeneration_8h.html#ad215d82453db4fb5d3a1c3f5692eb644',1,'movegeneration.cpp']]],
-  ['generateallpiecemoves_55',['generateAllPieceMoves',['../movegeneration_8h.html#adb698e757ab46fb88383e6a1f5637e15',1,'movegeneration.cpp']]],
-  ['generatebishopmoves_56',['generateBishopMoves',['../movegeneration_8h.html#ad63de70e75e6ba97db1c3bdf80132198',1,'movegeneration.cpp']]],
-  ['generatecastling_57',['generateCastling',['../movegeneration_8h.html#aad2d5fa101d9d491afe0b8e87a3c994f',1,'movegeneration.cpp']]],
-  ['generateenpassant_58',['generateEnPassant',['../movegeneration_8h.html#a0ce7ba1179af2ed9e34d4b0c15fffa96',1,'movegeneration.cpp']]],
-  ['generatekingmoves_59',['generateKingMoves',['../movegeneration_8h.html#a3bd7d6b31960c408a60b0e78e86c43bc',1,'movegeneration.cpp']]],
-  ['generateknightmoves_60',['generateKnightMoves',['../movegeneration_8h.html#aee274ca4539a2a26bf111c4f0f84aa57',1,'movegeneration.cpp']]],
-  ['generatepawncaptures_61',['generatePawnCaptures',['../movegeneration_8h.html#af7b3ad0c89cca30c9ec9ca28b151cb50',1,'movegeneration.cpp']]],
-  ['generatepawnmoves_62',['generatePawnMoves',['../movegeneration_8h.html#a7e94a5aa2db64ba19b2f94c7a278e24d',1,'movegeneration.cpp']]],
-  ['generatepawnpushes_63',['generatePawnPushes',['../movegeneration_8h.html#a8c4a41ce2d63ecef1b9777c8fbb99e24',1,'movegeneration.cpp']]],
-  ['generatepromotions_64',['generatePromotions',['../movegeneration_8h.html#afe337e5df1aea882564354b1887a9374',1,'movegeneration.cpp']]],
-  ['generatequeenmoves_65',['generateQueenMoves',['../movegeneration_8h.html#a2a12b764422226f70ba63a89d35d29ff',1,'movegeneration.cpp']]],
-  ['generaterookmoves_66',['generateRookMoves',['../movegeneration_8h.html#ade2348e4474e102a2536f98185f1d76c',1,'movegeneration.cpp']]]
+  ['endofgame_84',['endOfGame',['../classevaluation.html#a53f0bba38729601a55f385fa8de41bef',1,'evaluation']]],
+  ['evaluate_85',['evaluate',['../classgame.html#a72624ac14b20566d39cc487171c5dd8b',1,'game']]],
+  ['evaluateposition_86',['evaluatePosition',['../evaluate_8h.html#af805a514a4c9ba46e465714748f52e3c',1,'evaluate.cpp']]],
+  ['evaluateside_87',['evaluateSide',['../evaluate_8h.html#acb012999541f1ec78360f046e19687ef',1,'evaluate.cpp']]],
+  ['evaluation_88',['evaluation',['../classevaluation.html#ae713be81e69f626caaaf6f5621937b0d',1,'evaluation::evaluation()'],['../classevaluation.html#aaeb73d13197bdb74e839ebbff265a5ab',1,'evaluation::evaluation(int, Color)'],['../classevaluation.html#a16fca6d2e37973e5d12533d2aa56f1f7',1,'evaluation::evaluation(double)']]],
+  ['exists_89',['exists',['../classgame.html#aa1a2343fa197790634100780350033db',1,'game']]]
 ];

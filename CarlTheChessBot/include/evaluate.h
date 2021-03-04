@@ -1,3 +1,10 @@
+/**
+    \file evaluate.h
+
+    \brief File containing the functions used to evaluate any given position.
+*/
+
+
 #ifndef EVALUATE_H_
 #define EVALUATE_H_
 
@@ -5,21 +12,69 @@
 #include "position.h"
 #include "evaluation.h"
 
+
+/**
+    Function that evaluates a given position.
+
+    Note that it is a static evaluation, meaning that checks, checkmates, stalemates, draws by repetition, .etc, are not evaluated by this function. Instead, this function
+    assesses the material count and the position of the pieces to make its evaluation of the position.
+
+    \param position The given position
+    \return         The evaluation of the position
+*/
 evaluation evaluatePosition(Position);
 
+
+/**
+    Function that evaluates one side (white or black) of a given position.
+
+    The evaluation of a position corresponds to the evaluation of the white side minus the evaluation of the black side.
+
+    \param position The given position
+    \param color    The given color
+    \return         The vector containing the requested moves
+*/
 double evaluateSide(Position, Color);
 
+
+/**
+    Function that evaluates the material situation for one of the sides.
+
+    For example, if the given side has two pawns, a queen and two knights, the function returns 2*1 + 1*9 + 2*3 = 17 .
+
+    \param position The given position
+    \param color    The given color
+    \return         The vector containing the requested moves
+*/
 double material(Position, Color);
 
+
+/**
+    Function that evaluates the location of the pieces for a given side of a position, based on the piece square tables below.
+
+    \param position The given position
+    \param color    The given color
+    \param color    The given color
+    \return         The vector containing the requested moves
+*/
 double pieceLocations(Position, Color);
 
 
 
+/**
+    The value (in pawns) of each piece in chess, in the order of the Piece enum.
 
+    Note that bishops are worth 3.25 pawns, instead of 3.
+*/
 const double pieceValues[6] = {1.0, 3.0, 3.25, 5.0, 9.0, 0.0}; //King does not count for evaluation purposes
 
 
-//Taken from https://www.chessprogramming.org/Simplified_Evaluation_Function
+/**
+    The piece square tables used to assess the position of the pieces on the chessboard.
+
+    Taken from \link https://www.chessprogramming.org/Simplified_Evaluation_Function
+*/
+
 const double pieceSquaresTable[7][64] = {
     //Pawn
     {0,  0,  0,  0,  0,  0,  0,  0,

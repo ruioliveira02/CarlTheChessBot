@@ -69,7 +69,8 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">position.h File Reference</div>  </div>
 </div><!--header-->
@@ -79,6 +80,7 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for position.h:</div>
 <div class="dyncontent">
@@ -106,6 +108,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a1ac4529d9cfa2ab6cf25f353aba77394"><td class="memItemLeft" align="right" valign="top"><a id="a1ac4529d9cfa2ab6cf25f353aba77394"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BitBoard</b>&#160;&#160;&#160;uint64_t</td></tr>
 <tr class="separator:a1ac4529d9cfa2ab6cf25f353aba77394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4aa54817308f3542e1492484206f09b"><td class="memItemLeft" align="right" valign="top"><a id="af4aa54817308f3542e1492484206f09b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>oppositeColor</b>(x)&#160;&#160;&#160;x == Color::White ? Color::Black : Color::White</td></tr>
+<tr class="separator:af4aa54817308f3542e1492484206f09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -135,6 +140,12 @@ Enumerations</h2></td></tr>
 <a class="el" href="position_8h.html#ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f">Promotion</a>
  }</td></tr>
 <tr class="separator:ab152e38addc9865a033ed991583c1395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a69fca86e983668e5d3a8203baf37c7f5"><td class="memItemLeft" align="right" valign="top"><a id="a69fca86e983668e5d3a8203baf37c7f5"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>pieceChar</b> (<a class="el" href="position_8h.html#ade35c903123b92bed5cc7b84e6a1314e">Piece</a>, <a class="el" href="position_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a>)</td></tr>
+<tr class="separator:a69fca86e983668e5d3a8203baf37c7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>File containing the definition of the <a class="el" href="classPosition.html">Position</a> class and the various enums used to describe a chess position. </p>
@@ -150,7 +161,8 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63. More formally, should a square correspond to the i-th rank (0 based, i.e., A is 0, B is 1, ..., H is 7) and on the j-th file (again 0-based), its corresponding number is <img class="formulaInl" alt="$ 8i+j $" src="form_0.png"/> </p>
+<p>Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63. More formally, should a square correspond to the i-th rank (0 based, i.e., A is 0, B is 1, ..., H is 7) and on the j-th file (again 0-based), its corresponding number is 8i+j <br  />
+ </p>
 
 </div>
 </div>

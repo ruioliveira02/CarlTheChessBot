@@ -1,0 +1,66 @@
+\hypertarget{search_8h}{}\doxysection{include/search.h File Reference}
+\label{search_8h}\index{include/search.h@{include/search.h}}
+
+
+File containing the functions used to perform the search for the best move in a given position.  
+
+
+{\ttfamily \#include \char`\"{}position.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}evaluation.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}movegeneration.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}game.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for search.\+h\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::pair$<$ \mbox{\hyperlink{structMove}{Move}}, \mbox{\hyperlink{classevaluation}{evaluation}} $>$ \mbox{\hyperlink{search_8h_ad6ef74adee67a0cc5b8252b905f60cc0}{search}} (\mbox{\hyperlink{classgame}{game}})
+\item 
+std\+::pair$<$ \mbox{\hyperlink{structMove}{Move}}, \mbox{\hyperlink{classevaluation}{evaluation}} $>$ \mbox{\hyperlink{search_8h_a1db40c67aaa9e98538fd6f9c4e444504}{minimax}} (\mbox{\hyperlink{classgame}{game}}, int, \mbox{\hyperlink{classevaluation}{evaluation}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File containing the functions used to perform the search for the best move in a given position. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{search_8h_a1db40c67aaa9e98538fd6f9c4e444504}\label{search_8h_a1db40c67aaa9e98538fd6f9c4e444504}} 
+\index{search.h@{search.h}!minimax@{minimax}}
+\index{minimax@{minimax}!search.h@{search.h}}
+\doxysubsubsection{\texorpdfstring{minimax()}{minimax()}}
+{\footnotesize\ttfamily std\+::pair$<$\mbox{\hyperlink{structMove}{Move}}, \mbox{\hyperlink{classevaluation}{evaluation}}$>$ minimax (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classgame}{game}}}]{,  }\item[{int}]{,  }\item[{\mbox{\hyperlink{classevaluation}{evaluation}}}]{ }\end{DoxyParamCaption})}
+
+Function that runs the minimax algorithm used to search the moves
+
+
+\begin{DoxyParams}{Parameters}
+{\em game} & The given game \\
+\hline
+{\em depth} & The given search depth \\
+\hline
+{\em minmax} & Threshold for alpha beta pruning \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pair consisting of the best move and the evaluation of the position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{search_8h_ad6ef74adee67a0cc5b8252b905f60cc0}\label{search_8h_ad6ef74adee67a0cc5b8252b905f60cc0}} 
+\index{search.h@{search.h}!search@{search}}
+\index{search@{search}!search.h@{search.h}}
+\doxysubsubsection{\texorpdfstring{search()}{search()}}
+{\footnotesize\ttfamily std\+::pair$<$\mbox{\hyperlink{structMove}{Move}}, \mbox{\hyperlink{classevaluation}{evaluation}}$>$ search (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classgame}{game}}}]{ }\end{DoxyParamCaption})}
+
+Function that generates all the pseudo legal moves all the pieces of a certain color and type (e.\+g. white rooks, black pawns) can make.
+
+
+\begin{DoxyParams}{Parameters}
+{\em game} & The given game \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pair consisting of the best move and the evaluation of the position 
+\end{DoxyReturn}

@@ -7,6 +7,7 @@ File containing the definition of the \mbox{\hyperlink{classPosition}{Position}}
 
 {\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
 Include dependency graph for position.\+h\+:
 % FIG 0
 This graph shows which files directly or indirectly include this file\+:
@@ -23,6 +24,9 @@ class \mbox{\hyperlink{classPosition}{Position}}
 \item 
 \mbox{\Hypertarget{position_8h_a1ac4529d9cfa2ab6cf25f353aba77394}\label{position_8h_a1ac4529d9cfa2ab6cf25f353aba77394}} 
 \#define {\bfseries Bit\+Board}~uint64\+\_\+t
+\item 
+\mbox{\Hypertarget{position_8h_af4aa54817308f3542e1492484206f09b}\label{position_8h_af4aa54817308f3542e1492484206f09b}} 
+\#define {\bfseries opposite\+Color}(x)~x == Color\+::\+White ? Color\+::\+Black \+: Color\+::\+White
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
@@ -52,6 +56,12 @@ enum \mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395}{Move\+Type}
 \mbox{\hyperlink{position_8h_ab152e38addc9865a033ed991583c1395a7f63d695b956ec4502cba9b7c3c7d28f}{Promotion}}
  \}
 \end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{position_8h_a69fca86e983668e5d3a8203baf37c7f5}\label{position_8h_a69fca86e983668e5d3a8203baf37c7f5}} 
+char {\bfseries piece\+Char} (\mbox{\hyperlink{position_8h_ade35c903123b92bed5cc7b84e6a1314e}{Piece}}, \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}})
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -66,7 +76,8 @@ File containing the definition of the \mbox{\hyperlink{classPosition}{Position}}
 \doxysubsubsection{\texorpdfstring{Square}{Square}}
 {\footnotesize\ttfamily typedef short \mbox{\hyperlink{position_8h_aea36cb320045b9a24ec74b798982e5fc}{Square}}}
 
-Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63. More formally, should a square correspond to the i-\/th rank (0 based, i.\+e., A is 0, B is 1, ..., H is 7) and on the j-\/th file (again 0-\/based), its corresponding number is $ 8i+j $ 
+Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63. More formally, should a square correspond to the i-\/th rank (0 based, i.\+e., A is 0, B is 1, ..., H is 7) and on the j-\/th file (again 0-\/based), its corresponding number is 8i+j ~\newline
+ 
 
 \doxysubsection{Enumeration Type Documentation}
 \mbox{\Hypertarget{position_8h_ab87bacfdad76e61b9412d7124be44c1c}\label{position_8h_ab87bacfdad76e61b9412d7124be44c1c}} 

@@ -1,0 +1,124 @@
+\hypertarget{classevaluation}{}\doxysection{evaluation Class Reference}
+\label{classevaluation}\index{evaluation@{evaluation}}
+
+
+{\ttfamily \#include $<$evaluation.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classevaluation_ae713be81e69f626caaaf6f5621937b0d}{evaluation}} ()
+\item 
+\mbox{\hyperlink{classevaluation_aaeb73d13197bdb74e839ebbff265a5ab}{evaluation}} (int, \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}})
+\item 
+\mbox{\hyperlink{classevaluation_a16fca6d2e37973e5d12533d2aa56f1f7}{evaluation}} (double)
+\item 
+bool \mbox{\hyperlink{classevaluation_ab3a1f6735eca4e2d0781cc67c3251c53}{operator$<$}} (const \mbox{\hyperlink{classevaluation}{evaluation}} \&)
+\item 
+void \mbox{\hyperlink{classevaluation_a836a3e1b03af298f77a84a3b8fc3ae8d}{next\+Move}} (\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}})
+\item 
+double \mbox{\hyperlink{classevaluation_ae7750a2c02f2e9f72550e180dccb7fce}{to\+Score}} ()
+\item 
+string \mbox{\hyperlink{classevaluation_a0469304a6e835fa4c298242faeb71965}{to\+String}} ()
+\item 
+bool \mbox{\hyperlink{classevaluation_a53f0bba38729601a55f385fa8de41bef}{end\+Of\+Game}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classevaluation}{evaluation}} \mbox{\hyperlink{classevaluation_ad117927873105184263c8a245a2b9c06}{minimum}} ()
+\item 
+static \mbox{\hyperlink{classevaluation}{evaluation}} \mbox{\hyperlink{classevaluation_a33ea850cf27ef73689b7f620ae4d55d4}{maximum}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The class used to describe the evaluation of a given chess position 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classevaluation_ae713be81e69f626caaaf6f5621937b0d}\label{classevaluation_ae713be81e69f626caaaf6f5621937b0d}} 
+\index{evaluation@{evaluation}!evaluation@{evaluation}}
+\index{evaluation@{evaluation}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{evaluation()}{evaluation()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily evaluation\+::evaluation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default constructor. It represents a forced draw. \mbox{\Hypertarget{classevaluation_aaeb73d13197bdb74e839ebbff265a5ab}\label{classevaluation_aaeb73d13197bdb74e839ebbff265a5ab}} 
+\index{evaluation@{evaluation}!evaluation@{evaluation}}
+\index{evaluation@{evaluation}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{evaluation()}{evaluation()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily evaluation\+::evaluation (\begin{DoxyParamCaption}\item[{int}]{mate\+\_\+in,  }\item[{\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}]{color }\end{DoxyParamCaption})}
+
+Constructor for mate evaluations. \mbox{\Hypertarget{classevaluation_a16fca6d2e37973e5d12533d2aa56f1f7}\label{classevaluation_a16fca6d2e37973e5d12533d2aa56f1f7}} 
+\index{evaluation@{evaluation}!evaluation@{evaluation}}
+\index{evaluation@{evaluation}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{evaluation()}{evaluation()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily evaluation\+::evaluation (\begin{DoxyParamCaption}\item[{double}]{score }\end{DoxyParamCaption})}
+
+Constructor which fills the score with the given value. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classevaluation_a53f0bba38729601a55f385fa8de41bef}\label{classevaluation_a53f0bba38729601a55f385fa8de41bef}} 
+\index{evaluation@{evaluation}!endOfGame@{endOfGame}}
+\index{endOfGame@{endOfGame}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{endOfGame()}{endOfGame()}}
+{\footnotesize\ttfamily bool evaluation\+::end\+Of\+Game (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function that returns whether the game is over or not
+
+\begin{DoxyReturn}{Returns}
+Whether the game is over or not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classevaluation_a33ea850cf27ef73689b7f620ae4d55d4}\label{classevaluation_a33ea850cf27ef73689b7f620ae4d55d4}} 
+\index{evaluation@{evaluation}!maximum@{maximum}}
+\index{maximum@{maximum}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{maximum()}{maximum()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classevaluation}{evaluation}} evaluation\+::maximum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The maximum possible evaluation \mbox{\Hypertarget{classevaluation_ad117927873105184263c8a245a2b9c06}\label{classevaluation_ad117927873105184263c8a245a2b9c06}} 
+\index{evaluation@{evaluation}!minimum@{minimum}}
+\index{minimum@{minimum}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{minimum()}{minimum()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classevaluation}{evaluation}} evaluation\+::minimum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The minimum possible evaluation \mbox{\Hypertarget{classevaluation_a836a3e1b03af298f77a84a3b8fc3ae8d}\label{classevaluation_a836a3e1b03af298f77a84a3b8fc3ae8d}} 
+\index{evaluation@{evaluation}!nextMove@{nextMove}}
+\index{nextMove@{nextMove}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{nextMove()}{nextMove()}}
+{\footnotesize\ttfamily void evaluation\+::next\+Move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}]{to\+Move }\end{DoxyParamCaption})}
+
+Function that updates the number of moves until mate by augmenting it by one. \mbox{\Hypertarget{classevaluation_ab3a1f6735eca4e2d0781cc67c3251c53}\label{classevaluation_ab3a1f6735eca4e2d0781cc67c3251c53}} 
+\index{evaluation@{evaluation}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily bool evaluation\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classevaluation}{evaluation}} \&}]{eval }\end{DoxyParamCaption})}
+
+Comparator between two evaluations.
+
+One evaluation X is smaller than another Y if it is better for black than Y. \mbox{\Hypertarget{classevaluation_ae7750a2c02f2e9f72550e180dccb7fce}\label{classevaluation_ae7750a2c02f2e9f72550e180dccb7fce}} 
+\index{evaluation@{evaluation}!toScore@{toScore}}
+\index{toScore@{toScore}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{toScore()}{toScore()}}
+{\footnotesize\ttfamily double evaluation\+::to\+Score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function that converts the evaluation to its score
+
+\begin{DoxyReturn}{Returns}
+The resulting score 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classevaluation_a0469304a6e835fa4c298242faeb71965}\label{classevaluation_a0469304a6e835fa4c298242faeb71965}} 
+\index{evaluation@{evaluation}!toString@{toString}}
+\index{toString@{toString}!evaluation@{evaluation}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily string evaluation\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function that converts the evaluation to a string
+
+\begin{DoxyReturn}{Returns}
+The resulting string 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{evaluation_8h}{evaluation.\+h}}\item 
+src/evaluation.\+cpp\end{DoxyCompactItemize}

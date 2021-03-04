@@ -1,3 +1,9 @@
+/**
+    \file evaluation.h
+
+    \brief File containing the definition of the Evaluation class, used to describe the evaluation of a given chess position.
+*/
+
 #ifndef EVALUATION_H
 #define EVALUATION_H
 
@@ -7,99 +13,71 @@
 
 using namespace std;
 
+/**
+    The class used to describe the evaluation of a given chess position
+*/
 class evaluation
 {
-	private:
-
-		Color color; //para que cor é o mate (i. e. quem é que ganha)
-		int mateIn;
-		bool draw;   //TODO: draw_in ?
-		double score;
-
 	public:
+        /** Default constructor. It represents a forced draw. */
+		evaluation();
 
-		evaluation()
-		{
-			draw = true;
-			mateIn = -1;
-			score = 0;
-		}
+		/** Constructor for mate evaluations. */
+		evaluation(int, Color);
 
-		evaluation(int mate_in, Color color)
-		{
-			this->color = color;
-			this->mateIn = mate_in;
-			draw = false;
-		}
+		/** Constructor which fills the score with the given value. */
+		evaluation(double);
 
-		evaluation(double score)
-		{
-			this->score = score;
-			mateIn = -1;
-			draw = false;
-		}
+        /** The minimum possible evaluation */
+		static evaluation minimum();
 
+		/** The maximum possible evaluation */
+		static evaluation maximum();
 
-		static evaluation minimum()
-		{
-			return evaluation(0, Color::Black);
-		}
+		/** Comparator between two evaluations.
 
-		static evaluation maximum()
-		{
-			return evaluation(0, Color::White);
-		}
+            One evaluation X  is smaller than another Y if it is better for black than Y.
+		 */
+		bool operator<(const evaluation&);
 
-		//x < y if y is better for white
-		bool operator<(const evaluation& eval)
-		{
-			if (mateIn >= 0 && color == Color::White)
-				return eval.mateIn >= 0 && eval.mateIn < mateIn && eval.color == Color::White;
+		/**
+            Function that updates the number of moves until mate by augmenting it by one.
+        */
+		void nextMove(Color);
 
-			if (mateIn >= 0 && color == Color::Black)
-				return eval.mateIn < 0 || eval.color == Color::White || eval.mateIn > mateIn;
+		/**
+            Function that converts the evaluation to its score
 
-			if (eval.mateIn >= 0)
-				return eval.color == Color::White;
+            \return         The resulting score
+        */
+		double toScore();
 
-			if (draw)
-				return eval.score > 0;	//TODO...
+		/**
+            Function that converts the evaluation to a string
 
-			return score < eval.score;
-		}
+            \return         The resulting string
+        */
+		string toString();
 
-		void nextMove(Color toMove)
-		{
-			if (mateIn >= 0 && toMove == color)
-				this->mateIn++;
-		}
+		/**
+            Function that returns whether the game is over or not
 
-		double toScore()
-		{
-			if (mateIn >= 0)
-				return color == Color::White ? numeric_limits<double>::infinity() : -numeric_limits<double>::infinity();
+            \return         Whether the game is over or not
+        */
+		bool endOfGame();
 
-			if (draw)
-				return 0;
+    private:
+        /** The color which will be delivering the mate (i.e. who wins) */
+		Color color;
 
-			return score;
-		}
+		/** How many moves until move*/
+		int mateIn;
 
-		string toString()
-		{
-			if (mateIn >= 0)
-				return "#" + to_string(color == Color::White ? mateIn : -mateIn);
+		/** Whether the position is a forced draw or not */
+		bool draw;   //TODO: draw_in ?
 
-			if (draw)
-				return "£";
-
-			return to_string(score);
-		}
-
-		bool endOfGame()
-		{
-			return mateIn == 0 || draw;
-		}
+		/** The score of the given position*/
+		double score;
 };
 
 

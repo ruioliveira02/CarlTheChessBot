@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['position_74',['Position',['../classPosition.html#a369a577425f8ba02e8750d04b6a088db',1,'Position::Position()'],['../classPosition.html#a63750e368482cc5ef45180d3672b1c55',1,'Position::Position(const Position &amp;)'],['../classPosition.html#a366a3bf077f6bc80f9ce53fc0370517b',1,'Position::Position(std::vector&lt; Square &gt;[6][2], BitBoard, BitBoard, Color, bool[2][2], short, short, short)']]]
+  ['nextmove_115',['nextMove',['../classevaluation.html#a836a3e1b03af298f77a84a3b8fc3ae8d',1,'evaluation']]]
 ];
