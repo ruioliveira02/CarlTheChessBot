@@ -21,14 +21,14 @@ pair<Move, evaluation> search(game game1)
 	//}
 	//while (system_clock::now() <= limit);
 
-	initial_depth = 6;
+	initial_depth = 4;
 	total_positions_analysed = 0;
 	pair<Move, evaluation> p = minimax(game1, initial_depth,
 		game1.position.ToMove == Color::White ? evaluation(1, Color::White) : evaluation(1, Color::Black));
 
 	if (DEBUG)
 		cout << "\nFINAL EVALUAITON: " << p.second.toString()
-			 << "\nTOTAL POSITIONS ANALYSED: " << total_positions_analysed 
+			 << "\nTOTAL POSITIONS ANALYSED: " << total_positions_analysed
 			 << "\nBEST MOVE: " << p.first.toString(game1.position.ToMove) << endl;
 
 	return p;

@@ -1,6 +1,7 @@
 #include "game.h"
 #include "movegeneration.h"
 #include "magicmoves.h"
+#include "evaluate.h"
 #include <algorithm>
 
 
@@ -225,16 +226,5 @@ void game::updateCastlingRights(Move move)
 
 evaluation game::evaluate()
 {
-    double res = material(Color::White) - material(Color::Black);
-
-    return evaluation(res);
-}
-
-
-double game::material(Color color)
-{
-    double res = position.PieceLocations[Piece::Pawn][color].size() + 3 * position.PieceLocations[Piece::Knight][color].size() + 3.25 * position.PieceLocations[Piece::Bishop][color].size()
-                + 5 * position.PieceLocations[Piece::Rook][color].size() + 9 * position.PieceLocations[Piece::Queen][color].size();
-
-    return res;
+   return evaluatePosition(position);
 }
