@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cstring>
 
 char pieceChar(Piece piece, Color color)
 {

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-#define DEBUG true
+#define DEBUG false
 
 int initial_depth = 10;
 long long total_positions_analysed = 0;
@@ -20,7 +20,7 @@ pair<Move, evaluation> search(game game1)
 	//}
 	//while (system_clock::now() <= limit);
 
-	initial_depth = 4;
+	initial_depth = 5;
 	total_positions_analysed = 0;
 	pair<Move, evaluation> p = minimax(game1, initial_depth,
 		game1.position.ToMove == Color::White ? evaluation(1, Color::White) : evaluation(1, Color::Black));

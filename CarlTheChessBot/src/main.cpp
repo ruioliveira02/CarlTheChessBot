@@ -117,7 +117,7 @@ Move readMove(game g)
 }
 
 
-int main2()
+int main()
 {
     game::initialize();
 
