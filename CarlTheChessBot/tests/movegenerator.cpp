@@ -90,12 +90,12 @@ void runMoveGenerationTests()
 
         auto answer = generateAllMoves(tests[i].first);
 
-        for(int j = 0; j < answer.size(); j++)
-            cout << answer[j].origin << " " << answer[j].destiny << endl;
+        /*for(int j = 0; j < answer.size(); j++)
+            cout << answer[j].origin << " " << answer[j].destiny << endl;*/
 
-        cout << answer.size() << endl;
+        cout << answer.second << endl;
 
-        if(answer.size() == tests[i].second)
+        if(answer.second == tests[i].second)
             cout << "Test passed" << endl;
         else
             cout << "Task failed successfully" << endl;
@@ -103,7 +103,7 @@ void runMoveGenerationTests()
 }
 
 
-int testMoveGeneration()
+int main()//testMoveGeneration()
 {
     setupTests();
 
