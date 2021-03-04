@@ -1,0 +1,135 @@
+\hypertarget{evaluate_8h}{}\doxysection{include/evaluate.h File Reference}
+\label{evaluate_8h}\index{include/evaluate.h@{include/evaluate.h}}
+
+
+File containing the functions used to evaluate any given position.  
+
+
+{\ttfamily \#include \char`\"{}position.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}evaluation.\+h\char`\"{}}\newline
+Include dependency graph for evaluate.\+h\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classevaluation}{evaluation}} \mbox{\hyperlink{evaluate_8h_af805a514a4c9ba46e465714748f52e3c}{evaluate\+Position}} (\mbox{\hyperlink{classPosition}{Position}})
+\item 
+double \mbox{\hyperlink{evaluate_8h_acb012999541f1ec78360f046e19687ef}{evaluate\+Side}} (\mbox{\hyperlink{classPosition}{Position}}, \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}})
+\item 
+double \mbox{\hyperlink{evaluate_8h_aef8ed134814e62ed466b8d34f32cf450}{material}} (\mbox{\hyperlink{classPosition}{Position}}, \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}})
+\item 
+double \mbox{\hyperlink{evaluate_8h_a8c61f56c22731c33ec4312e02991eab3}{piece\+Locations}} (\mbox{\hyperlink{classPosition}{Position}}, \mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const double \mbox{\hyperlink{evaluate_8h_ad452faceb61429f6f7aa9f0e584f7a62}{piece\+Values}} \mbox{[}6\mbox{]} = \{1.\+0, 3.\+0, 3.\+25, 5.\+0, 9.\+0, 0.\+0\}
+\item 
+const double \mbox{\hyperlink{evaluate_8h_a0b870071ff50df43d47b82ff24872546}{piece\+Squares\+Table}} \mbox{[}7\mbox{]}\mbox{[}64\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File containing the functions used to evaluate any given position. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{evaluate_8h_af805a514a4c9ba46e465714748f52e3c}\label{evaluate_8h_af805a514a4c9ba46e465714748f52e3c}} 
+\index{evaluate.h@{evaluate.h}!evaluatePosition@{evaluatePosition}}
+\index{evaluatePosition@{evaluatePosition}!evaluate.h@{evaluate.h}}
+\doxysubsubsection{\texorpdfstring{evaluatePosition()}{evaluatePosition()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classevaluation}{evaluation}} evaluate\+Position (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPosition}{Position}}}]{ }\end{DoxyParamCaption})}
+
+Function that evaluates a given position.
+
+Note that it is a static evaluation, meaning that checks, checkmates, stalemates, draws by repetition, .etc, are not evaluated by this function. Instead, this function assesses the material count and the position of the pieces to make its evaluation of the position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The given position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The evaluation of the position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{evaluate_8h_acb012999541f1ec78360f046e19687ef}\label{evaluate_8h_acb012999541f1ec78360f046e19687ef}} 
+\index{evaluate.h@{evaluate.h}!evaluateSide@{evaluateSide}}
+\index{evaluateSide@{evaluateSide}!evaluate.h@{evaluate.h}}
+\doxysubsubsection{\texorpdfstring{evaluateSide()}{evaluateSide()}}
+{\footnotesize\ttfamily double evaluate\+Side (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPosition}{Position}}}]{,  }\item[{\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}]{ }\end{DoxyParamCaption})}
+
+Function that evaluates one side (white or black) of a given position.
+
+The evaluation of a position corresponds to the evaluation of the white side minus the evaluation of the black side.
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The given position \\
+\hline
+{\em color} & The given color \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The vector containing the requested moves 
+\end{DoxyReturn}
+\mbox{\Hypertarget{evaluate_8h_aef8ed134814e62ed466b8d34f32cf450}\label{evaluate_8h_aef8ed134814e62ed466b8d34f32cf450}} 
+\index{evaluate.h@{evaluate.h}!material@{material}}
+\index{material@{material}!evaluate.h@{evaluate.h}}
+\doxysubsubsection{\texorpdfstring{material()}{material()}}
+{\footnotesize\ttfamily double material (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPosition}{Position}}}]{,  }\item[{\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}]{ }\end{DoxyParamCaption})}
+
+Function that evaluates the material situation for one of the sides.
+
+For example, if the given side has two pawns, a queen and two knights, the function returns 2$\ast$1 + 1$\ast$9 + 2$\ast$3 = 17 .
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The given position \\
+\hline
+{\em color} & The given color \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The vector containing the requested moves 
+\end{DoxyReturn}
+\mbox{\Hypertarget{evaluate_8h_a8c61f56c22731c33ec4312e02991eab3}\label{evaluate_8h_a8c61f56c22731c33ec4312e02991eab3}} 
+\index{evaluate.h@{evaluate.h}!pieceLocations@{pieceLocations}}
+\index{pieceLocations@{pieceLocations}!evaluate.h@{evaluate.h}}
+\doxysubsubsection{\texorpdfstring{pieceLocations()}{pieceLocations()}}
+{\footnotesize\ttfamily double piece\+Locations (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPosition}{Position}}}]{,  }\item[{\mbox{\hyperlink{position_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}]{ }\end{DoxyParamCaption})}
+
+Function that evaluates the location of the pieces for a given side of a position, based on the piece square tables below.
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The given position \\
+\hline
+{\em color} & The given color \\
+\hline
+{\em color} & The given color \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The vector containing the requested moves 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{evaluate_8h_a0b870071ff50df43d47b82ff24872546}\label{evaluate_8h_a0b870071ff50df43d47b82ff24872546}} 
+\index{evaluate.h@{evaluate.h}!pieceSquaresTable@{pieceSquaresTable}}
+\index{pieceSquaresTable@{pieceSquaresTable}!evaluate.h@{evaluate.h}}
+\doxysubsubsection{\texorpdfstring{pieceSquaresTable}{pieceSquaresTable}}
+{\footnotesize\ttfamily const double piece\+Squares\+Table\mbox{[}7\mbox{]}\mbox{[}64\mbox{]}}
+
+The piece square tables used to assess the position of the pieces on the chessboard.
+
+Taken from \mbox{\hyperlink{}{https\+://www.\+chessprogramming.\+org/\+Simplified\+\_\+\+Evaluation\+\_\+\+Function}}\mbox{\Hypertarget{evaluate_8h_ad452faceb61429f6f7aa9f0e584f7a62}\label{evaluate_8h_ad452faceb61429f6f7aa9f0e584f7a62}} 
+\index{evaluate.h@{evaluate.h}!pieceValues@{pieceValues}}
+\index{pieceValues@{pieceValues}!evaluate.h@{evaluate.h}}
+\doxysubsubsection{\texorpdfstring{pieceValues}{pieceValues}}
+{\footnotesize\ttfamily const double piece\+Values\mbox{[}6\mbox{]} = \{1.\+0, 3.\+0, 3.\+25, 5.\+0, 9.\+0, 0.\+0\}}
+
+The value (in pawns) of each piece in chess, in the order of the Piece enum.
+
+Note that bishops are worth 3.\+25 pawns, instead of 3. 

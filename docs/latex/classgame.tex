@@ -1,0 +1,110 @@
+\hypertarget{classgame}{}\doxysection{game Class Reference}
+\label{classgame}\index{game@{game}}
+
+
+{\ttfamily \#include $<$game.\+h$>$}
+
+
+
+Collaboration diagram for game\+:
+% FIG 0
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classgame}{game}} \mbox{\hyperlink{classgame_a5a0cf6381b19dfeb60d37b42d9b054e3}{make\+Move}} (\mbox{\hyperlink{structMove}{Move}})
+\item 
+bool \mbox{\hyperlink{classgame_aa1a2343fa197790634100780350033db}{exists}} (\mbox{\hyperlink{position_8h_ade35c903123b92bed5cc7b84e6a1314e}{Piece}})
+\item 
+bool \mbox{\hyperlink{classgame_acd637f740e173b5dd41c061fa9761ec9}{is\+Draw}} ()
+\item 
+\mbox{\hyperlink{classevaluation}{evaluation}} \mbox{\hyperlink{classgame_a72624ac14b20566d39cc487171c5dd8b}{evaluate}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classgame_a3140391458e0e2cefcacaca8bd50eb20}{initialize}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPosition}{Position}} \mbox{\hyperlink{classgame_ade643a625cb9c53208dd09862223ef25}{position}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to store a game, i.\+e., the current position and all the previous positions and often they occured. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classgame_a72624ac14b20566d39cc487171c5dd8b}\label{classgame_a72624ac14b20566d39cc487171c5dd8b}} 
+\index{game@{game}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!game@{game}}
+\doxysubsubsection{\texorpdfstring{evaluate()}{evaluate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classevaluation}{evaluation}} game\+::evaluate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function that evaluates the current position
+
+\begin{DoxyReturn}{Returns}
+The evaluation of the current position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classgame_aa1a2343fa197790634100780350033db}\label{classgame_aa1a2343fa197790634100780350033db}} 
+\index{game@{game}!exists@{exists}}
+\index{exists@{exists}!game@{game}}
+\doxysubsubsection{\texorpdfstring{exists()}{exists()}}
+{\footnotesize\ttfamily bool game\+::exists (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{position_8h_ade35c903123b92bed5cc7b84e6a1314e}{Piece}}}]{piece }\end{DoxyParamCaption})}
+
+Function that returns whether or not the given piece exists on the current position 
+\begin{DoxyParams}{Parameters}
+{\em piece} & The given piece \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The game with the move played 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classgame_a3140391458e0e2cefcacaca8bd50eb20}\label{classgame_a3140391458e0e2cefcacaca8bd50eb20}} 
+\index{game@{game}!initialize@{initialize}}
+\index{initialize@{initialize}!game@{game}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily void game\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Function that initializes all the bitboards and magic needed for move generation. \mbox{\Hypertarget{classgame_acd637f740e173b5dd41c061fa9761ec9}\label{classgame_acd637f740e173b5dd41c061fa9761ec9}} 
+\index{game@{game}!isDraw@{isDraw}}
+\index{isDraw@{isDraw}!game@{game}}
+\doxysubsubsection{\texorpdfstring{isDraw()}{isDraw()}}
+{\footnotesize\ttfamily bool game\+::is\+Draw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function that returns whether the game is a forced draw or not
+
+\begin{DoxyReturn}{Returns}
+Whether the game is a forced draw or not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classgame_a5a0cf6381b19dfeb60d37b42d9b054e3}\label{classgame_a5a0cf6381b19dfeb60d37b42d9b054e3}} 
+\index{game@{game}!makeMove@{makeMove}}
+\index{makeMove@{makeMove}!game@{game}}
+\doxysubsubsection{\texorpdfstring{makeMove()}{makeMove()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classgame}{game}} game\+::make\+Move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMove}{Move}}}]{move }\end{DoxyParamCaption})}
+
+Function that returns the game which results from making the given move
+
+
+\begin{DoxyParams}{Parameters}
+{\em move} & The given move \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The game with the move played 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classgame_ade643a625cb9c53208dd09862223ef25}\label{classgame_ade643a625cb9c53208dd09862223ef25}} 
+\index{game@{game}!position@{position}}
+\index{position@{position}!game@{game}}
+\doxysubsubsection{\texorpdfstring{position}{position}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classPosition}{Position}} game\+::position}
+
+The current position 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{game_8h}{game.\+h}}\item 
+src/game.\+cpp\end{DoxyCompactItemize}

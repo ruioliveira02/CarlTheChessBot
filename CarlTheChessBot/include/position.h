@@ -19,7 +19,7 @@
 
 typedef short Square; /*!< Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63.
                         More formally, should a square correspond to the i-th rank (0 based, i.e., A is 0, B is 1, ..., H is 7) and on the j-th file (again 0-based),
-                        its corresponding number is \f$ 8i+j \f$ */
+                        its corresponding number is 8i+j  */
 
 
 /**

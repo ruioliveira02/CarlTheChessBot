@@ -1,7 +1,7 @@
 /**
     \file movegeneration.h
 
-    \brief File containing the definition of the  functions used to generate all the pseudo legals moves in a given chess position, as well as the functions to evaluate checks.
+    \brief File containing the  functions used to generate all the pseudo legals moves in a given chess position, as well as the functions to evaluate checks.
 
     Generating pseudo legal moves means that all the moves generated follow all the rules of chess, except for pins, meaning that a move which puts its own king in check can
     and will also be generated. Those cases are truncated by the search algorithm.
@@ -13,8 +13,6 @@
 
 
 #include "evaluation.h"
-
-bool hasLegalMoves(Position);
 
 /**
     Function that generates all the pseudo legal (not worrying about pins on the king or necessarily evading checks) moves in a position.
