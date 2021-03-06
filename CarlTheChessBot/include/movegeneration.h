@@ -30,7 +30,7 @@ std::pair<Move*, int> generateAllMoves(const Position&);
     \param color    The color of the pieces to generate moves for
     \return         The vector containing the requested moves
 */
-BitBoard* generateAllPieceMoves(const Position&,Piece,Color);
+int generateAllPieceMoves(const Position&,Piece,Color);
 
 /**
     Function that vector of pseudo legals move a piece on the given square can make, given a bitboard in which all the set bits correspond to squares said piece can move to.

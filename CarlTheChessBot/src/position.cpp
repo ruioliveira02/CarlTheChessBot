@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <cstring>
 
 char pieceChar(Piece piece, Color color)
@@ -23,6 +24,30 @@ char pieceChar(Piece piece, Color color)
         c += 'A' - 'a';
 
     return c;
+}
+
+bool readPiece(char c, std::pair<Piece, Color>& r)
+{
+    Color color;
+
+    if (c >= 'a')
+    {
+        c -= 'a' - 'A';
+        color = Color::Black;
+    }
+    else
+        color = Color::White;
+
+    switch (c)
+    {
+        case 'P':   r = std::make_pair(Piece::Pawn, color);      return true;
+        case 'N':   r = std::make_pair(Piece::Knight, color);    return true;
+        case 'B':   r = std::make_pair(Piece::Bishop, color);    return true;
+        case 'R':   r = std::make_pair(Piece::Rook, color);      return true;
+        case 'Q':   r = std::make_pair(Piece::Queen, color);     return true;
+        case 'K':   r = std::make_pair(Piece::King, color);      return true;
+        default:    return false;
+    }
 }
 
 std::string Move::toString(Color color)
@@ -50,15 +75,100 @@ Position::Position()
 }
 
 
-Position::Position(std::vector<Square> pieces [6][2],BitBoard white, BitBoard black ,Color color,bool castling[2][2], short enpassant,short halfMoves,short totalMoves)
+Position::Position(const char* fen)
+{
+    std::pair<Piece, Color> p;
+    int y = 7;
+    int x = 0;
+
+    for (int i = 0; i < 6; i++)
+        for (int j = 0; j < 2; j++)
+            PieceBitBoards[i][j] = 0ULL;
+
+    while (1)
+    {
+        if (readPiece(*fen, p))
+        {
+            PieceBitBoards[p.first][p.second] |= (1ULL << (8 * y + x));
+            x++;
+        }
+        else if ('1' <= *fen && *fen <= '8')
+            x += *fen - '0';
+        else //if (*fen == '/' || *fen == ' ')
+        {
+            y--;
+            x = 0;
+        }
+
+        fen++;
+
+        if (y < 0)
+            break;
+    }
+
+    ToMove = *fen == 'w' ? Color::White : Color::Black;
+    fen += 2;
+
+    if (*fen == 'K')
+    {
+        Castling[0][Color::White] = true;
+        fen++;
+    }
+
+    if (*fen == 'Q')
+    {
+        Castling[1][Color::White] = true;
+        fen++;
+    }
+
+    if (*fen == 'k')
+    {
+        Castling[0][Color::Black] = true;
+        fen++;
+    }
+
+    if (*fen == 'q')
+    {
+        Castling[1][Color::Black] = true;
+        fen++;
+    }
+
+    fen += *fen == '-' ? 2 : 1;
+
+    if (*fen == '-')
+    {
+        EnPassant = -1;
+        fen += 2;
+    }
+    else
+    {
+        EnPassant = (*(fen + 1) - '1') * 8 + (*fen - 'a');
+        fen += 3;
+    }
+
+    std::stringstream stream;
+    stream << fen;
+
+    stream >> HalfMoves;
+    stream >> TotalMoves;
+
+    WhiteOccupancy = 0ULL;
+    BlackOccupancy = 0ULL;
+
+    for (int i = 0; i < 6; i++)
+    {
+        WhiteOccupancy |= PieceBitBoards[i][Color::White];
+        BlackOccupancy |= PieceBitBoards[i][Color::Black];
+    }
+}
+
+
+Position::Position(std::vector<Square> pieces [6][2],Color color,bool castling[2][2], short enpassant,short halfMoves,short totalMoves)
 {
     EnPassant = enpassant;
     ToMove = color;
     HalfMoves = halfMoves;
     TotalMoves = totalMoves;
-
-    WhiteOccupancy = white;
-    BlackOccupancy = black;
 
     for(int i = 0; i < 2; i++)
         for(int j = 0; j < 2; j++)
@@ -66,18 +176,21 @@ Position::Position(std::vector<Square> pieces [6][2],BitBoard white, BitBoard bl
 
     for(int i = 0; i < 6; i++)
         for(int j = 0; j < 2; j++)
-            PieceLocations[i][j] = pieces[i][j];
-
-    for(int i = 0; i < 6; i++)
-        for(int j = 0; j < 2; j++)
             PieceBitBoards[i][j] = 0ULL;
 
-
-
     for(int i = 0; i < 6; i++)
         for(int j = 0; j < 2; j++)
-            for(int k = 0; k < PieceLocations[i][j].size(); k++)
-                PieceBitBoards[i][j] |= (1ULL << (PieceLocations[i][j][k]));
+            for(int k = 0; k < pieces[i][j].size(); k++)
+                PieceBitBoards[i][j] |= (1ULL << (pieces[i][j][k]));
+
+    WhiteOccupancy = 0ULL;
+    BlackOccupancy = 0ULL;
+
+    for (int i = 0; i < 6; i++)
+    {
+        WhiteOccupancy |= PieceBitBoards[i][Color::White];
+        BlackOccupancy |= PieceBitBoards[i][Color::Black];
+    }
 }
 
 Position::Position(const Position& pos)
@@ -94,9 +207,10 @@ Position::Position(const Position& pos)
         for(int j = 0; j < 2; j++)
             Castling[i][j] = pos.Castling[i][j];
 
-    for(int i = 0; i < 6; i++)
-        for(int j = 0; j < 2; j++)
-            PieceLocations[i][j] = pos.PieceLocations[i][j];
+    Castling[0][0] = pos.Castling[0][0];
+    Castling[0][1] = pos.Castling[0][1];
+    Castling[1][0] = pos.Castling[1][0];
+    Castling[1][1] = pos.Castling[1][1];
 
     for(int i = 0; i < 6; i++)
         for(int j = 0; j < 2; j++)

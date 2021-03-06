@@ -10,7 +10,7 @@ int initial_depth = 10;
 long long total_positions_analysed = 0;
 
 //retorna o melhor movimento e a avaliação do game passado à função
-pair<Move, evaluation> search(game game1)
+pair<Move, evaluation> search(const game& game1)
 {
 	//TODO: tudo
 
@@ -20,10 +20,9 @@ pair<Move, evaluation> search(game game1)
 	//}
 	//while (system_clock::now() <= limit);
 
-	initial_depth = 5;
+	initial_depth = 6;
 	total_positions_analysed = 0;
-	pair<Move, evaluation> p = minimax(game1, initial_depth,
-		game1.position.ToMove == Color::White ? evaluation(1, Color::White) : evaluation(1, Color::Black));
+	pair<Move, evaluation> p = minimax(game1, initial_depth, evaluation::minimum(), evaluation::maximum());
 
 	if (DEBUG)
 		cout << "\nFINAL EVALUAITON: " << p.second.toString()
@@ -36,7 +35,7 @@ pair<Move, evaluation> search(game game1)
 //recebe posições VÁLIDAS! comportamento indefinido para posições inválidas
 //o Move que retorna pode não ter sido atribuído! (se não houver jogadas possíveis)
 //nesse caso a evaluation é mate in 0 ou stalemate (evaluation.end_of_game() é true)
-pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
+pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, evaluation beta)
 {
 	bool maximize = game1.position.ToMove == Color::White;
 	Move best = Move();
@@ -60,7 +59,7 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 		cout << string(4 * (initial_depth - depth), ' ') << "FOUND " << size << " PSEUDOLEGAL MOVES\n\n";
 
 	bool empty = true;
-	evaluation minmax2 = maximize ? evaluation::minimum() : evaluation::maximum();
+	evaluation value = maximize ? evaluation::minimum() : evaluation::maximum();
 
 	for (int i = 0; i < size; i++)
 	{
@@ -78,7 +77,7 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 		if (DEBUG)
 			cout << string(4 * (initial_depth - depth), ' ') << "SEARCHING " << moves[i].toString(game1.position.ToMove) << "\n";
 
-		evaluation e = minimax(g, depth - 1, minmax2).second;
+		evaluation e = minimax(g, depth - 1, alpha, beta).second;
 
 		if (DEBUG)
 			cout << string(4 * (initial_depth - depth), ' ') << "EVALUATION: " << e.toString() << "\n\n";
@@ -86,16 +85,26 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 		e.nextMove(game1.position.ToMove);
 		empty = false;
 
-		//guaranteed best move (checkmate in 1)
-		if (maximize ? !(e < evaluation(1, Color::White)) : !(evaluation(1, Color::Black) < e))
+		//new best move found
+		if (maximize ? value < e : e < value)
 		{
-			auto ans = moves[i];
-			delete[] moves;
-			return make_pair(ans, e);
+			value = e;
+			best = moves[i];
+		}
+
+		if (maximize)
+		{
+			if (alpha < value)
+				alpha = value;
+		}
+		else
+		{
+			if (value < beta)
+				beta = value;
 		}
 
 		//alpha beta pruning
-		if (maximize ? !(e < minmax) : !(minmax < e))
+		if (!(alpha < beta))
 		{
 			if (DEBUG)
 				cout << string(4 * (initial_depth - depth), ' ') << "Alpha beta skip...\n";
@@ -105,11 +114,15 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 			return make_pair(ans, e);
 		}
 
-		//new best move found
-		if (maximize ? minmax2 < e : e < minmax2)
+		//guaranteed best move (checkmate in 1)
+		if (maximize ? !(e < evaluation(1, Color::White)) : !(evaluation(1, Color::Black) < e))
 		{
-			minmax2 = e;
-			best = moves[i];
+			if (DEBUG)
+				cout << string(4 * (initial_depth - depth), ' ') << "Mate in 1 found, skip...\n";
+
+			auto ans = moves[i];
+			delete[] moves;
+			return make_pair(ans, e);
 		}
 	}
 
@@ -119,5 +132,5 @@ pair<Move, evaluation> minimax(game game1, int depth, evaluation minmax)
 	if (empty && !inCheck(game1.position, game1.position.ToMove))
 		return make_pair(best, evaluation());
 
-	return make_pair(best, minmax2);
+	return make_pair(best, value);
 }

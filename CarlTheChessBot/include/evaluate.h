@@ -22,7 +22,7 @@
     \param position The given position
     \return         The evaluation of the position
 */
-evaluation evaluatePosition(Position);
+evaluation evaluatePosition(const Position&);
 
 
 /**
@@ -34,7 +34,7 @@ evaluation evaluatePosition(Position);
     \param color    The given color
     \return         The vector containing the requested moves
 */
-double evaluateSide(Position, Color);
+double evaluateSide(const Position&, Color);
 
 
 /**
@@ -46,7 +46,7 @@ double evaluateSide(Position, Color);
     \param color    The given color
     \return         The vector containing the requested moves
 */
-double material(Position, Color);
+double material(const Position&, Color);
 
 
 /**
@@ -57,7 +57,7 @@ double material(Position, Color);
     \param color    The given color
     \return         The vector containing the requested moves
 */
-double pieceLocations(Position, Color);
+double pieceLocations(const Position&, Color);
 
 
 

@@ -9,13 +9,17 @@
 #ifndef POSITION_H
 #define POSITION_H
 
-#include <vector>
-#include <cstdint>
-#include <string>
-
-#define BitBoard uint64_t
+#include <bits/stdc++.h>
 
 #define oppositeColor(x) x == Color::White ? Color::Black : Color::White
+
+#define countBits(x) __builtin_popcountll(x)
+
+#define rightmostBit(x) (ffsll(x) - 1)
+
+#define FORBIT(i,bitboard) for (BitBoard bb##i = bitboard, i = 0; (i = rightmostBit(bb##i)) != 0xffffffffffffffffULL; bb##i &= ~(1ULL << i))
+
+typedef uint64_t BitBoard;
 
 typedef short Square; /*!< Squares are labeled as numbers from 0 to 63. A1 (bottom left corner) is 0, A2 is 1, A3 is 2,..., and H8 (top right corner) is 63.
                         More formally, should a square correspond to the i-th rank (0 based, i.e., A is 0, B is 1, ..., H is 7) and on the j-th file (again 0-based),
@@ -45,6 +49,8 @@ enum Piece
 };
 
 char pieceChar(Piece, Color);
+
+bool readPiece(char, std::pair<Piece, Color>&);
 
 
 /**
@@ -105,6 +111,11 @@ class Position
         Position();
 
         /**
+            FEN constructor
+        */
+        Position(const char*);
+
+        /**
             Copy constructor
         */
         Position(const Position&);
@@ -121,7 +132,7 @@ class Position
             \param halfMoves      The number of half moves since the last pawn push or capture (to account to fifty move rule)
             \param totalMoves     The number of total moves in the game
         */
-        Position(std::vector<Square>[6][2],BitBoard,BitBoard,Color,bool[2][2],short,short,short);
+        Position(std::vector<Square>[6][2],Color,bool[2][2],short,short,short);
 
         /**
             Virtual destructor
@@ -153,10 +164,11 @@ class Position
                     if(a.Castling[i][j] != Castling[i][j])
                         return false;
 
+            //TODO: comparar en passant?
 
             for(int i = 0; i < 6; i++)
                 for(int j = 0; j < 2; j++)
-                    if(a.PieceLocations[i][j] != PieceLocations[i][j])
+                    if(a.PieceBitBoards[i][j] != PieceBitBoards[i][j])
                         return false;
 
             return true;
@@ -164,13 +176,6 @@ class Position
 
 
     public:
-        /**
-            The location of the pieces on the board.
-
-            The first coordinate is the piece type (as in the Piece enum order); second one is the color, as per the Color enum
-        */
-        std::vector<Square> PieceLocations[6][2];
-
         /**
             The Bitboards with the occupancies of pieces divided by color and type.
 
@@ -196,7 +201,7 @@ class Position
             The castling rights in the position. Does not mean that castling is legal, but that no pieces have been moved such that
             castling would be forever illegal.
 
-            First coordinate is kingside/queenside, the second one is white/black
+            First coordinate is kingside/queenside (0 = kingside, 1 = queenside), the second one is white/black
         */
         bool Castling[2][2];
 

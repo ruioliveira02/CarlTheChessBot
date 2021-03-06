@@ -14,7 +14,7 @@ void game::initialize()
 
 
 
-game game::makeMove(Move move)
+game game::makeMove(Move move) const
 {
     game g(*this);
 
@@ -45,12 +45,12 @@ game game::makeMove(Move move)
 }
 
 
-bool game::exists(Piece piece)
+bool game::exists(Piece piece) const
 {
     return position.PieceBitBoards[piece][Color::White] != 0ULL || position.PieceBitBoards[piece][Color::Black] != 0ULL;
 }
 
-bool game::isDraw()
+bool game::isDraw() const
 {
 	//material insuficiente
     if (!exists(Piece::Queen) && !exists(Piece::Rook) && !exists(Piece::Pawn))
@@ -85,24 +85,28 @@ void game::updateBitBoards(Move move)
 
 void game::assessCapture(Move move)
 {
+    Color color = oppositeColor(position.ToMove);
+
     for(int i = 0; i < 6; i++)
     {
-        if(std::find(position.PieceLocations[i][oppositeColor(position.ToMove)].begin(), position.PieceLocations[i][oppositeColor(position.ToMove)].end(),move.destiny)
-            != position.PieceLocations[i][oppositeColor(position.ToMove)].end())
+        //there is a piece of type i in the destination of the move
+        if (move.destiny & position.PieceBitBoards[i][color])
         {
-            position.PieceLocations[i][oppositeColor(position.ToMove)].erase(std::remove(position.PieceLocations[i][oppositeColor(position.ToMove)].begin(),
-                position.PieceLocations[i][oppositeColor(position.ToMove)].end(), move.destiny),position.PieceLocations[i][oppositeColor(position.ToMove)].end());
+            BitBoard eraseAux = ~(1ULL << move.destiny);
+            position.PieceBitBoards[i][color] &= eraseAux;
 
             if(position.ToMove == Color::White)
             {
-                position.BlackOccupancy = position.BlackOccupancy & ~(1ULL << move.destiny);
-                position.PieceBitBoards[i][Color::Black] = position.PieceBitBoards[i][Color::Black] & ~(1ULL << move.destiny);
+                position.BlackOccupancy &= eraseAux;
+                position.PieceBitBoards[i][Color::Black] &= eraseAux;
             }
             else
             {
-                position.WhiteOccupancy = position.WhiteOccupancy & ~(1ULL << move.destiny);
-                position.PieceBitBoards[i][Color::White] = position.PieceBitBoards[i][Color::White] & ~(1ULL << move.destiny);
+                position.WhiteOccupancy &= eraseAux;
+                position.PieceBitBoards[i][Color::White] &= eraseAux;
             }
+
+            break;
         }
     }
 }
@@ -111,11 +115,7 @@ void game::assessCapture(Move move)
 void game::promote(Move move)
 {
     position.PieceBitBoards[Piece::Pawn][position.ToMove] = position.PieceBitBoards[Piece::Pawn][position.ToMove] & ~(1ULL << move.origin);
-    position.PieceLocations[Piece::Pawn][position.ToMove].erase(std::remove(position.PieceLocations[Piece::Pawn][position.ToMove].begin(),
-            position.PieceLocations[Piece::Pawn][position.ToMove].end(), move.origin), position.PieceLocations[Piece::Pawn][position.ToMove].end());
-
     position.PieceBitBoards[move.piece][position.ToMove] |= (1ULL << move.destiny);
-    position.PieceLocations[move.piece][position.ToMove].push_back(move.destiny);
 }
 
 
@@ -124,7 +124,6 @@ void game::captureEnpassant(Move move)
 {
     position.PieceBitBoards[Piece::Pawn][position.ToMove] = position.PieceBitBoards[Piece::Pawn][position.ToMove] & ~(1ULL << move.origin);
     position.PieceBitBoards[Piece::Pawn][position.ToMove] |= (1ULL << move.destiny);
-    std::replace(position.PieceLocations[Piece::Pawn][position.ToMove].begin(), position.PieceLocations[Piece::Pawn][position.ToMove].end(), move.origin, move.destiny);
 
     int enpassant = (position.ToMove == Color::White) ? (move.destiny - 8) : (move.destiny + 8);
 
@@ -138,8 +137,6 @@ void game::captureEnpassant(Move move)
     }
 
     position.PieceBitBoards[Piece::Pawn][oppositeColor(position.ToMove)] = position.PieceBitBoards[Piece::Pawn][oppositeColor(position.ToMove)] & (1ULL << enpassant);
-    position.PieceLocations[Piece::Pawn][oppositeColor(position.ToMove)].erase(std::remove(position.PieceLocations[Piece::Pawn][oppositeColor(position.ToMove)].begin(),
-            position.PieceLocations[Piece::Pawn][oppositeColor(position.ToMove)].end(), enpassant), position.PieceLocations[Piece::Pawn][oppositeColor(position.ToMove)].end());
 }
 
 
@@ -181,17 +178,18 @@ void game::castle(Move move)
         position.BlackOccupancy = position.BlackOccupancy & ~(1ULL << rookOrigin);
     }
 
-    std::replace(position.PieceLocations[Piece::Rook][position.ToMove].begin(), position.PieceLocations[Piece::Rook][position.ToMove].end(), rookOrigin, rookDestiny);
     position.PieceBitBoards[Piece::Rook][position.ToMove] |= (1ULL << rookDestiny);
-    position.PieceBitBoards[Piece::Rook][position.ToMove] = position.PieceBitBoards[Piece::Rook][position.ToMove] & ~(1ULL << rookOrigin);
+    position.PieceBitBoards[Piece::Rook][position.ToMove] &= ~(1ULL << rookOrigin);
+
+    updatePieces(move);
 }
 
 
 void game::updatePieces(Move move)
 {
-    std::replace(position.PieceLocations[move.piece][position.ToMove].begin(), position.PieceLocations[move.piece][position.ToMove].end(), move.origin, move.destiny);
-        position.PieceBitBoards[move.piece][position.ToMove] |= (1ULL << move.destiny);
-    position.PieceBitBoards[move.piece][position.ToMove] = position.PieceBitBoards[move.piece][position.ToMove] & ~(1ULL << move.origin);
+    //fazer ceninha com XOR para ser mais rápido?
+    position.PieceBitBoards[move.piece][position.ToMove] |= (1ULL << move.destiny);
+    position.PieceBitBoards[move.piece][position.ToMove] &= ~(1ULL << move.origin);
 }
 
 
@@ -224,7 +222,7 @@ void game::updateCastlingRights(Move move)
 
 
 
-evaluation game::evaluate()
+evaluation game::evaluate() const
 {
    return evaluatePosition(position);
 }

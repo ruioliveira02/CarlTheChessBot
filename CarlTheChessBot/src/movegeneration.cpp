@@ -1,46 +1,53 @@
 #include "movegeneration.h"
 #include "magicmoves.h"
 
-#include <bits/stdc++.h>
+BitBoard knightBitBoard[64];
+BitBoard kingBitBoard[64];
 
-BitBoard knightMoves[64];
 BitBoard kingMoves[64];
+BitBoard queenMoves[64];
+BitBoard rookMoves[64];
+BitBoard bishopMoves[64];
+BitBoard knightMoves[64];
+BitBoard pawnMoves[64];
 
 std::pair<Move*, int> generateAllMoves(const Position& position)
 {
     Color color = position.ToMove;
     int moveCount = 0;
 
-    BitBoard* kingMoves = generateAllPieceMoves(position, Piece::King, color);
-    BitBoard* queenMoves = generateAllPieceMoves(position, Piece::Queen, color);
-    BitBoard* rookMoves = generateAllPieceMoves(position, Piece::Rook, color);
-    BitBoard* bishopMoves = generateAllPieceMoves(position, Piece::Bishop, color);
-    BitBoard* knightMoves = generateAllPieceMoves(position, Piece::Knight, color);
-    BitBoard* pawnMoves = generateAllPieceMoves(position, Piece::Pawn, color);
+    int kingMovesCount = generateAllPieceMoves(position, Piece::King, color);
+    int queenMovesCount = generateAllPieceMoves(position, Piece::Queen, color);
+    int rookMovesCount = generateAllPieceMoves(position, Piece::Rook, color);
+    int bishopMovesCount = generateAllPieceMoves(position, Piece::Bishop, color);
+    int knightMovesCount = generateAllPieceMoves(position, Piece::Knight, color);
+    int pawnMovesCount = generateAllPieceMoves(position, Piece::Pawn, color);
+
     BitBoard enPassant = generateEnPassant(position);
-    Move* castling = generateCastling(position, position.PieceLocations[Piece::King][color][0]);
+    Move* castling = generateCastling(position, rightmostBit(position.PieceBitBoards[Piece::King][color]));
 
-    moveCount += __builtin_popcountll(*kingMoves);
+    for (int i = 0; i < kingMovesCount; i++)
+        moveCount += countBits(kingMoves[0]);
 
-    for (int i = 0; i < 10 && queenMoves[i] != -1; i++)
-        moveCount += __builtin_popcountll(queenMoves[i]);
+    for (int i = 0; i < queenMovesCount; i++)
+        moveCount += countBits(queenMoves[i]);
 
-    for (int i = 0; i < 10 && rookMoves[i] != -1; i++)
-        moveCount += __builtin_popcountll(rookMoves[i]);
+    for (int i = 0; i < rookMovesCount; i++)
+        moveCount += countBits(rookMoves[i]);
 
-    for (int i = 0; i < 10 && bishopMoves[i] != -1; i++)
-        moveCount += __builtin_popcountll(bishopMoves[i]);
+    for (int i = 0; i < bishopMovesCount; i++)
+        moveCount += countBits(bishopMoves[i]);
 
-    for (int i = 0; i < 10 && knightMoves[i] != -1; i++)
-        moveCount += __builtin_popcountll(knightMoves[i]);
+    for (int i = 0; i < knightMovesCount; i++)
+        moveCount += countBits(knightMoves[i]);
 
-    for (int i = 0; i < 10 && pawnMoves[i] != -1; i++)
+    for (int i = 0; i < pawnMovesCount; i++)
     {
-        moveCount += __builtin_popcountll(pawnMoves[i] & 72057594037927680ULL);
-        moveCount += 4 * __builtin_popcountll(pawnMoves[i] & 18374686479671623935ULL);
+        moveCount += countBits(pawnMoves[i] & 72057594037927680ULL);
+        moveCount += 4 * countBits(pawnMoves[i] & 18374686479671623935ULL);
     }
 
-    moveCount += __builtin_popcountll(enPassant);
+    moveCount += countBits(enPassant);
 
     //castling
     for (int i = 0; i < 2; i++)
@@ -49,106 +56,108 @@ std::pair<Move*, int> generateAllMoves(const Position& position)
 
     Move* moves = new Move[moveCount];
     Move* it = moves;
-    int j;
+    int i = 0;
 
-    convertBitBoardToMoves(*kingMoves, position.PieceLocations[Piece::King][color][0], Piece::King, it);
-
-    for (int i = 0; i < position.PieceLocations[Piece::Queen][color].size()  /*&& queenMoves[i] != 0*/; i++)
-        convertBitBoardToMoves(queenMoves[i], position.PieceLocations[Piece::Queen][color][i], Piece::Queen, it);
-
-    for (int i = 0; i < position.PieceLocations[Piece::Rook][color].size()  /*&& rookMoves[i] != 0*/; i++)
-        convertBitBoardToMoves(rookMoves[i], position.PieceLocations[Piece::Rook][color][i], Piece::Rook, it);
-
-    for (int i = 0; i <  position.PieceLocations[Piece::Bishop][color].size() /*bishopMoves[i] != 0*/; i++)
-        convertBitBoardToMoves(bishopMoves[i], position.PieceLocations[Piece::Bishop][color][i], Piece::Bishop, it);
-
-    for (int i = 0; i < position.PieceLocations[Piece::Knight][color].size()  /*&& knightMoves[i] != 0*/; i++)
-        convertBitBoardToMoves(knightMoves[i], position.PieceLocations[Piece::Knight][color][i], Piece::Knight, it);
-
-    for (int i = 0; i < position.PieceLocations[Piece::Pawn][color].size() /*&& pawnMoves[i] != 0*/; i++)
+    FORBIT(j, position.PieceBitBoards[Piece::King][color])
     {
-        convertBitBoardToMoves(pawnMoves[i] & 72057594037927680ULL, position.PieceLocations[Piece::Pawn][color][i], Piece::Pawn, it);
-        BitBoard promotions = pawnMoves[i] & 18374686479671623935ULL;
+        convertBitBoardToMoves(kingMoves[i], j, Piece::King, it);
+        i++;
+    }
 
-        while ((j = ffsll(promotions) - 1) != -1)
+    i = 0;
+    FORBIT(j, position.PieceBitBoards[Piece::Queen][color])
+    {
+        convertBitBoardToMoves(queenMoves[i], j, Piece::Queen, it);
+        i++;
+    }
+
+    i = 0;
+    FORBIT(j, position.PieceBitBoards[Piece::Rook][color])
+    {
+        convertBitBoardToMoves(rookMoves[i], j, Piece::Rook, it);
+        i++;
+    }
+
+    i = 0;
+    FORBIT(j, position.PieceBitBoards[Piece::Bishop][color])
+    {
+        convertBitBoardToMoves(bishopMoves[i], j, Piece::Bishop, it);
+        i++;
+    }
+
+    i = 0;
+    FORBIT(j, position.PieceBitBoards[Piece::Knight][color])
+    {
+        convertBitBoardToMoves(knightMoves[i], j, Piece::Bishop, it);
+        i++;
+    }
+
+    i = 0;
+    FORBIT(j, position.PieceBitBoards[Piece::Pawn][color])
+    {
+        convertBitBoardToMoves(pawnMoves[i] & 72057594037927680ULL, j, Piece::Pawn, it);
+
+        FORBIT(k, pawnMoves[i] & 18374686479671623935ULL)
         {
-            *(it++) = Move(MoveType::Promotion, position.PieceLocations[Piece::Pawn][color][i], j, Piece::Queen);
-            *(it++) = Move(MoveType::Promotion, position.PieceLocations[Piece::Pawn][color][i], j, Piece::Rook);
-            *(it++) = Move(MoveType::Promotion, position.PieceLocations[Piece::Pawn][color][i], j, Piece::Knight);
-            *(it++) = Move(MoveType::Promotion, position.PieceLocations[Piece::Pawn][color][i], j, Piece::Bishop);
-            promotions &= ~(1ULL << j);
+            *(it++) = Move(MoveType::Promotion, j, k, Piece::Queen);
+            *(it++) = Move(MoveType::Promotion, j, k, Piece::Rook);
+            *(it++) = Move(MoveType::Promotion, j, k, Piece::Knight);
+            *(it++) = Move(MoveType::Promotion, j, k, Piece::Bishop);
         }
+
+        i++;
     }
 
-    //en passant
-    while ((j = ffsll(enPassant) - 1) != -1)
-    {
+    FORBIT(j, enPassant)
         *(it++) = Move(MoveType::EnPassant, j, position.EnPassant, Piece::Pawn);
-        enPassant &= ~(1ULL << j);
-    }
 
     for (int i = 0; i < 2; i++)
         if (castling[i].type == MoveType::Castling)
             *(it++) = castling[i];
 
-    delete[] kingMoves;
-    delete[] queenMoves;
-    delete[] rookMoves;
-    delete[] bishopMoves;
-    delete[] knightMoves;
-    delete[] pawnMoves;
-    delete[] castling;
-
-    return make_pair(moves, moveCount);
+    return std::make_pair(moves, moveCount);
 }
 
-BitBoard* generateAllPieceMoves(const Position& position, Piece piece, Color color)
+
+int generateAllPieceMoves(const Position& position, Piece piece, Color color)
 {
-    BitBoard* moves = new BitBoard[10];
+    int size = countBits(position.PieceBitBoards[piece][color]);
+    int i = 0;
 
-    for(int i = 0; i < 10; i++)
-        moves[i] = 0ULL;
-
-    for(int i = 0; i < position.PieceLocations[piece][color].size(); i++)
+    FORBIT(square, position.PieceBitBoards[piece][color])
     {
-        Square square = position.PieceLocations[piece][color][i];
-
         switch(piece)
         {
             case Piece::Pawn:
-                moves[i] = generatePawnMoves(position, square);
+                pawnMoves[i] = generatePawnMoves(position, square);
                 break;
             case Piece::Knight:
-                moves[i] = generateKnightMoves(position, square);
+                knightMoves[i] = generateKnightMoves(position, square);
                 break;
             case Piece::Bishop:
-                moves[i] = generateBishopMoves(position, square);
+                bishopMoves[i] = generateBishopMoves(position, square);
                 break;
             case Piece::Rook:
-                moves[i] = generateRookMoves(position, square);
+                rookMoves[i] = generateRookMoves(position, square);
                 break;
             case Piece::Queen:
-                moves[i] = generateQueenMoves(position, square);
+                queenMoves[i] = generateQueenMoves(position, square);
                 break;
             case Piece::King:
-                moves[i] = generateKingMoves(position, square);
+                kingMoves[i] = generateKingMoves(position, square);
                 break;
         }
+
+        i++;
     }
 
-    return moves;
+    return size;
 }
 
 void convertBitBoardToMoves(BitBoard bitboard, Square square, Piece piece, Move*& it)
 {
-    int i;
-
-    //find rightmost set bit
-    while ((i = ffsll(bitboard) - 1) != -1)
-    {
+    FORBIT(i, bitboard)
         *(it++) = Move(MoveType::Normal, square, i, piece);
-        bitboard &= ~(1ULL << i);
-    }
 }
 
 
@@ -160,7 +169,6 @@ BitBoard generateQueenMoves(const Position& position, Square square)
 BitBoard generateRookMoves(const Position& position, Square square)
 {
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
-
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
 
     return Rmagic(square,occupancy) & ~ownPieces;
@@ -169,7 +177,6 @@ BitBoard generateRookMoves(const Position& position, Square square)
 BitBoard generateBishopMoves(const Position& position, Square square)
 {
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
-
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
 
     return Bmagic(square,occupancy) & ~ownPieces;
@@ -207,7 +214,7 @@ BitBoard generateKnightMoves(const Position& position, Square square)
 BitBoard generateKingMoves(const Position& position, Square square)
 {
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
-    return kingMoves[square] & ~ownPieces;
+    return kingBitBoard[square] & ~ownPieces;
 }
 
 //retorna uma array de tamanho 2
@@ -265,27 +272,27 @@ void initializeKnightBitBoard()
 {
     for(int i = 0; i < 64; i++)
     {
-        knightMoves[i] = 0ULL;
+        knightBitBoard[i] = 0ULL;
 
         int rank = i / 8;
         int file = i % 8;
 
         if(rank + 2 <= 7 && file + 1 <= 7)
-            knightMoves[i] |= (1ULL << (i + 17));
+            knightBitBoard[i] |= (1ULL << (i + 17));
         if(rank + 2 <= 7 && file - 1 >= 0)
-            knightMoves[i] |= (1ULL << (i + 15));
+            knightBitBoard[i] |= (1ULL << (i + 15));
         if(rank - 2 >= 0 && file + 1 <= 7)
-            knightMoves[i] |= (1ULL << (i - 15));
+            knightBitBoard[i] |= (1ULL << (i - 15));
         if(rank - 2 >= 0 && file - 1 >= 0)
-            knightMoves[i] |= (1ULL << (i - 17));
+            knightBitBoard[i] |= (1ULL << (i - 17));
         if(rank + 1 <= 7 && file + 2 <= 7)
-            knightMoves[i] |= (1ULL << (i + 10));
+            knightBitBoard[i] |= (1ULL << (i + 10));
         if(rank + 1 <= 7 && file - 2 >= 0)
-            knightMoves[i] |= (1ULL << (i + 6));
+            knightBitBoard[i] |= (1ULL << (i + 6));
         if(rank - 1 >= 0 && file + 2 <= 7)
-            knightMoves[i] |= (1ULL << (i - 6));
+            knightBitBoard[i] |= (1ULL << (i - 6));
         if(rank - 1 >= 0 && file - 2 >= 0)
-            knightMoves[i] |= (1ULL << (i - 10));
+            knightBitBoard[i] |= (1ULL << (i - 10));
     }
 }
 
@@ -294,34 +301,34 @@ void initializeKingBitBoard()
 {
     for(int i = 0; i < 64; i++)
     {
-        kingMoves[i] = 0ULL;
+        kingBitBoard[i] = 0ULL;
 
         int rank = i / 8;
         int file = i % 8;
 
         if(rank + 1 <= 7 && file + 1 <= 7)
-            kingMoves[i] |= (1ULL << (i + 9));
+            kingBitBoard[i] |= (1ULL << (i + 9));
         if(rank + 1 <= 7)
-            kingMoves[i] |= (1ULL << (i + 8));
+            kingBitBoard[i] |= (1ULL << (i + 8));
         if(rank + 1 <= 7 && file - 1 >= 0)
-            kingMoves[i] |= (1ULL << (i + 7));
+            kingBitBoard[i] |= (1ULL << (i + 7));
         if(file - 1 >= 0)
-            kingMoves[i] |= (1ULL << (i - 1));
+            kingBitBoard[i] |= (1ULL << (i - 1));
         if(file + 1 <= 7)
-            kingMoves[i] |= (1ULL << (i + 1));
+            kingBitBoard[i] |= (1ULL << (i + 1));
         if(rank - 1 >= 0 && file - 1 >= 0)
-            kingMoves[i] |= (1ULL << (i - 9));
+            kingBitBoard[i] |= (1ULL << (i - 9));
         if(rank - 1 >= 0 && file + 1 <= 7)
-            kingMoves[i] |= (1ULL << (i - 7));
+            kingBitBoard[i] |= (1ULL << (i - 7));
         if(rank - 1 >= 0)
-            kingMoves[i] |= (1ULL << (i - 8));
+            kingBitBoard[i] |= (1ULL << (i - 8));
     }
 }
 
 
 bool inCheck(const Position& position, Color color)
 {
-    return inCheck(position, color, position.PieceLocations[Piece::King][color][0]);
+    return inCheck(position, color, rightmostBit(position.PieceBitBoards[Piece::King][color]));
 }
 
 bool inCheck(const Position& position, Color color, Square square)
@@ -331,7 +338,7 @@ bool inCheck(const Position& position, Color color, Square square)
 
     int opponentIndex = oppositeColor(color);
 
-    if((knightMoves[square] & ~ownPieces) & position.PieceBitBoards[Piece::Knight][opponentIndex])
+    if((knightBitBoard[square] & ~ownPieces) & position.PieceBitBoards[Piece::Knight][opponentIndex])
         return true;
 
      if((Rmagic(square, occupancy) & ~ownPieces) & (position.PieceBitBoards[Piece::Rook][opponentIndex] | position.PieceBitBoards[Piece::Queen][opponentIndex]))
@@ -347,7 +354,7 @@ bool inCheck(const Position& position, Color color, Square square)
     if(pawnChecks & position.PieceBitBoards[Piece::Pawn][oppositeColor(color)])
         return true;
 
-    if(kingMoves[square] & position.PieceBitBoards[Piece::King][oppositeColor(color)])
+    if(kingBitBoard[square] & position.PieceBitBoards[Piece::King][oppositeColor(color)])
         return true;
 
     return false;

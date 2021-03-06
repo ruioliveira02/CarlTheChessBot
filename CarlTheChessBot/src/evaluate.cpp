@@ -1,39 +1,41 @@
 #include "evaluate.h"
 
+#include <bits/stdc++.h>
 
-evaluation evaluatePosition(Position position)
+evaluation evaluatePosition(const Position& position)
 {
     return evaluation(evaluateSide(position, Color::White) - evaluateSide(position, Color::Black));
 }
 
 
-double evaluateSide(Position position, Color color)
+double evaluateSide(const Position& position, Color color)
 {
     return material(position, color) + pieceLocations(position, color);
 }
 
 
-double material(Position position, Color color)
+double material(const Position& position, Color color)
 {
-    double res = position.PieceLocations[Piece::Pawn][color].size() + 3 * position.PieceLocations[Piece::Knight][color].size() + 3.25 * position.PieceLocations[Piece::Bishop][color].size()
-                + 5 * position.PieceLocations[Piece::Rook][color].size() + 9 * position.PieceLocations[Piece::Queen][color].size();
+    double res = countBits(position.PieceBitBoards[Piece::Pawn][color]) + 3 * countBits(position.PieceBitBoards[Piece::Knight][color])
+        + 3.25 * countBits(position.PieceBitBoards[Piece::Bishop][color]) + 5 * countBits(position.PieceBitBoards[Piece::Rook][color])
+        + 9 * countBits(position.PieceBitBoards[Piece::Queen][color]);
 
     return res;
 }
 
 
-double pieceLocations(Position position, Color color)
+double pieceLocations(const Position& position, Color color)
 {
     double res = 0.0;
 
-    for(int i = 0; i < 6; i++)
+    for (int i = 0; i < 6; i++)
     {
-        for(int j = 0; j < position.PieceLocations[i][color].size(); j++)
+        FORBIT(pos, position.PieceBitBoards[i][color])
         {
             if(color == Color::White)
-                res += pieceSquaresTable[i][position.PieceLocations[i][color][j]];
+                res += pieceSquaresTable[i][pos];
             else
-                res += pieceSquaresTable[i][63 - position.PieceLocations[i][color][j]];
+                res += pieceSquaresTable[i][(7 - (pos / 8)) * 8 + (pos % 8)];
         }
     }
 

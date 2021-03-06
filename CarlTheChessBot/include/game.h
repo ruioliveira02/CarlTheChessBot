@@ -29,14 +29,14 @@ class game
             \param move     The given move
             \return         The game with the move played
         */
-		game makeMove(Move);
+		game makeMove(Move) const;
 
         /**
             Function that returns whether or not the given piece exists on the current position
             \param piece    The given piece
             \return         The game with the move played
         */
-		bool exists(Piece);
+		bool exists(Piece) const;
 
 
         /**
@@ -44,7 +44,7 @@ class game
 
             \return         Whether the game is a forced draw or not
         */
-		bool isDraw();
+		bool isDraw() const;
 
 
 		/**
@@ -52,7 +52,7 @@ class game
 
             \return         The evaluation of the current position
         */
-		evaluation evaluate();
+		evaluation evaluate() const;
 
 
 

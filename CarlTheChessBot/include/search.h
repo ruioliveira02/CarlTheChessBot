@@ -21,7 +21,7 @@
     \param game     The given game
     \return         A pair consisting of the best move and the evaluation of the position
 */
-std::pair<Move, evaluation> search(game);
+std::pair<Move, evaluation> search(const game&);
 
 
 /**
@@ -29,10 +29,11 @@ std::pair<Move, evaluation> search(game);
 
     \param game     The given game
     \param depth    The given search depth
-    \param minmax   Threshold for alpha beta pruning
+    \param alpha    Used for alpha beta pruning
+    \param beta     Used for alpha beta pruning
     \return         A pair consisting of the best move and the evaluation of the position
 */
-std::pair<Move, evaluation> minimax(game, int, evaluation);
+std::pair<Move, evaluation> minimax(const game&, int, evaluation, evaluation);
 
 
 #endif
