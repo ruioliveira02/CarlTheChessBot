@@ -109,6 +109,10 @@ Position::Position(const char* fen)
     ToMove = *fen == 'w' ? Color::White : Color::Black;
     fen += 2;
 
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            Castling[i][j] = false;
+
     if (*fen == 'K')
     {
         Castling[0][Color::White] = true;

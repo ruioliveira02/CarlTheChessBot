@@ -93,18 +93,19 @@ Move readMove(game g)
 }
 
 
-int main2()
+int main()
 {
     game::initialize();
+    cout << "Loaded!\n" << endl;
 
-    Position pos("r3k2r/1p1pppbp/8/pPp3pP/4Q3/2P1N1P1/P2PPP2/R3K2R w KQkq a6 0 1");
+    Position pos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1");
     game g = game();
     g.position = pos;
 
-    auto a = search(g);
+
     //game g2 = g.makeMove(a.first);
     //search(g2);
-    return 0;
+    //return 0;
 
     while (1)
     {

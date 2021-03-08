@@ -17,8 +17,8 @@
 
 //10M
 #define BUCKETS 10000000
-//100M
-#define STORED_POSITIONS 100000000
+//10M
+#define STORED_POSITIONS 10000000
 
 struct node
 {
@@ -38,11 +38,20 @@ class linked_list
 {
 
 private:
+    static int master_code;
+
+    int code;
     int length;
     node* first;
     node* last;
 
 public:
+
+    static void clearAll()
+    {
+        master_code++;
+    }
+
     linked_list()
     {
         length = 0;
@@ -52,6 +61,9 @@ public:
 
     node* get(const Position& p)
     {
+        if (code != master_code)
+            return nullptr;
+
         for (node* it = first; it != nullptr; it = it->next)
             if (std::get<0>(it->value) == p)
                 return it;
@@ -61,8 +73,11 @@ public:
 
     void add(node* n)
     {
-        if (length == 0)
+        if (length == 0 || code != master_code)
+        {
+            code = master_code;
             first = n;
+        }
         else
             last->next = n;
 
@@ -88,6 +103,12 @@ public:
     {
         hash_table = new linked_list[BUCKETS];
         stored_positions = new node[STORED_POSITIONS];
+        stored_count = 0;
+    }
+
+    void clear()
+    {
+        linked_list::clearAll();
         stored_count = 0;
     }
 

@@ -8,7 +8,7 @@
 using namespace std;
 using namespace std::chrono;
 
-#define DEBUG false
+#define DEBUG true
 #define SHOW_SEARCH_TREE false
 #define LOG if (SHOW_SEARCH_TREE) cout << string(4 * (initial_depth - depth), ' ')
 
@@ -23,6 +23,7 @@ long long draw_skips;
 long long alpha_beta_skips;
 long long mate_in_one_skips;
 
+int linked_list::master_code = 0;
 searcher searcher;
 
 
@@ -39,7 +40,9 @@ pair<Move, evaluation> search(const game& game1)
 
 	//dp.clear();
 
-	initial_depth = 7;
+	searcher.clear();
+
+	initial_depth = 6;
 	nodes_found = 1;
 	nodes_visited = 0;
 	nodes_calculated = 0;

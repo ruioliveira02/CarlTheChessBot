@@ -187,9 +187,17 @@ void game::castle(Move move)
 
 void game::updatePieces(Move move)
 {
-    //fazer ceninha com XOR para ser mais rápido?
-    position.PieceBitBoards[move.piece][position.ToMove] |= (1ULL << move.destiny);
+    Color color = oppositeColor(position.ToMove);
+    BitBoard dest_bitboard = (1ULL << move.destiny);
+
+    //inventar alguma coisa com XOR para ser mais rápido?
     position.PieceBitBoards[move.piece][position.ToMove] &= ~(1ULL << move.origin);
+    position.PieceBitBoards[move.piece][position.ToMove] |= dest_bitboard;
+
+    dest_bitboard = ~dest_bitboard;
+
+    for (int i = 0; i < 6; i++)
+        position.PieceBitBoards[i][color] &= dest_bitboard;
 }
 
 
