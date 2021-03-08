@@ -93,7 +93,7 @@ Move readMove(game g)
 }
 
 
-int main()
+int main2()
 {
     game::initialize();
 
@@ -101,7 +101,10 @@ int main()
     game g = game();
     g.position = pos;
 
-    cout << pos.ToMove << endl;
+    auto a = search(g);
+    //game g2 = g.makeMove(a.first);
+    //search(g2);
+    return 0;
 
     while (1)
     {

@@ -4,6 +4,7 @@
     \brief File containing the definition of the Evaluation class, used to describe the evaluation of a given chess position.
 */
 
+#pragma once
 #ifndef EVALUATION_H
 #define EVALUATION_H
 

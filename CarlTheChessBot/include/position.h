@@ -5,7 +5,7 @@
 */
 
 
-
+#pragma once
 #ifndef POSITION_H
 #define POSITION_H
 
@@ -142,7 +142,7 @@ class Position
         /**
             Comparator used to sort positions. They are sorted by the value of the WhiteOccupancy property.
         */
-        bool operator < (const Position& a)
+        bool operator < (const Position& a) const
         {
             return WhiteOccupancy < a.WhiteOccupancy;
         }
@@ -152,9 +152,10 @@ class Position
 
             Two positions are considered equal if the pieces are on the same squares, it is the same player to move, and the enpassant and castling rights are the same-
         */
-        bool operator == (const Position& a)
+        bool operator == (const Position& a) const
         {
-            bool first = WhiteOccupancy == a.WhiteOccupancy && a.BlackOccupancy == BlackOccupancy && a.ToMove == ToMove;
+            bool first = WhiteOccupancy == a.WhiteOccupancy && a.BlackOccupancy == BlackOccupancy
+                            && a.ToMove == ToMove && EnPassant == a.EnPassant;
 
             if(!first)
                 return false;
@@ -164,14 +165,35 @@ class Position
                     if(a.Castling[i][j] != Castling[i][j])
                         return false;
 
-            //TODO: comparar en passant?
-
             for(int i = 0; i < 6; i++)
                 for(int j = 0; j < 2; j++)
                     if(a.PieceBitBoards[i][j] != PieceBitBoards[i][j])
                         return false;
 
             return true;
+        }
+
+        unsigned long long hash() const
+        {
+            //ignoring HalfMoves and TotalMoves...
+            
+            unsigned long long ans = 0ULL;
+
+            for (int i = 0; i < 6; i++)
+                for (int j = 0; j < 2; j++)
+                    ans = (ans << 1) ^ PieceBitBoards[i][j];
+
+            for (int i = 0; i < 6; i++)
+                for (int j = 0; j < 2; j++)
+                    ans = (ans >> 2) ^ PieceBitBoards[i][j];
+
+            ans ^= Castling[0][0] ? 7506213756019786892ULL : 769871230598702352ULL;
+            ans ^= Castling[0][1] ? 6947560976017010655ULL : 7605723695871603876ULL;
+            ans ^= Castling[1][0] ? 569123876017860753ULL : 75910873607260375ULL;
+            ans ^= Castling[1][1] ? 720395873860297367ULL : 6091764108734018973ULL;
+            ans ^= EnPassant;
+
+            return ans;
         }
 
 

@@ -7,7 +7,7 @@
     and will also be generated. Those cases are truncated by the search algorithm.
 */
 
-
+#pragma once
 #ifndef MOVEGENERATION_H_
 #define MOVEGENERATION_H_
 

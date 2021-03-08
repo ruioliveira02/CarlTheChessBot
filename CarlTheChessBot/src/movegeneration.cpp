@@ -27,7 +27,7 @@ std::pair<Move*, int> generateAllMoves(const Position& position)
     Move* castling = generateCastling(position, rightmostBit(position.PieceBitBoards[Piece::King][color]));
 
     for (int i = 0; i < kingMovesCount; i++)
-        moveCount += countBits(kingMoves[0]);
+        moveCount += countBits(kingMoves[i]);
 
     for (int i = 0; i < queenMovesCount; i++)
         moveCount += countBits(queenMoves[i]);
@@ -88,7 +88,7 @@ std::pair<Move*, int> generateAllMoves(const Position& position)
     i = 0;
     FORBIT(j, position.PieceBitBoards[Piece::Knight][color])
     {
-        convertBitBoardToMoves(knightMoves[i], j, Piece::Bishop, it);
+        convertBitBoardToMoves(knightMoves[i], j, Piece::Knight, it);
         i++;
     }
 
@@ -121,7 +121,6 @@ std::pair<Move*, int> generateAllMoves(const Position& position)
 
 int generateAllPieceMoves(const Position& position, Piece piece, Color color)
 {
-    int size = countBits(position.PieceBitBoards[piece][color]);
     int i = 0;
 
     FORBIT(square, position.PieceBitBoards[piece][color])
@@ -151,7 +150,7 @@ int generateAllPieceMoves(const Position& position, Piece piece, Color color)
         i++;
     }
 
-    return size;
+    return i;
 }
 
 void convertBitBoardToMoves(BitBoard bitboard, Square square, Piece piece, Move*& it)
@@ -208,7 +207,7 @@ BitBoard generatePawnMoves(const Position& position, Square square)
 BitBoard generateKnightMoves(const Position& position, Square square)
 {
     BitBoard ownPieces = (position.ToMove == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
-    return knightMoves[square] & ~ownPieces;
+    return knightBitBoard[square] & ~ownPieces;
 }
 
 BitBoard generateKingMoves(const Position& position, Square square)

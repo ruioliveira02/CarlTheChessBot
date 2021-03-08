@@ -4,7 +4,7 @@
     \brief File containing the functions used to evaluate any given position.
 */
 
-
+#pragma once
 #ifndef EVALUATE_H_
 #define EVALUATE_H_
 
