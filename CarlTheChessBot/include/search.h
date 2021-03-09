@@ -18,7 +18,7 @@
 //10M
 #define BUCKETS 10000000
 //10M
-#define STORED_POSITIONS 10000000
+#define STORED_POSITIONS 5000000
 
 struct node
 {

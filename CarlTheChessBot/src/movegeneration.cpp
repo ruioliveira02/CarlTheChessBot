@@ -23,6 +23,11 @@ std::pair<Move*, int> generateAllMoves(const Position& position)
     int knightMovesCount = generateAllPieceMoves(position, Piece::Knight, color);
     int pawnMovesCount = generateAllPieceMoves(position, Piece::Pawn, color);
 
+    int x = rightmostBit(position.PieceBitBoards[Piece::King][color]);
+
+    if(x == -1)
+        return std::make_pair(nullptr, 0);
+
     BitBoard enPassant = generateEnPassant(position);
     Move* castling = generateCastling(position, rightmostBit(position.PieceBitBoards[Piece::King][color]));
 

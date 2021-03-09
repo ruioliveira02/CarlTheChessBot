@@ -90,7 +90,7 @@ void game::assessCapture(Move move)
     for(int i = 0; i < 6; i++)
     {
         //there is a piece of type i in the destination of the move
-        if (move.destiny & position.PieceBitBoards[i][color])
+        if ((1ULL << move.destiny) & position.PieceBitBoards[i][color])
         {
             BitBoard eraseAux = ~(1ULL << move.destiny);
             position.PieceBitBoards[i][color] &= eraseAux;
@@ -195,9 +195,6 @@ void game::updatePieces(Move move)
     position.PieceBitBoards[move.piece][position.ToMove] |= dest_bitboard;
 
     dest_bitboard = ~dest_bitboard;
-
-    for (int i = 0; i < 6; i++)
-        position.PieceBitBoards[i][color] &= dest_bitboard;
 }
 
 

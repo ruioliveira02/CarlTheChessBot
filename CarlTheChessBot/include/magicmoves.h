@@ -205,6 +205,8 @@ extern const unsigned int magicmoves_r_shift[64];
 	{
 		#ifndef PERFECT_MAGIC_HASH
 			#ifdef MINIMIZE_MAGIC
+			if(square > 63)
+                return 0;
 				return *(magicmoves_r_indices[square]+(((occupancy&magicmoves_r_mask[square])*magicmoves_r_magics[square])>>magicmoves_r_shift[square]));
 			#else
 				return magicmovesrdb[square][(((occupancy)&magicmoves_r_mask[square])*magicmoves_r_magics[square])>>MINIMAL_R_BITS_SHIFT(square)];

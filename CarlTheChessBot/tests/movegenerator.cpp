@@ -42,7 +42,7 @@ void runMoveGenerationTests()
 }
 
 
-int main()//testMoveGeneration()
+int testMoveGeneration()
 {
     setupTests();
 
