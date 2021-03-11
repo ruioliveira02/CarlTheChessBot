@@ -35,11 +35,14 @@ evaluation evaluation::maximum()
 
 bool evaluation::operator <(const evaluation& eval)
 {
-    if (mateIn >= 0 && color == Color::White)
-        return eval.mateIn >= 0 && eval.mateIn < mateIn && eval.color == Color::White;
+    if (mateIn >= 0)
+    {
+        if (color == Color::White)
+            return eval.mateIn >= 0 && eval.mateIn < mateIn && eval.color == Color::White;
 
-    if (mateIn >= 0 && color == Color::Black)
-        return eval.mateIn < 0 || eval.color == Color::White || eval.mateIn > mateIn;
+        //color = Black
+        return eval.mateIn < 0 || eval.mateIn > mateIn || eval.color == Color::White;
+    }
 
     if (eval.mateIn >= 0)
         return eval.color == Color::White;

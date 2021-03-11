@@ -105,7 +105,7 @@ BitBoard generateQueenMoves(const Position&,Square);
     \param square   The square the king is on
     \return         The vector containing the requested moves
 */
-Move* generateCastling(const Position&, Square);
+void generateCastling(const Position&, Move*, Square);
 
 /**
     Function that generates the pseudo legal enpassant capture the pawn on the given square can make (if there is no capture possible, returns the empty list).

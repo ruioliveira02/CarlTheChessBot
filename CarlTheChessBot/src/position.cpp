@@ -54,14 +54,13 @@ std::string Move::toString(Color color)
 {
     switch (type)
     {
-
         case MoveType::Normal:
         case MoveType::EnPassant:
         return std::string() + (char)(origin % 8 + 'a') + (char)(origin / 8 + '1') + pieceChar(piece, color)
                   + (char)(destiny % 8 + 'a') + (char)(destiny / 8 + '1');
 
         case MoveType::Castling:
-        return destiny % 8 == 6 ? "O-O" : "O-O-O";
+        return destiny % 8 == 6 ? "0-0" : "0-0-0";
 
         case MoveType::Promotion:
         return std::string() + (char)(origin % 8 + 'a') + (char)(origin / 8 + '1') + '=' + pieceChar(piece, color);

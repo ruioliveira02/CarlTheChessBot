@@ -8,10 +8,9 @@
 using namespace std;
 using namespace std::chrono;
 
-#define DEBUG true
+#define DEBUG false
 #define SHOW_SEARCH_TREE false
 #define LOG if (SHOW_SEARCH_TREE) cout << string(4 * (initial_depth - depth), ' ')
-
 
 int initial_depth;
 long long nodes_found;
@@ -126,10 +125,10 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 	auto search = bucket.get(game1.position);
 
 	//DP for the win
-	if (search != nullptr && get<1>(search->value) >= depth)
+	if (search != nullptr && search->depth >= depth)
 	{
 		dp_skips++;
-		return get<2>(search->value);
+		return search->ans;
 	}
 
 	//draw -> repetition, 50 moves, insufficient material, dead position... basically everything except stalemate
@@ -149,12 +148,15 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 			draw_skips++;
 		}
 
+		if (depth < 2)
+			return ans;
+
 		if (search == nullptr)
 			searcher.add(bucket, game1.position, depth, ans);
 		else
 		{
-			get<1>(search->value) = depth;
-			get<2>(search->value) = ans;
+			search->depth = depth;
+			search->ans = ans;
 		}
 
 		return ans;
@@ -234,12 +236,15 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 	auto ans = make_pair(best, value);
 
+	if (depth < 2)
+		return ans;
+
 	if (search == nullptr)
 		searcher.add(bucket, game1.position, depth, ans);
 	else
 	{
-		get<1>(search->value) = depth;
-		get<2>(search->value) = ans;
+		search->depth = depth;
+		search->ans = ans;
 	}
 
 	return ans;

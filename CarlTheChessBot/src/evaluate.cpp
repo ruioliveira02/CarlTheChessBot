@@ -32,7 +32,7 @@ double pieceLocations(const Position& position, Color color)
     {
         FORBIT(pos, position.PieceBitBoards[i][color])
         {
-            if(color == Color::White)
+            if(color == Color::Black)
                 res += pieceSquaresTable[i][pos];
             else
                 res += pieceSquaresTable[i][(7 - (pos / 8)) * 8 + (pos % 8)];

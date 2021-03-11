@@ -28,8 +28,9 @@ std::pair<Move*, int> generateAllMoves(const Position& position)
     if(x == -1)
         return std::make_pair(nullptr, 0);
 
+    Move castling[2];
+    generateCastling(position, castling, rightmostBit(position.PieceBitBoards[Piece::King][color]));
     BitBoard enPassant = generateEnPassant(position);
-    Move* castling = generateCastling(position, rightmostBit(position.PieceBitBoards[Piece::King][color]));
 
     for (int i = 0; i < kingMovesCount; i++)
         moveCount += countBits(kingMoves[i]);
@@ -221,16 +222,14 @@ BitBoard generateKingMoves(const Position& position, Square square)
     return kingBitBoard[square] & ~ownPieces;
 }
 
-//retorna uma array de tamanho 2
-Move* generateCastling(const Position& position, Square square)
+//answer tem tamanho 2
+void generateCastling(const Position& position, Move* answer, Square square)
 {
-    Move *answer = new Move[2];
     answer[0].type = MoveType::Normal;
     answer[1].type = MoveType::Normal;
-    Move *it = answer;
 
     if(inCheck(position, position.ToMove, square))
-        return answer;
+        return;
 
     bool kingside = (position.ToMove == Color::White) ? position.Castling[0][0] : position.Castling[0][1];
     bool queenside = (position.ToMove == Color::White) ? position.Castling[1][0] : position.Castling[1][1];
@@ -240,16 +239,14 @@ Move* generateCastling(const Position& position, Square square)
     if(kingside && !(occupancy & (1ULL << (square + 1))) && !(occupancy & (1ULL << (square + 2)))
         && !inCheck(position, position.ToMove, square + 1) && !inCheck(position, position.ToMove, square + 2))
     {
-        *(it++) = Move(MoveType::Castling, square, square + 2, Piece::King);
+        *(answer++) = Move(MoveType::Castling, square, square + 2, Piece::King);
     }
 
     if(queenside && !(occupancy & (1ULL << (square - 1))) && !(occupancy & (1ULL << (square - 2))) && !(occupancy & (1ULL << (square - 3)))
         && !inCheck(position, position.ToMove, square - 1) && !inCheck(position, position.ToMove, square - 2))
     {
-        *(it++) = Move(MoveType::Castling, square, square - 2, Piece::King);
+        *(answer++) = Move(MoveType::Castling, square, square - 2, Piece::King);
     }
-
-    return answer;
 }
 
 

@@ -15,21 +15,25 @@
 #include <tuple>
 #include <vector>
 
-//10M
-#define BUCKETS 10000000
-//10M
+//1M
+#define BUCKETS 1000000
+//5M
 #define STORED_POSITIONS 5000000
 
 struct node
 {
     node* next;
-    tuple<Position, int, pair<Move, evaluation>> value;
+    Position position;
+    int depth;
+    pair<Move, evaluation> ans;
 
     node() { }
 
     void set(const Position& position, int depth, const pair<Move, evaluation>& ans)
     {
-        value = make_tuple(position, depth, ans);
+        this->position = position;
+        this->depth = depth;
+        this->ans = ans;
         next = nullptr;
     }
 };
@@ -54,6 +58,7 @@ public:
 
     linked_list()
     {
+        code = 0;
         length = 0;
         first = nullptr;
         last = nullptr;
@@ -65,7 +70,7 @@ public:
             return nullptr;
 
         for (node* it = first; it != nullptr; it = it->next)
-            if (std::get<0>(it->value) == p)
+            if (it->position == p)
                 return it;
 
         return nullptr;
@@ -87,7 +92,7 @@ public:
 
     int size()
     {
-        return length;
+        return code != master_code ? 0 : length;
     }
 };
 

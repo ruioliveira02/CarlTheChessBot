@@ -11,7 +11,14 @@ void printPosition(const Position& position)
     for (int y = 7; y >= 0; y--)
     {
         for (int x = 0; x < 8; x++)
+            cout << ((x + y) % 2 == 0 ? "      " : "██████");
+
+        cout << '\n';
+
+        for (int x = 0; x < 8; x++)
         {
+            cout << ((x + y) % 2 == 0 ? "   " : "███");
+
             for (int p = 0; p < 6; p++)
             {
                 for (int c = 0; c < 2; c++)
@@ -24,10 +31,17 @@ void printPosition(const Position& position)
                 }
             }
 
-            cout << ' ';
+            cout << ((x + y) % 2 == 0 ? " " : "█");
             endstep:
+
+            cout << ((x + y) % 2 == 0 ? "  " : "██");
             continue;
         }
+
+        cout << '\n';
+
+        for (int x = 0; x < 8; x++)
+            cout << ((x + y) % 2 == 0 ? "      " : "██████");
 
         cout << '\n';
     }
@@ -43,12 +57,12 @@ Move readMove(game g)
     string s;
     cin >> s;
 
-    if (s == "O-O" || s == "O-O-O")
+    if (s == "0-0" || s == "0-0-0")
     {
         m.type = MoveType::Castling;
         m.piece = Piece::King;
         m.origin = g.position.ToMove == Color::White ? 4 : 59;
-        m.destiny = m.origin + (s == "O-O" ? 2 : (-2));
+        m.destiny = m.origin + (s == "0-0" ? 2 : (-2));
     }
     else if (s[2] == '=')
     {
@@ -98,11 +112,10 @@ int main()
     game::initialize();
     cout << "Loaded!\n" << endl;
 
-    Position pos("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1");
     game g = game();
-    g.position = pos;
+    g.position = Position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1");
 
-
+    //auto a = search(g);
     //game g2 = g.makeMove(a.first);
     //search(g2);
     //return 0;
