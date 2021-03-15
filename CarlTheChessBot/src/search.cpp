@@ -28,13 +28,14 @@ searcher searcher;
 
 
 //duration está em milisegundos. o tempo não é exato... pode demorar mais um bocadinho
-pair<Move, evaluation> search(const game& game1, long long duration)
+//retorna antes se completar a pesquisa de profundidade max_depth
+pair<Move, evaluation> search(const game& game1, long long duration, int max_depth)
 {
 	end_time = system_clock::now() + milliseconds(duration);
 	pair<Move, evaluation> ans;
 	searcher.clear();
 
-	for (initial_depth = 0; system_clock::now() < end_time; initial_depth++)
+	for (initial_depth = 0; system_clock::now() < end_time && initial_depth <= max_depth; initial_depth++)
 	{
 		nodes_found = 1;
 		nodes_visited = 0;
@@ -133,6 +134,7 @@ int compareBlack(int a, int b)
 	return evaluations_pointer[a] < evaluations_pointer[b];
 }
 
+
 //recebe posições VÁLIDAS! comportamento indefinido para posições inválidas
 //o Move que retorna pode não ter sido atribuído se depth == 0 ou se não houver jogadas possíveis
 //nesse caso a evaluation é mate in 0 ou draw (evaluation.end_of_game() é true)
@@ -219,6 +221,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 			moves[i] = moves[size - 1];
 			size--;
+			i--;
 
 			continue;
 		}
@@ -267,7 +270,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 	if (search != nullptr || searcher.stored_count < STORED_POSITIONS)
 	{
-		for (int j = 0; j < i; i++)
+		for (int j = 0; j < i; j++)
 			indices[j] = j;
 
 		evaluations_pointer = evaluations;
@@ -285,7 +288,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 			result[j] = moves[indices[j]];
 	}
 
-	auto ans = make_pair(result[0], value);
+	auto ans = make_pair(size > 0 ? result[0] : Move(), value);
 
 	if (search == nullptr)
 		searcher.add(bucket, game1.position, depth, result, size, ans);

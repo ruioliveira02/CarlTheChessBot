@@ -155,7 +155,7 @@ public:
     \param game     The given game
     \return         A pair consisting of the best move and the evaluation of the position
 */
-std::pair<Move, evaluation> search(const game&, long long duration);
+std::pair<Move, evaluation> search(const game&, long long duration, int max_depth);
 
 
 /**

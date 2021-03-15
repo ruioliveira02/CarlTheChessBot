@@ -109,6 +109,9 @@ Move readMove(game g)
 
 int main()
 {
+    //std::ofstream out("out.txt");
+    //std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+
     game::initialize();
     cout << "Loaded!\n" << endl;
 
@@ -134,7 +137,7 @@ int main()
         printPosition(g.position);
         cout << "\n";
 
-        auto res = search(g, 10000);
+        auto res = search(g, 10000, 2);
         cout << "Black: " << res.first.toString(Color::Black) << endl;
         g = g.makeMove(res.first);
     }
