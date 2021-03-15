@@ -196,6 +196,8 @@ class Position
             return ans;
         }
 
+        std::string toFEN() const;
+
 
     public:
         /**

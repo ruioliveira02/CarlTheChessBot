@@ -225,3 +225,82 @@ Position::~Position()
 {
     //dtor
 }
+
+std::string Position::toFEN() const
+{
+    std::string ans = "";
+
+    for (int y = 7; y >= 0; y--)
+    {
+        int skips = 0;
+
+        for (int x = 0; x < 8; x++)
+        {
+            for (int p = 0; p < 6; p++)
+            {
+                for (int c = 0; c < 2; c++)
+                {
+                    if (PieceBitBoards[p][c] & (1ULL << (8 * y + x)))
+                    {
+                        if (skips == 0)
+                            ans += pieceChar((Piece)p, (Color)c);
+                        else
+                            ans += std::to_string(skips) + pieceChar((Piece)p, (Color)c);
+
+                        skips = 0;
+                        goto next;
+                    }
+                }
+            }
+
+            skips++;
+            next:
+            continue;
+        }
+
+        if (y != 0)
+            ans += skips == 0 ? "/" : std::to_string(skips) + "/";
+        else if (skips != 0)
+            ans += std::to_string(skips);
+    }
+
+    ans += (ToMove == Color::White ? " w " : " b ");
+    bool any = false;
+
+    if (Castling[0][Color::White])
+    {
+        ans += 'K';
+        any = true;
+    }
+
+    if (Castling[1][Color::White])
+    {
+        ans += 'Q';
+        any = true;
+    }
+
+    if (Castling[0][Color::Black])
+    {
+        ans += 'k';
+        any = true;
+    }
+
+    if (Castling[1][Color::Black])
+    {
+        ans += 'q';
+        any = true;
+    }
+
+    if (!any)
+        ans += "- ";
+    else
+        ans += ' ';
+
+    if (EnPassant == -1)
+        ans += "- ";
+    else
+        ans += "" + ('a' + (EnPassant % 8)) + ('1' + (EnPassant / 8)) + ' ';
+
+    ans += std::to_string(HalfMoves) + ' ' + std::to_string(TotalMoves);
+    return ans;
+}

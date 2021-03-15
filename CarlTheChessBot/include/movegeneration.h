@@ -20,7 +20,7 @@
     \param position The given position
     \return         The vector containing the requested moves
 */
-std::pair<Move*, int> generateAllMoves(const Position&);
+int generateAllMoves(const Position&, Move*);
 
 /**
     Function that generates all the pseudo legal moves all the pieces of a certain color and type (e.g. white rooks, black pawns) can make.
@@ -40,7 +40,7 @@ int generateAllPieceMoves(const Position&,Piece,Color);
     \param piece    The type of piece
     \return         The vector containing the requested moves
 */
-void convertBitBoardToMoves(BitBoard, Square, Piece, Move*&);
+int convertBitBoardToMoves(BitBoard, Square, Piece, Move*&);
 
 
 /**

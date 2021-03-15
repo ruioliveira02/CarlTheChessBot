@@ -3,15 +3,16 @@
 
 #include <iostream>
 #include <chrono>
-#include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 using namespace std::chrono;
 
-#define DEBUG false
-#define SHOW_SEARCH_TREE false
+#define DEBUG true
+#define SHOW_SEARCH_TREE true
 #define LOG if (SHOW_SEARCH_TREE) cout << string(4 * (initial_depth - depth), ' ')
 
+time_point<system_clock> end_time;
 int initial_depth;
 long long nodes_found;
 long long nodes_visited;
@@ -26,71 +27,78 @@ int linked_list::master_code = 0;
 searcher searcher;
 
 
-//retorna o melhor movimento e a avaliação do game passado à função
-pair<Move, evaluation> search(const game& game1)
+//duration está em milisegundos. o tempo não é exato... pode demorar mais um bocadinho
+pair<Move, evaluation> search(const game& game1, long long duration)
 {
-	//TODO: tudo
-
-	//do
-	//{
-	//
-	//}
-	//while (system_clock::now() <= limit);
-
-	//dp.clear();
-
+	end_time = system_clock::now() + milliseconds(duration);
+	pair<Move, evaluation> ans;
 	searcher.clear();
 
-	initial_depth = 6;
-	nodes_found = 1;
-	nodes_visited = 0;
-	nodes_calculated = 0;
-
-	dp_skips = 0;
-	heuristic_skips = 0;
-	draw_skips = 0;
-	alpha_beta_skips = 0;
-	mate_in_one_skips = 0;
-
-	auto begin = system_clock::now();
-	pair<Move, evaluation> p = minimax(game1, initial_depth, evaluation::minimum(), evaluation::maximum());
-
-	if (DEBUG)
+	for (initial_depth = 0; system_clock::now() < end_time; initial_depth++)
 	{
-		cout << "\nFINAL EVALUAITON: " << p.second.toString()
-			 << "\nBEST MOVE: " << p.first.toString(game1.position.ToMove)
-			 << "\nTIME: " << (duration_cast<nanoseconds>(system_clock::now() - begin)).count() / 1000000000.0 << " seconds" << endl;
-	
-		int max = 0;
-		double average = 0;
-		srand(time(NULL)); //fixar seed para ver os mesmos buckets
+		nodes_found = 1;
+		nodes_visited = 0;
+		nodes_calculated = 0;
 
-		for (int i = 0; i < 1000; i++)
+		dp_skips = 0;
+		heuristic_skips = 0;
+		draw_skips = 0;
+		alpha_beta_skips = 0;
+		mate_in_one_skips = 0;
+
+		auto current_begin_time = system_clock::now();
+		auto aux = minimax(game1, initial_depth, evaluation::minimum(), evaluation::maximum());
+
+		if (system_clock::now() < end_time)
+			ans = aux;
+		else
 		{
-			int n = searcher.hash_table[rand() % BUCKETS].size();
-			//cout << n << endl;
-			if (n > max)
-				max = n;
-			average += n;
+			if (DEBUG)
+				cout << "\nTIME LIMIT REACHED. DISCARDING DEPTH " << initial_depth
+				 	 << "\nRETURN DELAY: " << ((system_clock::now() - end_time).count() / 1000000000.0) << " seconds\n\n" << endl;
+
+			return ans;
 		}
 
-		average /= 1000.0;
+		if (DEBUG)
+		{
+			cout << "\n\nDEPTH: " << initial_depth
+				 << "\nEVALUAITON: " << ans.second.toString()
+				 << "\nBEST MOVE: " << ans.first.toString(game1.position.ToMove)
+				 << "\nTIME: " << (duration_cast<nanoseconds>(system_clock::now() - current_begin_time)).count() / 1000000000.0 << " seconds" << endl;
+		
+			int max = 0;
+			double average = 0;
+			srand(time(NULL)); //fixar seed para ver os mesmos buckets
 
-		cout << "\nAVERAGE ENTRIES PER HASH TABLE BUCKET: " << average
-			 << "\nMAX ENTRIES PER HASH TABLE BUCKET: " << max
-			 << "\nTOTAL POSITIONS STORED: " << searcher.stored_count << endl;
+			for (int i = 0; i < 1000; i++)
+			{
+				int n = searcher.hash_table[rand() % BUCKETS].size();
+				//cout << n << endl;
+				if (n > max)
+					max = n;
+				average += n;
+			}
 
-		cout << "\nTOTAL NODES FOUND: " << nodes_found
-		 	 << "\nTOTAL NODES VISITED: " << nodes_visited
-			 << "\nTOTAL NODES CALCULATED: " << nodes_calculated
-			 << "\nDP SKIPS: " << dp_skips
-			 << "\nHEURISTIC SKIPS: " << heuristic_skips
-			 << "\nDRAW SKIPS: " << draw_skips
-			 << "\nALPHA BETA SKIPS: " << alpha_beta_skips
-			 << "\nMATE IN ONE SKIPS: " << mate_in_one_skips << endl;
+			average /= 1000;
+
+			cout << "\nAVERAGE ENTRIES PER HASH TABLE BUCKET: " << average
+				 << "\nMAX ENTRIES PER HASH TABLE BUCKET: " << max
+				 << "\nTOTAL POSITIONS STORED: " << searcher.stored_count << endl;
+
+			cout << "\nNODES FOUND: " << nodes_found
+			 	 << "\nNODES VISITED: " << nodes_visited
+				 << "\nNODES CALCULATED: " << nodes_calculated << endl;
+
+			cout << "\nDP SKIPS: " << dp_skips
+				 << "\nHEURISTIC SKIPS: " << heuristic_skips
+				 << "\nDRAW SKIPS: " << draw_skips
+				 << "\nALPHA BETA SKIPS: " << alpha_beta_skips
+				 << "\nMATE IN ONE SKIPS: " << mate_in_one_skips << endl;
+		}
 	}
 
-	return p;
+	return ans;
 }
 
 linked_list& searcher::get_bucket(const Position& p)
@@ -98,18 +106,31 @@ linked_list& searcher::get_bucket(const Position& p)
 	return hash_table[p.hash() % BUCKETS];
 }
 
-void searcher::add(linked_list& bucket, const Position& p, int depth, const pair<Move, evaluation>& ans)
+bool searcher::add(linked_list& bucket, const Position& p, int depth, Move* moves, int move_no, const pair<Move, evaluation>& ans)
 {
-    stored_positions[stored_count].set(p, depth, ans);
+	if (stored_count >= STORED_POSITIONS)
+		return false;
+
+    stored_positions[stored_count].set(p, depth, moves, move_no, ans);
     bucket.add(&stored_positions[stored_count]);
     stored_count++;
 
-    if (stored_count >= STORED_POSITIONS)
-    {
-        //TODO: reaproveitar memória?
-        cout << "ERROR: Insificient memory to store positions" << endl;
-        throw overflow_error("Insificient memory to store positions");
-    }
+    if (DEBUG && stored_count == STORED_POSITIONS)
+    	cout << "\n\nSTORED POSITIONS LIMIT REACHED\n\n\n";
+
+    return true;
+}
+
+evaluation* evaluations_pointer;
+
+int compareWhite(int a, int b)
+{
+	return evaluations_pointer[b] < evaluations_pointer[a];
+}
+
+int compareBlack(int a, int b)
+{
+	return evaluations_pointer[a] < evaluations_pointer[b];
 }
 
 //recebe posições VÁLIDAS! comportamento indefinido para posições inválidas
@@ -117,9 +138,11 @@ void searcher::add(linked_list& bucket, const Position& p, int depth, const pair
 //nesse caso a evaluation é mate in 0 ou draw (evaluation.end_of_game() é true)
 pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, evaluation beta)
 {
+	if (system_clock::now() >= end_time)
+		return make_pair(Move(), evaluation());
+
 	nodes_visited++;
 	bool maximize = game1.position.ToMove == Color::White;
-	Move best = Move();
 
 	auto& bucket = searcher.get_bucket(game1.position);
 	auto search = bucket.get(game1.position);
@@ -139,42 +162,53 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 		if (depth == 0)
 		{
-			ans = make_pair(best, game1.evaluate());
+			ans = make_pair(Move(), game1.evaluate());
 			heuristic_skips++;
 		}
 		else
 		{
-			ans = make_pair(best, evaluation());
+			ans = make_pair(Move(), evaluation());
 			draw_skips++;
-		}
-
-		if (depth < 2)
-			return ans;
-
-		if (search == nullptr)
-			searcher.add(bucket, game1.position, depth, ans);
-		else
-		{
-			search->depth = depth;
-			search->ans = ans;
 		}
 
 		return ans;
 	}
 
-	auto aux = generateAllMoves(game1.position);
-	Move* moves = aux.first;
-	int size = aux.second;
-	nodes_calculated++;
+	Move* result = nullptr;
+	Move moves[300];
+	int indices[300];
+	int size;
+	evaluation evaluations[300];
 
-	LOG << "FOUND " << size << " PSEUDOLEGAL MOVES\n\n";
-	nodes_found += size;
-
-	bool empty = true;
-	evaluation value = maximize ? evaluation::minimum() : evaluation::maximum();
-
-	for (int i = 0; i < size; i++)
+	if (search != nullptr)
 	{
+		result = search->moves;
+		size = search->move_no;
+
+		LOG << "RETRIEVED " << size << " PSEUDOLEGAL MOVES\n\n";
+	}
+	else
+	{
+		size = generateAllMoves(game1.position, moves);
+		nodes_calculated++;
+
+		LOG << "FOUND " << size << " PSEUDOLEGAL MOVES\n\n";
+	}
+
+
+	nodes_found += size;	
+	evaluation value = maximize ? evaluation::minimum() : evaluation::maximum();
+	bool empty = true;
+	int i;
+
+	for (i = 0; i < size; i++)
+	{
+		if (system_clock::now() >= end_time)
+			break;
+
+		if (result != nullptr)
+			moves[i] = result[i];
+
 		game g = game1.makeMove(moves[i]);
 
 		//the position in invalid
@@ -182,22 +216,23 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 		{
 			LOG << "Skipping illegal move " << moves[i].toString(game1.position.ToMove) << "\n\n";
 			nodes_found--;
+
+			moves[i] = moves[size - 1];
+			size--;
+
 			continue;
 		}
 
 		LOG << "SEARCHING " << moves[i].toString(game1.position.ToMove) << "\n";
-		evaluation e = minimax(g, depth - 1, alpha, beta).second;
-		LOG << "EVALUATION: " << e.toString() << "\n\n";
+		evaluations[i] = minimax(g, depth - 1, alpha, beta).second;
+		LOG << "EVALUATION: " << evaluations[i].toString() << "\n\n";
 
-		e.nextMove(game1.position.ToMove);
+		evaluations[i].nextMove(game1.position.ToMove);
 		empty = false;
 
 		//new best move found
-		if (maximize ? value < e : e < value)
-		{
-			value = e;
-			best = moves[i];
-		}
+		if (maximize ? value < evaluations[i] : evaluations[i] < value)
+			value = evaluations[i];
 
 		if (maximize)
 		{
@@ -208,7 +243,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 			beta = value;
 
 		//alpha beta pruning / guaranteed best move (checkmate in 1)
-		if (!(alpha < beta) || (maximize ? !(e < evaluation(1, Color::White)) : !(evaluation(1, Color::Black) < e)))
+		if (!(alpha < beta) || (maximize ? !(evaluations[i] < evaluation(1, Color::White)) : !(evaluation(1, Color::Black) < evaluations[i])))
 		{
 			if (!(alpha < beta))
 			{
@@ -221,30 +256,44 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 				mate_in_one_skips++;
 			}
 
-			auto ans = moves[i];
-
-			delete[] moves;
-			return make_pair(ans, e);
+			value = evaluations[i];
+			break;
 		}
 	}
-
-	delete[] moves;
 
 	//stalemate
 	if (empty && !inCheck(game1.position, game1.position.ToMove))
 		value = evaluation();
 
-	auto ans = make_pair(best, value);
+	if (search != nullptr || searcher.stored_count < STORED_POSITIONS)
+	{
+		for (int j = 0; j < i; i++)
+			indices[j] = j;
 
-	if (depth < 2)
-		return ans;
+		evaluations_pointer = evaluations;
+		sort(indices, indices + i, maximize ? compareWhite : compareBlack);
+		
+		if (result == nullptr)
+		{
+			result = new Move[size];
+
+			for (int j = i; j < size; j++)
+				result[j] = moves[j];
+		}
+
+		for (int j = 0; j < i; j++)
+			result[j] = moves[indices[j]];
+	}
+
+	auto ans = make_pair(result[0], value);
 
 	if (search == nullptr)
-		searcher.add(bucket, game1.position, depth, ans);
+		searcher.add(bucket, game1.position, depth, result, size, ans);
 	else
 	{
 		search->depth = depth;
 		search->ans = ans;
+		search->move_no = size;
 	}
 
 	return ans;

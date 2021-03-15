@@ -15,26 +15,46 @@
 #include <tuple>
 #include <vector>
 
-//1M
-#define BUCKETS 1000000
+//~1M (número primo para diminuir colisões... em teoria. n sei se faz diferença)
+#define BUCKETS 1000003
 //5M
 #define STORED_POSITIONS 5000000
 
 struct node
 {
     node* next;
+
     Position position;
     int depth;
+
+    Move* moves;
+    int move_no;
     pair<Move, evaluation> ans;
 
-    node() { }
+    node()
+    {
+        moves = nullptr;
+    }
 
-    void set(const Position& position, int depth, const pair<Move, evaluation>& ans)
+    ~node()
+    {
+        if (moves != nullptr)
+            delete[] moves;
+    }
+
+    void set(const Position& position, int depth, Move* moves, int move_no, const pair<Move, evaluation>& ans)
     {
         this->position = position;
         this->depth = depth;
+        this->moves = moves;
+        this->move_no = move_no;
         this->ans = ans;
-        next = nullptr;
+
+        if (next != nullptr)
+        {
+            delete[] next;
+            next = nullptr;
+        }
     }
 };
 
@@ -47,7 +67,6 @@ private:
     int code;
     int length;
     node* first;
-    node* last;
 
 public:
 
@@ -61,7 +80,6 @@ public:
         code = 0;
         length = 0;
         first = nullptr;
-        last = nullptr;
     }
 
     node* get(const Position& p)
@@ -78,16 +96,18 @@ public:
 
     void add(node* n)
     {
-        if (length == 0 || code != master_code)
+        if (code != master_code)
         {
             code = master_code;
-            first = n;
+            length = 1;
         }
         else
-            last->next = n;
+        {
+            n->next = first;
+            length++;
+        }
 
-        last = n;
-        length++;
+        first = n;
     }
 
     int size()
@@ -125,7 +145,8 @@ public:
 
     linked_list& get_bucket(const Position&);
 
-    void add(linked_list&, const Position&, int, const pair<Move, evaluation>&);
+    //retorna false se tiver acabado o espaço (já nao lança exceção)
+    bool add(linked_list&, const Position&, int, Move*, int, const pair<Move, evaluation>&);
 };
 
 /**
@@ -134,7 +155,7 @@ public:
     \param game     The given game
     \return         A pair consisting of the best move and the evaluation of the position
 */
-std::pair<Move, evaluation> search(const game&);
+std::pair<Move, evaluation> search(const game&, long long duration);
 
 
 /**
