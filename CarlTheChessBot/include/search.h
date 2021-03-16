@@ -29,7 +29,7 @@ struct node
 
     Move* moves;
     int move_no;
-    pair<Move, evaluation> ans;
+    std::pair<Move, evaluation> ans;
 
     node()
     {
@@ -50,10 +50,10 @@ struct node
         this->move_no = move_no;
         this->ans = ans;
 
-        if (next != nullptr)
+        if (moves != nullptr)
         {
-            delete[] next;
-            next = nullptr;
+            delete[] moves;
+            moves = nullptr;
         }
     }
 };
