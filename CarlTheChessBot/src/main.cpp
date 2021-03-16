@@ -3,6 +3,7 @@
 #include "movegeneration.h"
 #include "magicmoves.h"
 #include "search.h"
+#include "UCI.h"
 
 using namespace std;
 
@@ -108,7 +109,7 @@ Move readMove(game g)
 
 
 int main()
-{
+{/*
     //std::ofstream out("out.txt");
     //std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
@@ -140,7 +141,10 @@ int main()
         auto res = search(g, 10000, 2);
         cout << "Black: " << res.first.toString(Color::Black) << endl;
         g = g.makeMove(res.first);
-    }
+    }*/
+
+    UCI uci = UCI();
+    uci.run();
 
     return 0;
 }
