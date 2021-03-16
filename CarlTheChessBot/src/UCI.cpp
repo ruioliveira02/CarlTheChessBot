@@ -19,8 +19,8 @@ void UCI::run()
 {
     while(running)
     {
-        string input = "";
-        cin >> input;
+        char input[1000];
+        std::cin.getline(input, 1000);
 
         processCommand(input);
     }
@@ -35,58 +35,71 @@ void UCI::processCommand(string str)
 
     vector<string> splitStr = splitCommand(str);
 
-    switch(splitStr[0])
+    if(splitStr[0] == "uci")
     {
-        case "uci":
-            break;
-        case "debug":
-            //DEBUG = (splitStr[1] == 'on');
-            break;
-        case "isready":
-            cout << "readyok" << endl;
-            break;
-        case "setoption":
-            throw new exception("No options can be set");
-            break;
-        case "register":
-            throw exception("Registration not supported");
-            break;
-        case "ucinewgame":
-            break;
-        case "position":
-            string fen = (splitStr[1] == "startpos") ? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" : splitStr[1];
-            currentGame.position = position(fen);
-
-            if((int)splitStr.size() > 2)
-                processMoves(splitStr);
-
-            break;
-        case "go":
-            //TODO:: Go parameters
-            auto res = searchEngine.search(game);
-
-            cout << "best move " << res.first.toString() << endl;
-
-            break;
-        case "stop":
-            break;
-        case "ponderhit":
-            throw exception("Ponders not supported");
-            break;
-        case "quit":
-            running = false;
-            break;
-        default:
-            throw exception("Command does not follow UCI standard");
-            break;
+        ident();
     }
+    else if(splitStr[0] == "debug")
+    {
+        //DEBUG = (splitStr[1] == 'on');
+    }
+    else if(splitStr[0] == "isready")
+    {
+        cout << "readyok" << endl;
+    }
+    else if(splitStr[0] == "setoption")
+    {
+        throw new std::invalid_argument("No options can be set");
+    }
+    else if(splitStr[0] == "register")
+    {
+        throw std::invalid_argument("Registration not supported");
+    }
+    else if(splitStr[0] == "ucinewgame")
+    {
+    }
+    else if(splitStr[0] == "position")
+    {
+        string fen = (splitStr[1] == "startpos") ? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" : splitStr[1];
+        currentGame.position = Position(fen.c_str());
+
+        if((int)splitStr.size() > 2)
+            processMoves(splitStr);
+    }
+    else if(splitStr[0] == "go")
+    {
+        //TODO:: Go parameters
+        auto res = search(currentGame, 10000, 5);
+
+        cout << "bestmove " << res.first.toString() << endl;
+    }
+    else if(splitStr[0] == "stop")
+    {
+    }
+    else if(splitStr[0] == "ponderhit")
+    {
+        throw std::invalid_argument("Ponders not supported");
+    }
+    else if(splitStr[0] == "quit")
+    {
+        running = false;
+    }
+    else
+    {
+        throw std::invalid_argument("Command does not follow UCI standard");
+    }
+}
+
+void UCI::ident()
+{
+    std::cout << "id CarlTheChessBot Rui Oliveira Tiago Bacelar" << std::endl;
 }
 
 void UCI::processMoves(vector<string> moves)
 {
     for(int i = 3; i < (int)moves.size(); i++)
     {
-        currentGame.makeMove(moves[i]);
+        currentGame.makeMove(currentGame.position.moveFromString(moves[i]));
     }
 }
 
@@ -103,6 +116,10 @@ vector<string> UCI::splitCommand(string str)
         {
             res.push_back(cur);
             cur = "";
+        }
+        else
+        {
+            cur += str[i];
         }
     }
 

@@ -8,9 +8,11 @@
 using namespace std;
 using namespace std::chrono;
 
-#define DEBUG true
-#define SHOW_SEARCH_TREE true
 #define LOG if (SHOW_SEARCH_TREE) out << string(4 * (initial_depth - depth), ' ')
+
+bool DEBUG = true;
+bool SHOW_SEARCH_TREE = true;
+
 
 time_point<system_clock> end_time;
 int initial_depth;

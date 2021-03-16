@@ -13,7 +13,7 @@
 
 #define oppositeColor(x) x == Color::White ? Color::Black : Color::White
 
-#define countBits(x) __builtin_popcountll(x)
+#define countBits __builtin_popcountll
 
 #define rightmostBit(x) (ffsll(x) - 1)
 
@@ -93,9 +93,13 @@ struct Move
 
     Move()
     {
+
     }
 
     std::string toString(Color);
+    std::string toString();
+
+    std::string squareToString(Square);
 };
 
 
@@ -176,7 +180,7 @@ class Position
         unsigned long long hash() const
         {
             //ignoring HalfMoves and TotalMoves...
-            
+
             unsigned long long ans = 0ULL;
 
             for (int i = 0; i < 6; i++)
@@ -198,6 +202,12 @@ class Position
 
         std::string toFEN() const;
 
+        Move moveFromString(std::string);
+
+    private:
+        Square squareFromString(std::string);
+        Piece  pieceFromChar(char);
+        Piece  pieceOnSquare(Square);
 
     public:
         /**

@@ -21,11 +21,11 @@ void runMoveGenerationTests()
     initializeAllBitBoards();
     initmagicmoves();
 
-    for(int i = 0; i < tests.size(); i++)
+    /*for(int i = 0; i < tests.size(); i++)
     {
         cout << "Running test " << i << endl;
 
-        auto answer = generateAllMoves(tests[i].first);
+        answer = generateAllMoves(tests[i].first);
 
         for(int j = 0; j < answer.second; j++)
             cout << answer.first[j].origin << " " << answer.first[j].destiny << endl;
@@ -38,7 +38,7 @@ void runMoveGenerationTests()
             cout << "Task failed successfully" << endl;
 
         delete[] answer.first;
-    }
+    }*/
 }
 
 

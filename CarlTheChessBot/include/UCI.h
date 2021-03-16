@@ -21,6 +21,9 @@ class UCI
 
     private:
         void processCommand(string);
+
+        void ident();
+
         void processMoves(vector<string>);
         vector<string> splitCommand(string);
 

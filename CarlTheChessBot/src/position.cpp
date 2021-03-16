@@ -304,3 +304,112 @@ std::string Position::toFEN() const
     ans += std::to_string(HalfMoves) + ' ' + std::to_string(TotalMoves);
     return ans;
 }
+
+
+Move Position::moveFromString(std::string str)
+{
+    Square origin = squareFromString(str.substr(0, 2));
+    Square destiny = squareFromString(str.substr(2, 2));
+
+    //Promotion
+    if(str.size() == 5)
+    {
+        return Move(MoveType::Promotion, origin, destiny, pieceFromChar(str[4]));
+    }
+
+    Piece moved = pieceOnSquare(origin);
+
+    if(moved == Piece::King && abs(origin - destiny) == 2)
+    {
+        return Move(MoveType::Castling, origin, destiny, moved);
+    }
+    if(moved == Piece::Pawn)
+    {
+        if(ToMove == Color::White && origin / 8 == 4)
+        {
+            if(destiny == origin + 7 && (PieceBitBoards[Piece::Pawn][Color::Black] & (1ULL << (origin - 1))) &&
+                !(BlackOccupancy & (1ULL << (origin + 7))))
+            {
+                return Move(MoveType::EnPassant, origin, destiny, Piece::Pawn);
+            }
+            if(destiny == origin + 9 && (PieceBitBoards[Piece::Pawn][Color::Black] & (1ULL << (origin + 1))) &&
+                !(BlackOccupancy & (1ULL << (origin + 9))))
+            {
+                return Move(MoveType::EnPassant, origin, destiny, Piece::Pawn);
+            }
+        }
+        if(ToMove == Color::White && origin / 8 == 3)
+        {
+            if(destiny == origin - 7 && (PieceBitBoards[Piece::Pawn][Color::White] & (1ULL << (origin + 1))) &&
+                !(WhiteOccupancy & (1ULL << (origin - 7))))
+            {
+                return Move(MoveType::EnPassant, origin, destiny, Piece::Pawn);
+            }
+            if(destiny == origin - 9 && (PieceBitBoards[Piece::Pawn][Color::White] & (1ULL << (origin - 1))) &&
+                !(WhiteOccupancy & (1ULL << (origin - 9))))
+            {
+                return Move(MoveType::EnPassant, origin, destiny, Piece::Pawn);
+            }
+        }
+    }
+
+    return Move(MoveType::Normal, origin, destiny, moved);
+}
+
+
+Square Position::squareFromString(std::string str)
+{
+    return (str[0] - 'a') * 8 + (str[1] - '1');
+}
+
+
+
+Piece Position::pieceFromChar(char ch)
+{
+    switch(ch)
+    {
+        case 'q':
+            return Piece::Queen;
+        case 'k':
+            return Piece::King;
+        case 'r':
+            return Piece::Rook;
+        case 'b':
+            return Piece::Bishop;
+        case 'n':
+            return Piece::Knight;
+        default:
+            return Piece::Pawn;
+    }
+}
+
+
+
+
+std::string Move::toString()
+{
+    std::string suffix = "";
+    if(type==MoveType::Promotion)
+        suffix = std::string(1, pieceChar(piece, Color::Black));
+
+    return squareToString(origin) + squareToString(destiny) + suffix;
+}
+
+
+std::string Move::squareToString(Square s)
+{
+    int i = s / 8, j = s % 8;
+
+    return std::string(1,(char)(i + 'a')) + std::string(1,(char)(j + '1'));
+}
+
+
+Piece Position::pieceOnSquare(Square s)
+{
+    for(int i = 0; i < 6; i++)
+        for(int j = 0; j < 2; j++)
+            if(PieceBitBoards[i][j] & (1ULL << s))
+                return (Piece)i;
+
+    return Piece::King;
+}

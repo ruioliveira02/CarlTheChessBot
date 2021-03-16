@@ -20,6 +20,9 @@
 //5M
 #define STORED_POSITIONS 5000000
 
+extern bool DEBUG;
+extern bool SHOW_SEARCH_TREE;
+
 struct node
 {
     node* next;
@@ -29,7 +32,7 @@ struct node
 
     Move* moves;
     int move_no;
-    pair<Move, evaluation> ans;
+    std::pair<Move, evaluation> ans;
 
     node()
     {
