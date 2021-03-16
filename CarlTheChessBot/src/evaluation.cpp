@@ -2,25 +2,20 @@
 
 using namespace std;
 
-evaluation::evaluation()
-{
-    draw = true;
-    mateIn = -1;
-    score = 0;
-}
+evaluation::evaluation() { }
 
 evaluation::evaluation(int mate_in, Color color)
 {
     this->color = color;
     this->mateIn = mate_in;
-    draw = false;
+    isDraw = false;
 }
 
 evaluation::evaluation(double score)
 {
     this->score = score;
     mateIn = -1;
-    draw = false;
+    isDraw = false;
 }
 
 evaluation evaluation::minimum()
@@ -31,6 +26,15 @@ evaluation evaluation::minimum()
 evaluation evaluation::maximum()
 {
     return evaluation(0, Color::White);
+}
+
+evaluation evaluation::draw()
+{
+    evaluation e;
+    e.isDraw = true;
+    e.mateIn = -1;
+    e.score = 0;
+    return e;
 }
 
 bool evaluation::operator <(const evaluation& eval)
@@ -47,7 +51,7 @@ bool evaluation::operator <(const evaluation& eval)
     if (eval.mateIn >= 0)
         return eval.color == Color::White;
 
-    if (draw)
+    if (isDraw)
         return eval.score > 0;	//TODO...
 
     return score < eval.score;
@@ -66,7 +70,7 @@ double evaluation::toScore()
     if (mateIn >= 0)
         return color == Color::White ? numeric_limits<double>::infinity() : -numeric_limits<double>::infinity();
 
-    if (draw)
+    if (isDraw)
         return 0;
 
     return score;
@@ -78,7 +82,7 @@ string evaluation::toString()
     if (mateIn >= 0)
         return "#" + to_string(color == Color::White ? mateIn : -mateIn);
 
-    if (draw)
+    if (isDraw)
         return "£";
 
     return to_string(score);
@@ -87,5 +91,5 @@ string evaluation::toString()
 
 bool evaluation::endOfGame()
 {
-    return mateIn == 0 || draw;
+    return mateIn == 0 || isDraw;
 }

@@ -44,17 +44,15 @@ struct node
 
     void set(const Position& position, int depth, Move* moves, int move_no, const pair<Move, evaluation>& ans)
     {
+        if (this->moves != nullptr)
+            delete[] this->moves;
+
         this->position = position;
         this->depth = depth;
         this->moves = moves;
         this->move_no = move_no;
         this->ans = ans;
-
-        if (next != nullptr)
-        {
-            delete[] next;
-            next = nullptr;
-        }
+        this->next = nullptr;
     }
 };
 

@@ -2,12 +2,13 @@
 
 #include <bits/stdc++.h>
 
+
 evaluation evaluatePosition(const Position& position)
 {
-    return evaluation(evaluateSide(position, Color::White) - evaluateSide(position, Color::Black));
+    return pieceLocations(position, Color::White) - pieceLocations(position, Color::Black);
 }
 
-
+/*
 double evaluateSide(const Position& position, Color color)
 {
     return material(position, color) + pieceLocations(position, color);
@@ -22,7 +23,7 @@ double material(const Position& position, Color color)
 
     return res;
 }
-
+*/
 
 double pieceLocations(const Position& position, Color color)
 {

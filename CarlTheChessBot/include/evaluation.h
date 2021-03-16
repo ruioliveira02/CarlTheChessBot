@@ -20,7 +20,7 @@ using namespace std;
 class evaluation
 {
 	public:
-        /** Default constructor. It represents a forced draw. */
+        /** Empty constructor. Returns an unitialized variable. */
 		evaluation();
 
 		/** Constructor for mate evaluations. */
@@ -34,6 +34,9 @@ class evaluation
 
 		/** The maximum possible evaluation */
 		static evaluation maximum();
+
+		/** A forced draw */
+		static evaluation draw();
 
 		/** Comparator between two evaluations.
 
@@ -75,7 +78,7 @@ class evaluation
 		int mateIn;
 
 		/** Whether the position is a forced draw or not */
-		bool draw;   //TODO: draw_in ?
+		bool isDraw;   //TODO: draw_in ?
 
 		/** The score of the given position*/
 		double score;

@@ -10,7 +10,7 @@ using namespace std::chrono;
 
 #define DEBUG true
 #define SHOW_SEARCH_TREE true
-#define LOG if (SHOW_SEARCH_TREE) cout << string(4 * (initial_depth - depth), ' ')
+#define LOG if (SHOW_SEARCH_TREE) out << string(4 * (initial_depth - depth), ' ')
 
 time_point<system_clock> end_time;
 int initial_depth;
@@ -25,17 +25,21 @@ long long mate_in_one_skips;
 
 int linked_list::master_code = 0;
 searcher searcher;
-
+std::ofstream out;
 
 //duration está em milisegundos. o tempo não é exato... pode demorar mais um bocadinho
 //retorna antes se completar a pesquisa de profundidade max_depth
+//se max_depth < 0, nao tem limite. para max_depth = 0 retorna um valor nao inicializado
 pair<Move, evaluation> search(const game& game1, long long duration, int max_depth)
 {
 	end_time = system_clock::now() + milliseconds(duration);
 	pair<Move, evaluation> ans;
 	searcher.clear();
 
-	for (initial_depth = 0; system_clock::now() < end_time && initial_depth <= max_depth; initial_depth++)
+	if (DEBUG || SHOW_SEARCH_TREE)
+		out = std::ofstream("out.txt");
+
+	for (initial_depth = 1; system_clock::now() < end_time && (max_depth < 0 || initial_depth <= max_depth); initial_depth++)
 	{
 		nodes_found = 1;
 		nodes_visited = 0;
@@ -47,6 +51,9 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 		alpha_beta_skips = 0;
 		mate_in_one_skips = 0;
 
+		if (SHOW_SEARCH_TREE)
+			out << "\nDEPTH: " << initial_depth << endl;
+
 		auto current_begin_time = system_clock::now();
 		auto aux = minimax(game1, initial_depth, evaluation::minimum(), evaluation::maximum());
 
@@ -55,7 +62,7 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 		else
 		{
 			if (DEBUG)
-				cout << "\nTIME LIMIT REACHED. DISCARDING DEPTH " << initial_depth
+				out << "\nTIME LIMIT REACHED. DISCARDING DEPTH " << initial_depth
 				 	 << "\nRETURN DELAY: " << ((system_clock::now() - end_time).count() / 1000000000.0) << " seconds\n\n" << endl;
 
 			return ans;
@@ -63,8 +70,8 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 
 		if (DEBUG)
 		{
-			cout << "\n\nDEPTH: " << initial_depth
-				 << "\nEVALUAITON: " << ans.second.toString()
+			out << "\nDEPTH: " << initial_depth
+				 << "\nEVALUATION: " << ans.second.toString()
 				 << "\nBEST MOVE: " << ans.first.toString(game1.position.ToMove)
 				 << "\nTIME: " << (duration_cast<nanoseconds>(system_clock::now() - current_begin_time)).count() / 1000000000.0 << " seconds" << endl;
 		
@@ -75,7 +82,7 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 			for (int i = 0; i < 1000; i++)
 			{
 				int n = searcher.hash_table[rand() % BUCKETS].size();
-				//cout << n << endl;
+				//out << n << endl;
 				if (n > max)
 					max = n;
 				average += n;
@@ -83,21 +90,24 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 
 			average /= 1000;
 
-			cout << "\nAVERAGE ENTRIES PER HASH TABLE BUCKET: " << average
+			out << "\nAVERAGE ENTRIES PER HASH TABLE BUCKET: " << average
 				 << "\nMAX ENTRIES PER HASH TABLE BUCKET: " << max
 				 << "\nTOTAL POSITIONS STORED: " << searcher.stored_count << endl;
 
-			cout << "\nNODES FOUND: " << nodes_found
+			out << "\nNODES FOUND: " << nodes_found
 			 	 << "\nNODES VISITED: " << nodes_visited
 				 << "\nNODES CALCULATED: " << nodes_calculated << endl;
 
-			cout << "\nDP SKIPS: " << dp_skips
+			out << "\nDP SKIPS: " << dp_skips
 				 << "\nHEURISTIC SKIPS: " << heuristic_skips
 				 << "\nDRAW SKIPS: " << draw_skips
 				 << "\nALPHA BETA SKIPS: " << alpha_beta_skips
-				 << "\nMATE IN ONE SKIPS: " << mate_in_one_skips << endl;
+				 << "\nMATE IN ONE SKIPS: " << mate_in_one_skips << "\n" << endl;
 		}
 	}
+
+	if (DEBUG || SHOW_SEARCH_TREE)
+		out.close();
 
 	return ans;
 }
@@ -117,7 +127,7 @@ bool searcher::add(linked_list& bucket, const Position& p, int depth, Move* move
     stored_count++;
 
     if (DEBUG && stored_count == STORED_POSITIONS)
-    	cout << "\n\nSTORED POSITIONS LIMIT REACHED\n\n\n";
+    	out << "\n\nSTORED POSITIONS LIMIT REACHED\n\n\n";
 
     return true;
 }
@@ -169,22 +179,24 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 		}
 		else
 		{
-			ans = make_pair(Move(), evaluation());
+			ans = make_pair(Move(), evaluation::draw());
 			draw_skips++;
 		}
+
+		if (search == nullptr)
+			searcher.add(bucket, game1.position, depth, nullptr, 0, ans);
 
 		return ans;
 	}
 
-	Move* result = nullptr;
 	Move moves[300];
 	int indices[300];
 	int size;
 	evaluation evaluations[300];
+	Move* result = search == nullptr ? nullptr : search->moves;
 
-	if (search != nullptr)
+	if (result != nullptr)
 	{
-		result = search->moves;
 		size = search->move_no;
 
 		LOG << "RETRIEVED " << size << " PSEUDOLEGAL MOVES\n\n";
@@ -198,7 +210,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 	}
 
 
-	nodes_found += size;	
+	nodes_found += size;
 	evaluation value = maximize ? evaluation::minimum() : evaluation::maximum();
 	bool empty = true;
 	int i;
@@ -213,7 +225,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 		game g = game1.makeMove(moves[i]);
 
-		//the position in invalid
+		//the position is invalid
 		if (inCheck(g.position, game1.position.ToMove))
 		{
 			LOG << "Skipping illegal move " << moves[i].toString(game1.position.ToMove) << "\n\n";
@@ -228,7 +240,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 		LOG << "SEARCHING " << moves[i].toString(game1.position.ToMove) << "\n";
 		evaluations[i] = minimax(g, depth - 1, alpha, beta).second;
-		LOG << "EVALUATION: " << evaluations[i].toString() << "\n\n";
+		LOG << "EVALUATION: " << evaluations[i].toString() << " Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << "\n\n";
 
 		evaluations[i].nextMove(game1.position.ToMove);
 		empty = false;
@@ -250,7 +262,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 		{
 			if (!(alpha < beta))
 			{
-				LOG << "Alpha beta skip...\n";
+				LOG << "Alpha beta skip... Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << "\n";
 				alpha_beta_skips++;
 			}
 			else
@@ -259,14 +271,13 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 				mate_in_one_skips++;
 			}
 
-			value = evaluations[i];
 			break;
 		}
 	}
 
 	//stalemate
 	if (empty && !inCheck(game1.position, game1.position.ToMove))
-		value = evaluation();
+		value = evaluation::draw();
 
 	if (search != nullptr || searcher.stored_count < STORED_POSITIONS)
 	{
@@ -296,6 +307,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 	{
 		search->depth = depth;
 		search->ans = ans;
+		search->moves = result;
 		search->move_no = size;
 	}
 

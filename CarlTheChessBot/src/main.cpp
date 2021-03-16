@@ -116,9 +116,9 @@ int main()
     cout << "Loaded!\n" << endl;
 
     game g = game();
-    g.position = Position("8/4k3/6n1/8/8/P2P3P/2B1K3/8 w - - 0 1");
+    g.position = Position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-    //auto a = search(g);
+    //auto a = search(g, 10000, -1);
     //game g2 = g.makeMove(a.first);
     //search(g2);
     //return 0;
@@ -137,7 +137,7 @@ int main()
         printPosition(g.position);
         cout << "\n";
 
-        auto res = search(g, 10000, 2);
+        auto res = search(g, 10000, 5);
         cout << "Black: " << res.first.toString(Color::Black) << endl;
         g = g.makeMove(res.first);
     }
