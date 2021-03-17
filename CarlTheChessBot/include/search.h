@@ -13,6 +13,7 @@
 #include "movegeneration.h"
 #include "game.h"
 #include <tuple>
+#include <chrono>
 #include <vector>
 
 //~1M (número primo para diminuir colisões... em teoria. n sei se faz diferença)
@@ -20,8 +21,13 @@
 //5M
 #define STORED_POSITIONS 5000000
 
+using namespace std;
+using namespace std::chrono;
+
 extern bool DEBUG;
 extern bool SHOW_SEARCH_TREE;
+
+extern time_point<system_clock> end_time;
 
 struct node
 {

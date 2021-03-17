@@ -76,7 +76,7 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 				 << "\nEVALUATION: " << ans.second.toString()
 				 << "\nBEST MOVE: " << ans.first.toString(game1.position.ToMove)
 				 << "\nTIME: " << (duration_cast<nanoseconds>(system_clock::now() - current_begin_time)).count() / 1000000000.0 << " seconds" << endl;
-		
+
 			int max = 0;
 			double average = 0;
 			srand(time(NULL)); //fixar seed para ver os mesmos buckets
@@ -288,7 +288,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 		evaluations_pointer = evaluations;
 		sort(indices, indices + i, maximize ? compareWhite : compareBlack);
-		
+
 		if (result == nullptr)
 		{
 			result = new Move[size];
