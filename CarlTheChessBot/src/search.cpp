@@ -23,7 +23,6 @@ long long dp_skips;
 long long heuristic_skips;
 long long draw_skips;
 long long alpha_beta_skips;
-long long mate_in_one_skips;
 
 int linked_list::master_code = 0;
 searcher searcher;
@@ -51,7 +50,6 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 		heuristic_skips = 0;
 		draw_skips = 0;
 		alpha_beta_skips = 0;
-		mate_in_one_skips = 0;
 
 		if (SHOW_SEARCH_TREE)
 			out << "\nDEPTH: " << initial_depth << endl;
@@ -103,8 +101,7 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 			out << "\nDP SKIPS: " << dp_skips
 				 << "\nHEURISTIC SKIPS: " << heuristic_skips
 				 << "\nDRAW SKIPS: " << draw_skips
-				 << "\nALPHA BETA SKIPS: " << alpha_beta_skips
-				 << "\nMATE IN ONE SKIPS: " << mate_in_one_skips << "\n" << endl;
+				 << "\nALPHA BETA SKIPS: " << alpha_beta_skips << "\n" << endl;
 		}
 	}
 
@@ -215,6 +212,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 	nodes_found += size;
 	evaluation value = maximize ? evaluation::minimum() : evaluation::maximum();
 	bool empty = true;
+	bool skipped = false;
 	int i;
 
 	for (i = 0; i < size; i++)
@@ -233,10 +231,13 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 			LOG << "Skipping illegal move " << moves[i].toString(game1.position.ToMove) << "\n\n";
 			nodes_found--;
 
-			moves[i] = moves[size - 1];
-			size--;
-			i--;
+			if (result == nullptr)
+				moves[i] = moves[size - 1];
+			else
+				result[i] = result[size - 1];
 
+			i--;
+			size--;
 			continue;
 		}
 
@@ -259,20 +260,13 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 		else if (value < beta)
 			beta = value;
 
-		//alpha beta pruning / guaranteed best move (checkmate in 1)
-		if (!(alpha < beta) || (maximize ? !(evaluations[i] < evaluation(1, Color::White)) : !(evaluation(1, Color::Black) < evaluations[i])))
+		//alpha beta pruning
+		if (!(alpha < beta))
 		{
-			if (!(alpha < beta))
-			{
-				LOG << "Alpha beta skip... Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << "\n";
-				alpha_beta_skips++;
-			}
-			else
-			{
-				LOG << "Mate in 1 found, skip...\n";
-				mate_in_one_skips++;
-			}
+			LOG << "Alpha beta skip... Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << "\n";
+			alpha_beta_skips++;
 
+			skipped = true;
 			break;
 		}
 	}
@@ -288,7 +282,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 		evaluations_pointer = evaluations;
 		sort(indices, indices + i, maximize ? compareWhite : compareBlack);
-		
+
 		if (result == nullptr)
 		{
 			result = new Move[size];
@@ -301,7 +295,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 			result[j] = moves[indices[j]];
 	}
 
-	auto ans = make_pair(size > 0 ? result[0] : Move(), value);
+	auto ans = make_pair(size > 0 ? result[0] : Move(), skipped ? (maximize ? evaluation::maximum() : evaluation::minimum()) : value);
 
 	if (search == nullptr)
 		searcher.add(bucket, game1.position, depth, result, size, ans);
