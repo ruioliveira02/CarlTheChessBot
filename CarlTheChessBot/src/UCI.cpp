@@ -5,8 +5,6 @@ UCI::UCI()
     running = true;
     currentGame = game();
     game::initialize();
-    searchEngine = searcher();
-
 }
 
 UCI::~UCI()
@@ -19,13 +17,18 @@ void UCI::run()
 {
     while(running)
     {
-        char input[1000];
-        std::cin.getline(input, 1000);
-
+        std::string input;
+        std::getline(std::cin,input);
         processCommand(input);
     }
 }
 
+
+void UCI::runSearch(game g, long long duration, int depth)
+{
+    auto res = search(g, duration, depth);
+    cout << "bestmove " << res.first.toString() << endl;
+}
 
 
 void UCI::processCommand(string str)
@@ -41,7 +44,7 @@ void UCI::processCommand(string str)
     }
     else if(splitStr[0] == "debug")
     {
-        //DEBUG = (splitStr[1] == 'on');
+        DEBUG = (splitStr[1] == "on");
     }
     else if(splitStr[0] == "isready")
     {
@@ -60,7 +63,7 @@ void UCI::processCommand(string str)
     }
     else if(splitStr[0] == "position")
     {
-        string fen = (splitStr[1] == "startpos") ? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" : splitStr[1];
+        string fen = (splitStr[1] == "startpos") ? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" : joinString(splitStr, 2);
         currentGame.position = Position(fen.c_str());
 
         if((int)splitStr.size() > 2)
@@ -69,12 +72,16 @@ void UCI::processCommand(string str)
     else if(splitStr[0] == "go")
     {
         //TODO:: Go parameters
-        auto res = search(currentGame, 10000, 5);
 
-        cout << "bestmove " << res.first.toString() << endl;
+        long long duration = 1e18;
+        int maxDepth = 100;
+        processGoArguments(splitStr, 1, &duration, &maxDepth);
+
+        thread(UCI::runSearch,currentGame, duration, maxDepth).detach();
     }
     else if(splitStr[0] == "stop")
     {
+        end_time = std::chrono::system_clock::now();
     }
     else if(splitStr[0] == "ponderhit")
     {
@@ -103,6 +110,24 @@ void UCI::processMoves(vector<string> moves)
     }
 }
 
+void UCI::processGoArguments(vector<string> args, int index, long long* duration, int* maxDepth)
+{
+    if(index == args.size())
+        return;
+
+    if(args[index] == "movetime")
+    {
+        *duration = stoll(args[++index]);
+    }
+    else if(args[index] == "depth")
+    {
+        *maxDepth = stoi(args[++index]);
+    }
+
+    processGoArguments(args, ++index, duration, maxDepth);
+}
+
+
 vector<string> UCI::splitCommand(string str)
 {
     str += " "; // Adding a space at the end of the string to make sure all the words are included in the vector
@@ -122,6 +147,17 @@ vector<string> UCI::splitCommand(string str)
             cur += str[i];
         }
     }
+
+    return res;
+}
+
+
+string UCI::joinString(vector<string> list, int index)
+{
+    string res = "";
+
+    for(int i = index; i < list.size(); i++)
+        res += list[i];
 
     return res;
 }
