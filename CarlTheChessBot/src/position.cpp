@@ -206,10 +206,6 @@ Position::Position(const Position& pos)
     WhiteOccupancy = pos.WhiteOccupancy;
     BlackOccupancy = pos.BlackOccupancy;
 
-    for(int i = 0; i < 2; i++)
-        for(int j = 0; j < 2; j++)
-            Castling[i][j] = pos.Castling[i][j];
-
     Castling[0][0] = pos.Castling[0][0];
     Castling[0][1] = pos.Castling[0][1];
     Castling[1][0] = pos.Castling[1][0];
@@ -224,6 +220,72 @@ Position::Position(const Position& pos)
 Position::~Position()
 {
     //dtor
+}
+
+void Position::print() const
+{
+    for (int y = 7; y >= 0; y--)
+    {
+        for (int x = 0; x < 8; x++)
+            std::cout << ((x + y) % 2 == 0 ? "      " : "██████");
+
+        std::cout << '\n';
+
+        for (int x = 0; x < 8; x++)
+        {
+            std::cout << ((x + y) % 2 == 0 ? "   " : "███");
+
+            for (int p = 0; p < 6; p++)
+            {
+                for (int c = 0; c < 2; c++)
+                {
+                    if (PieceBitBoards[p][c] & (1ULL << (8 * y + x)))
+                    {
+                        std::cout << pieceChar((Piece)p, (Color)c);
+                        goto endstep;
+                    }
+                }
+            }
+
+            std::cout << ((x + y) % 2 == 0 ? " " : "█");
+            endstep:
+
+            std::cout << ((x + y) % 2 == 0 ? "  " : "██");
+            continue;
+        }
+
+        std::cout << '\n';
+
+        for (int x = 0; x < 8; x++)
+            std::cout << ((x + y) % 2 == 0 ? "      " : "██████");
+
+        std::cout << '\n';
+    }
+
+    std::cout.flush();
+}
+
+unsigned long long Position::hash() const
+{
+    //ignoring HalfMoves and TotalMoves...
+
+    unsigned long long ans = 0ULL;
+
+    for (int i = 0; i < 6; i++)
+        for (int j = 0; j < 2; j++)
+            ans = (ans << 1) ^ PieceBitBoards[i][j];
+
+    for (int i = 0; i < 6; i++)
+        for (int j = 0; j < 2; j++)
+            ans = (ans >> 2) ^ PieceBitBoards[i][j];
+
+    ans ^= Castling[0][0] ? 7506213756019786892ULL : 769871230598702352ULL;
+    ans ^= Castling[0][1] ? 6947560976017010655ULL : 7605723695871603876ULL;
+    ans ^= Castling[1][0] ? 569123876017860753ULL : 75910873607260375ULL;
+    ans ^= Castling[1][1] ? 720395873860297367ULL : 6091764108734018973ULL;
+    ans ^= EnPassant;
+
+    return ans;
 }
 
 std::string Position::toFEN() const
