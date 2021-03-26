@@ -462,7 +462,7 @@ std::string Move::squareToString(Square s)
 {
     int i = s / 8, j = s % 8;
 
-    return std::string(1,(char)(i + 'a')) + std::string(1,(char)(j + '1'));
+    return std::string(1,(char)(j + 'a')) + std::string(1,(char)(i + '1'));
 }
 
 
