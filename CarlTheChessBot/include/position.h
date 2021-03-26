@@ -177,28 +177,9 @@ class Position
             return true;
         }
 
-        unsigned long long hash() const
-        {
-            //ignoring HalfMoves and TotalMoves...
+        unsigned long long hash() const;
 
-            unsigned long long ans = 0ULL;
-
-            for (int i = 0; i < 6; i++)
-                for (int j = 0; j < 2; j++)
-                    ans = (ans << 1) ^ PieceBitBoards[i][j];
-
-            for (int i = 0; i < 6; i++)
-                for (int j = 0; j < 2; j++)
-                    ans = (ans >> 2) ^ PieceBitBoards[i][j];
-
-            ans ^= Castling[0][0] ? 7506213756019786892ULL : 769871230598702352ULL;
-            ans ^= Castling[0][1] ? 6947560976017010655ULL : 7605723695871603876ULL;
-            ans ^= Castling[1][0] ? 569123876017860753ULL : 75910873607260375ULL;
-            ans ^= Castling[1][1] ? 720395873860297367ULL : 6091764108734018973ULL;
-            ans ^= EnPassant;
-
-            return ans;
-        }
+        void print() const;
 
         std::string toFEN() const;
 

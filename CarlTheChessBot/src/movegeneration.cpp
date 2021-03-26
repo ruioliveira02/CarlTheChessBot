@@ -100,7 +100,7 @@ int generateAllMoves(const Position& position, Move* it)
 }
 
 
-int generateAllPieceMoves(const Position& position, Piece piece, Color color)
+void generateAllPieceMoves(const Position& position, Piece piece, Color color)
 {
     int i = 0;
 
@@ -130,8 +130,6 @@ int generateAllPieceMoves(const Position& position, Piece piece, Color color)
 
         i++;
     }
-
-    return i;
 }
 
 int convertBitBoardToMoves(BitBoard bitboard, Square square, Piece piece, Move*& it)
@@ -140,7 +138,11 @@ int convertBitBoardToMoves(BitBoard bitboard, Square square, Piece piece, Move*&
 
     FORBIT(i, bitboard)
     {
-        *(it++) = Move(MoveType::Normal, square, i, piece);
+        it->type = MoveType::Normal;
+        it->origin = square;
+        it->destiny = i;
+        it->piece = piece;
+        it++;
         count++;
     }
 
@@ -174,20 +176,19 @@ BitBoard generateBishopMoves(const Position& position, Square square)
 BitBoard generatePawnMoves(const Position& position, Square square)
 {
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
-    BitBoard oppoenentOccupancy = position.ToMove == Color::White ? position.BlackOccupancy : position.WhiteOccupancy;
 
     if (position.ToMove == Color::White)
     {
         BitBoard push = (1ULL << (square + 8)) & ~occupancy;
         BitBoard doublePush = 4278190080ULL & (push << 8) & ~occupancy;
-        BitBoard captures = (5ULL << (square + 7)) & (255ULL << ((square / 8 + 1) * 8)) & oppoenentOccupancy;
+        BitBoard captures = (5ULL << (square + 7)) & (255ULL << ((square / 8 + 1) * 8)) & position.BlackOccupancy;
         return push | doublePush | captures;
     }
     else
     {
         BitBoard push = (1ULL << (square - 8)) & ~occupancy;
         BitBoard doublePush = 1095216660480ULL & (push >> 8) & ~occupancy;
-        BitBoard captures = (5ULL << (square - 9)) & (255ULL << ((square / 8 - 1) * 8)) & oppoenentOccupancy;
+        BitBoard captures = (5ULL << (square - 9)) & (255ULL << ((square / 8 - 1) * 8)) & position.WhiteOccupancy;
         return push | doublePush | captures;
     }
 }

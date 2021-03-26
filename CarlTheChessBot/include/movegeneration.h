@@ -29,9 +29,8 @@ int generateAllMoves(const Position&, Move*);
     \param position The given position
     \param piece    The type of piece (rook, bishop, king, .etc)
     \param color    The color of the pieces to generate moves for
-    \return         The vector containing the requested moves
 */
-int generateAllPieceMoves(const Position&,Piece,Color);
+void generateAllPieceMoves(const Position&,Piece,Color);
 
 /**
     Function that vector of pseudo legals move a piece on the given square can make, given a bitboard in which all the set bits correspond to squares said piece can move to.

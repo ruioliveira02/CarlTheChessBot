@@ -111,6 +111,8 @@ class game
             \param move     The given move
         */
         void updateCastlingRights(Move);
+
+        void updateEnPassant(Move);
 };
 
 

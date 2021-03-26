@@ -11,7 +11,7 @@ using namespace std::chrono;
 #define LOG if (SHOW_SEARCH_TREE) out << string(4 * (initial_depth - depth), ' ')
 
 bool DEBUG = true;
-bool SHOW_SEARCH_TREE = true;
+bool SHOW_SEARCH_TREE = false;
 
 
 time_point<system_clock> end_time;
@@ -71,10 +71,21 @@ pair<Move, evaluation> search(const game& game1, long long duration, int max_dep
 		if (DEBUG)
 		{
 			out << "\nDEPTH: " << initial_depth
-				 << "\nEVALUATION: " << ans.second.toString()
+				 << "\nTIME: " << (duration_cast<nanoseconds>(system_clock::now() - current_begin_time)).count() / 1000000000.0 << " seconds"
 				 << "\nBEST MOVE: " << ans.first.toString(game1.position.ToMove)
-				 << "\nTIME: " << (duration_cast<nanoseconds>(system_clock::now() - current_begin_time)).count() / 1000000000.0 << " seconds" << endl;
-		
+				 << "\nEVALUATION: " << ans.second.toString() << endl;
+
+			out << "\nOPTIMAL GAME:";
+			game g = game1;
+
+			for (int i = 0; i < initial_depth; i++)
+			{
+				Move best = searcher.get_bucket(g.position).get(g.position)->moves[0];
+				out << " " << best.toString(i % 2 == 0 ? game1.position.ToMove : oppositeColor(game1.position.ToMove));
+				g = g.makeMove(best);
+			}
+
+			out << endl;
 			int max = 0;
 			double average = 0;
 			srand(time(NULL)); //fixar seed para ver os mesmos buckets
@@ -198,14 +209,14 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 	{
 		size = search->move_no;
 
-		LOG << "RETRIEVED " << size << " PSEUDOLEGAL MOVES\n\n";
+		LOG << "RETRIEVED " << size << " PSEUDOLEGAL MOVES\n" << endl;
 	}
 	else
 	{
 		size = generateAllMoves(game1.position, moves);
 		nodes_calculated++;
 
-		LOG << "FOUND " << size << " PSEUDOLEGAL MOVES\n\n";
+		LOG << "FOUND " << size << " PSEUDOLEGAL MOVES\n" << endl;
 	}
 
 
@@ -241,9 +252,9 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 			continue;
 		}
 
-		LOG << "SEARCHING " << moves[i].toString(game1.position.ToMove) << "\n";
+		LOG << "SEARCHING " << moves[i].toString(game1.position.ToMove) << endl;
 		evaluations[i] = minimax(g, depth - 1, alpha, beta).second;
-		LOG << "EVALUATION: " << evaluations[i].toString() << " Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << "\n\n";
+		LOG << "EVALUATION: " << evaluations[i].toString() << " Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << "\n" << endl;
 
 		evaluations[i].nextMove(game1.position.ToMove);
 		empty = false;
@@ -263,7 +274,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 		//alpha beta pruning
 		if (!(alpha < beta))
 		{
-			LOG << "Alpha beta skip... Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << "\n";
+			LOG << "Alpha beta skip... Alpha=" << alpha.toString() << "; Beta=" << beta.toString() << endl;
 			alpha_beta_skips++;
 
 			skipped = true;
@@ -293,6 +304,25 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 		for (int j = 0; j < i; j++)
 			result[j] = moves[indices[j]];
+	}
+	else
+	{
+        int max = 0;
+
+        if (maximize)
+        {
+            for (int i = 0; i < size; i++)
+                if (evaluations[max] < evaluations[i])
+                    max = i;
+        }
+        else
+        {
+            for (int i = 0; i < size; i++)
+                if (evaluations[i] < evaluations[max])
+                    max = i;
+        }
+
+        return make_pair(size > 0 ? moves[max] : Move(), skipped ? (maximize ? evaluation::maximum() : evaluation::minimum()) : value);
 	}
 
 	auto ans = make_pair(size > 0 ? result[0] : Move(), skipped ? (maximize ? evaluation::maximum() : evaluation::minimum()) : value);
