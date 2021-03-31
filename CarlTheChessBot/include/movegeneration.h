@@ -24,13 +24,17 @@
 int generateAllMoves(const Position&, Move*);
 
 /**
+    Eu sou capaz de ter tirado isto e substituído por um macro....
+
+
+
     Function that generates all the pseudo legal moves all the pieces of a certain color and type (e.g. white rooks, black pawns) can make.
 
     \param position The given position
     \param piece    The type of piece (rook, bishop, king, .etc)
     \param color    The color of the pieces to generate moves for
 */
-void generateAllPieceMoves(const Position&,Piece,Color);
+//void generateAllPieceMoves(const Position&,Piece,Color);
 
 /**
     Function that vector of pseudo legals move a piece on the given square can make, given a bitboard in which all the set bits correspond to squares said piece can move to.
@@ -40,7 +44,7 @@ void generateAllPieceMoves(const Position&,Piece,Color);
     \param piece    The type of piece
     \return         The vector containing the requested moves
 */
-int convertBitBoardToMoves(BitBoard, Square, Piece, Move*&);
+void convertBitBoardToMoves(BitBoard, Square, Piece, Move*&);
 
 
 /**
@@ -105,7 +109,7 @@ BitBoard generateQueenMoves(const Position&,Square);
     \param square   The square the king is on
     \return         The vector containing the requested moves
 */
-void generateCastling(const Position&, Move*, Square);
+void generateCastling(const Position&, Move*&, Square);
 
 /**
     Function that generates the pseudo legal enpassant capture the pawn on the given square can make (if there is no capture possible, returns the empty list).
@@ -114,7 +118,7 @@ void generateCastling(const Position&, Move*, Square);
     \param square   The square the pawn is on
     \return         The vector containing the requested moves
 */
-BitBoard generateEnPassant(const Position&);
+void generateEnPassant(const Position&, Move*&);
 
 
 /**
@@ -136,6 +140,9 @@ bool inCheck(const Position&,Color);
     \return         Whether the king of the given color is in check or not
 */
 bool inCheck(const Position&,Color,Square);
+
+//retorna uma bitboard com 1's onde o rei da cor color está em cheque (i.e. 1's nos quadrados que o oponente controla)
+BitBoard checkBoard(const Position&, Color);
 
 
 /** The bitboards used to compute the movements of knights */

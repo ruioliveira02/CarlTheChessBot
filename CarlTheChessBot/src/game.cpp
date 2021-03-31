@@ -18,7 +18,7 @@ game game::makeMove(Move move) const
 {
     game g(*this);
 
-    g.updateBitBoards(move);            //atualiza a ocupaçao da peça que se move
+    g.updateBitBoards(move);            //atualiza a ocupaçao da cor da peça que se move
     g.position.EnPassant = -1;
 
     if(move.type == MoveType::Promotion)
@@ -40,7 +40,7 @@ game game::makeMove(Move move) const
         g.assessCapture(move);          //atualiza a PieceBitBoard e a ocupaçao da peça que é comida (do adversário)
         g.updatePieces(move);           //atualiza a PieceBitBoard da peça que se mexeu
         g.updateCastlingRights(move);   //se as torres ou o rei se mexeu, atualiza os direitos de roque
-        g.updateEnPassant(move);         //atualiza EnPassant
+        g.updateEnPassant(move);        //atualiza EnPassant
     }
 
     //TODO: halfMoves e totalMoves
