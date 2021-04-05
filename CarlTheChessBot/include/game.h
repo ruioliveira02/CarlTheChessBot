@@ -12,6 +12,9 @@
 #include "evaluation.h"
 
 
+#define STORE_HIERARCHY 0
+
+
 /**
     Class to store a game, i.e., the current position and all the previous positions and often they occured.
 */
@@ -48,13 +51,18 @@ class game
 
 
 		/**
+            Yaaa.... eu apaguei isto... agora é uma variável dentro da Position
+
+
             Function that evaluates the current position
 
             \return         The evaluation of the current position
         */
-		evaluation evaluate() const;
 
-
+        #if STORE_HIERARCHY
+        stack<std::string> previous_positions;
+        stack<Move> previous_moves;
+        #endif
 
     public:
         /** The current position */

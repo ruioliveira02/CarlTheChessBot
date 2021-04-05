@@ -75,8 +75,8 @@ int generateAllCaptures(const Position& position, Move* captures)
 
     FORBIT(j, position.PieceBitBoards[Piece::Pawn][color])
     {
-        BitBoard pushes = position.PieceBitBoards[Piece::Pawn][color] << 8;
-        BitBoard bb = (((pushes & 18374403900871474942ULL) >> 1) | ((pushes & 9187201950435737471ULL) << 1)) & oppositeOccupancy;
+        BitBoard push = 1ULL << (j + 8);
+        BitBoard bb = (((push & 18374403900871474942ULL) >> 1) | ((push & 9187201950435737471ULL) << 1)) & oppositeOccupancy;
         convertBitBoardToMoves(bb & 72057594037927680ULL, j, Piece::Pawn, it);
 
         FORBIT(k, bb & 18374686479671623935ULL)
@@ -273,11 +273,15 @@ void initializeKingBitBoard()
 
 bool inCheck(const Position& position, Color color)
 {
+    //return position.PieceBitBoards[Piece::King][color] & (color == Color::White ? position.BlackControl : position.WhiteControl);
+
     return inCheck(position, color, rightmostBit(position.PieceBitBoards[Piece::King][color]));
 }
 
 bool inCheck(const Position& position, Color color, Square square)
 {
+    //return (1ULL << square) & (color == Color::White ? position.BlackControl : position.WhiteControl);
+
     BitBoard ownPieces = (color == Color::White) ? position.WhiteOccupancy : position.BlackOccupancy;
     BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
 
@@ -305,25 +309,24 @@ bool inCheck(const Position& position, Color color, Square square)
     return false;
 }
 
-//retorna uma bitboard com 1's onde o rei da cor color está em cheque (i.e. 1's nos quadrados que o oponente controla)
-//usar isto em vez do inCheck só compensa se se testar o cheque em mais do que um quadrado
-BitBoard checkBoard(const Position& position, Color color)
+BitBoard Position::calculateControl(Color color)
 {
-    BitBoard occupancy = position.WhiteOccupancy | position.BlackOccupancy;
-    color = oppositeColor(color);
+    BitBoard occupancy = WhiteOccupancy | BlackOccupancy;
+    BitBoard ans = kingBitBoard[rightmostBit(PieceBitBoards[Piece::King][color])];
 
-    BitBoard ans = kingBitBoard[rightmostBit(position.PieceBitBoards[Piece::King][color])];
+    FORBIT(i, PieceBitBoards[Piece::Knight][color])
+        ans |= knightBitBoard[i];
 
-    FORBIT(i, position.PieceBitBoards[Piece::Rook][color])
+    FORBIT(i, PieceBitBoards[Piece::Rook][color])
         ans |= Rmagic(i, occupancy);
 
-    FORBIT(i, position.PieceBitBoards[Piece::Bishop][color])
+    FORBIT(i, PieceBitBoards[Piece::Bishop][color])
         ans |= Bmagic(i, occupancy);
 
-    FORBIT(i, position.PieceBitBoards[Piece::Queen][color])
+    FORBIT(i, PieceBitBoards[Piece::Queen][color])
         ans |= Rmagic(i, occupancy) | Bmagic(i, occupancy);
 
-    BitBoard pushes = color == Color::White ? position.PieceBitBoards[Piece::Pawn][color] << 8 : position.PieceBitBoards[Piece::Pawn][color] >> 8;
+    BitBoard pushes = color == Color::White ? PieceBitBoards[Piece::Pawn][color] << 8 : PieceBitBoards[Piece::Pawn][color] >> 8;
     ans |= ((pushes & 18374403900871474942ULL) >> 1) | ((pushes & 9187201950435737471ULL) << 1);
     return ans;
 }

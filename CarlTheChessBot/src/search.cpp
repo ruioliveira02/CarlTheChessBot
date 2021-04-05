@@ -155,6 +155,55 @@ int compareBlack(int a, int b)
 }
 
 
+double pieceValues[6] = { 1, 3, 3.5, 5, 9, 999 };
+int* scores_pointer;
+Move sort_aux[300];
+
+int compareScore(int a, int b)
+{
+    return scores_pointer[a] > scores_pointer[b];
+}
+
+//ordena os moves de provavelmente melhor para provavelmente pior
+void sortMoves(const Position& pos, Move* moves, int size)
+{
+/*
+    int indices[size];
+    int scores[size];
+
+    for (int i = 0; i < size; i++)
+    {
+        //promoção e roque é fixe
+        if (moves[i].type == MoveType::Promotion)
+            scores[i] += 50;
+        else if (moves[i].type == MoveType::Castling)
+            scores[i] += 25;
+
+        BitBoard destBoard = 1ULL << moves[i].destiny;
+
+        //ir para um sítio controlado pelo oponente é mau
+        //if (destBoard & (pos.ToMove == Color::White ? pos.BlackControl : pos.WhiteControl))
+        //    scores[i] -= pieceValues[moves[i].piece];
+
+        //capturas sao boas (TODO: ver que peças estao a ser capturadas)
+        if (destBoard & (pos.ToMove == Color::White ? pos.BlackOccupancy : pos.WhiteOccupancy))
+            scores[i] += 4 - 0.3 * pieceValues[moves[i].piece];
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        indices[i] = i;
+        sort_aux[i] = moves[i];
+    }
+
+    scores_pointer = scores;
+    sort(indices, indices + size, compareScore);
+
+    for (int i = 0; i < size; i++)
+        moves[i] = sort_aux[indices[i]];
+    */
+}
+
 //recebe posições VÁLIDAS! comportamento indefinido para posições inválidas
 //o Move que retorna pode não ter sido atribuído se depth == 0 ou se não houver jogadas possíveis
 //nesse caso a evaluation é mate in 0 ou draw (evaluation.end_of_game() é true)
@@ -184,7 +233,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 		if (depth == 0)
 		{
-			ans = make_pair(Move(), game1.evaluate());
+			ans = make_pair(Move(), capturesMinimax(game1, alpha, beta)/*game1.evaluate()*/);
 			heuristic_skips++;
 		}
 		else
@@ -221,6 +270,7 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 
 
 	nodes_found += size;
+	sortMoves(game1.position, moves, size);
 	evaluation value = maximize ? evaluation::minimum() : evaluation::maximum();
 	bool empty = true;
 	bool skipped = false;
@@ -338,4 +388,63 @@ pair<Move, evaluation> minimax(const game& game1, int depth, evaluation alpha, e
 	}
 
 	return ans;
+}
+
+int depth = 0;
+Move captures_array[9600]; //300 * 32
+
+evaluation capturesMinimax(const game& game1, evaluation alpha, evaluation beta)
+{
+    if (game1.position.currentEvaluation.endOfGame())
+        return game1.position.currentEvaluation;
+
+    Move* captures = captures_array + (depth * 300);
+    evaluation best = game1.position.currentEvaluation;
+    bool maximize = game1.position.ToMove == Color::White;
+    int size = generateAllCaptures(game1.position, captures);
+    sortMoves(game1.position, captures, size);
+
+    if (maximize)
+    {
+        if (alpha < best)
+            alpha = best;
+    }
+    else if (best < beta)
+        beta = best;
+
+    //alpha beta pruning
+    if (!(alpha < beta))
+        return best;
+
+    for (int i = 0; i < size; i++)
+    {
+        game game2 = game1.makeMove(captures[i]);
+
+        //se o movimento é inválido
+        if (inCheck(game2.position, game1.position.ToMove))
+            continue;
+
+        depth++;
+        evaluation eval = capturesMinimax(game2, alpha, beta);
+        depth--;
+
+
+        //novo melhor encontrado
+        if (maximize ? best < eval : eval < best)
+            best = eval;
+
+        if (maximize)
+		{
+			if (alpha < eval)
+				alpha = eval;
+		}
+		else if (eval < beta)
+			beta = eval;
+
+		//alpha beta pruning
+		if (!(alpha < beta))
+			return best;
+    }
+
+    return best;
 }

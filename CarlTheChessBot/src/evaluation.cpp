@@ -37,7 +37,7 @@ evaluation evaluation::draw()
     return e;
 }
 
-bool evaluation::operator <(const evaluation& eval)
+bool evaluation::operator <(const evaluation& eval) const
 {
     if (mateIn >= 0)
     {
@@ -57,6 +57,16 @@ bool evaluation::operator <(const evaluation& eval)
     return score < eval.score;
 }
 
+void evaluation::add(double delta)
+{
+    score += delta;
+}
+
+void evaluation::subtract(double delta)
+{
+    score -= delta;
+}
+
 
 void evaluation::nextMove(Color toMove)
 {
@@ -65,7 +75,7 @@ void evaluation::nextMove(Color toMove)
 }
 
 
-double evaluation::toScore()
+double evaluation::toScore() const
 {
     if (mateIn >= 0)
         return color == Color::White ? numeric_limits<double>::infinity() : -numeric_limits<double>::infinity();
@@ -77,7 +87,7 @@ double evaluation::toScore()
 }
 
 
-string evaluation::toString()
+string evaluation::toString() const
 {
     if (mateIn >= 0)
         return "#" + to_string(color == Color::White ? mateIn : -mateIn);
@@ -89,7 +99,7 @@ string evaluation::toString()
 }
 
 
-bool evaluation::endOfGame()
+bool evaluation::endOfGame() const
 {
     return mateIn == 0 || isDraw;
 }

@@ -18,7 +18,11 @@ game game::makeMove(Move move) const
 {
     game g(*this);
 
-    g.updateBitBoards(move);            //atualiza a ocupaçao da cor da peça que se move
+    #if STORE_HIERARCHY
+    g.previous_positions.push(g.position.toFEN());
+    g.previous_moves.push(move);
+    #endif
+
     g.position.EnPassant = -1;
 
     if(move.type == MoveType::Promotion)
@@ -37,14 +41,19 @@ game game::makeMove(Move move) const
     }
     else
     {
-        g.assessCapture(move);          //atualiza a PieceBitBoard e a ocupaçao da peça que é comida (do adversário)
-        g.updatePieces(move);           //atualiza a PieceBitBoard da peça que se mexeu
+        g.assessCapture(move);          //atualiza a avaliação, a PieceBitBoard e a ocupaçao/controlo da peça que é comida (do adversário)
+        g.updatePieces(move);           //atualiza a avaliação e a PieceBitBoard da peça que se mexeu
         g.updateCastlingRights(move);   //se as torres ou o rei se mexeu, atualiza os direitos de roque
         g.updateEnPassant(move);        //atualiza EnPassant
     }
 
     //TODO: halfMoves e totalMoves
+    g.updateBitBoards(move);                              //atualiza a ocupaçao da cor da peça que se move e o controlo das duas cores
     g.position.ToMove = oppositeColor(g.position.ToMove); //atualiza o ToMove
+
+    if (!g.position.PieceBitBoards[Piece::King][g.position.ToMove])
+        g.position.currentEvaluation = evaluation(0, oppositeColor(g.position.ToMove));
+
     return g;
 }
 
@@ -78,6 +87,10 @@ void game::updateBitBoards(Move move)
         position.WhiteOccupancy ^= (1ULL << move.origin) | (1ULL << move.destiny);
     else
         position.BlackOccupancy ^= (1ULL << move.origin) | (1ULL << move.destiny);
+
+    //é preciso atualizar os dois por causa de cheques a descoberto e tal
+    //position.WhiteControl = position.calculateControl(Color::White); //TODO: otimizar?
+    //position.BlackControl = position.calculateControl(Color::Black);
 }
 
 
@@ -94,11 +107,13 @@ void game::assessCapture(Move move)
                 if (position.PieceBitBoards[i][Color::Black] & aux)
                 {
                     position.PieceBitBoards[i][Color::Black] ^= aux;
+                    position.currentEvaluation.subtract(value((Piece)i, Color::Black, move.destiny));
                     break;
                 }
             }
 
             position.BlackOccupancy ^= aux;
+            //position.BlackControl = position.calculateControl(Color::Black); //TODO: otimizar?
         }
     }
     else
@@ -110,11 +125,13 @@ void game::assessCapture(Move move)
                 if (position.PieceBitBoards[i][Color::White] & aux)
                 {
                     position.PieceBitBoards[i][Color::White] ^= aux;
+                    position.currentEvaluation.subtract(value((Piece)i, Color::White, move.destiny));
                     break;
                 }
             }
 
             position.WhiteOccupancy ^= aux;
+            //position.WhiteControl = position.calculateControl(Color::White); //TODO: otimizar?
         }
     }
 }
@@ -122,6 +139,7 @@ void game::assessCapture(Move move)
 void game::updatePieces(Move move)
 {
     position.PieceBitBoards[move.piece][position.ToMove] ^= (1ULL << move.origin) | (1ULL << move.destiny);
+    position.currentEvaluation.add(value(move.piece, position.ToMove, move.destiny) - value(move.piece, position.ToMove, move.origin));
 }
 
 
@@ -129,39 +147,58 @@ void game::promote(Move move)
 {
     position.PieceBitBoards[Piece::Pawn][position.ToMove] ^= (1ULL << move.origin);
     position.PieceBitBoards[move.piece][position.ToMove] |= (1ULL << move.destiny);
+    position.currentEvaluation.add(value(move.piece, position.ToMove, move.destiny) - value(Piece::Pawn, position.ToMove, move.origin));
 }
-
 
 
 void game::captureEnpassant(Move move)
 {
-    position.PieceBitBoards[Piece::Pawn][position.ToMove] ^= (1ULL << move.origin) | (1ULL << move.destiny);
+    Color color = position.ToMove;
+    position.PieceBitBoards[Piece::Pawn][color] ^= (1ULL << move.origin) | (1ULL << move.destiny);
 
-    int enpassant = (position.ToMove == Color::White) ? (move.destiny - 8) : (move.destiny + 8);
+    Square enpassant = (color == Color::White) ? (move.destiny - 8) : (move.destiny + 8);
 
-    if (position.ToMove == Color::White)
+    if (color == Color::White)
         position.BlackOccupancy ^= (1ULL << enpassant);
     else
         position.WhiteOccupancy ^= (1ULL << enpassant);
 
-    position.PieceBitBoards[Piece::Pawn][oppositeColor(position.ToMove)] ^= (1ULL << enpassant);
+    position.PieceBitBoards[Piece::Pawn][oppositeColor(color)] ^= (1ULL << enpassant);
+    position.currentEvaluation.add(value(Piece::Pawn, color, move.destiny) - value(Piece::Pawn, color, move.origin)
+                            - value(Piece::Pawn, oppositeColor(color), enpassant));
 }
 
 
 void game::castle(Move move)
 {
-    position.Castling[0][position.ToMove] = position.Castling[1][position.ToMove] = false;
+    Color color = position.ToMove;
+    position.Castling[0][color] = position.Castling[1][color] = false;
     BitBoard rookChange = 0;
 
     switch (move.destiny)
     {
-        case 2:     rookChange = 9ULL;                      break;
-        case 6:     rookChange = 160ULL;                    break;
-        case 58:    rookChange = 648518346341351424ULL;     break;
-        case 62:    rookChange = 11529215046068469760ULL;   break;
+        case 2:
+        rookChange = 9ULL;
+        position.currentEvaluation.add(value(Piece::Rook, color, 3) - value(Piece::Rook, color, 0));
+        break;
+
+        case 6:
+        rookChange = 160ULL;
+        position.currentEvaluation.add(value(Piece::Rook, color, 5) - value(Piece::Rook, color, 7));
+        break;
+
+        case 58:
+        rookChange = 648518346341351424ULL;
+        position.currentEvaluation.add(value(Piece::Rook, color, 59) - value(Piece::Rook, color, 56));
+        break;
+
+        case 62:
+        rookChange = 11529215046068469760ULL;
+        position.currentEvaluation.add(value(Piece::Rook, color, 61) - value(Piece::Rook, color, 63));
+        break;
     }
 
-    if (position.ToMove == Color::White)
+    if (color == Color::White)
         position.WhiteOccupancy ^= rookChange;
     else
         position.BlackOccupancy ^= rookChange;
@@ -230,10 +267,4 @@ void game::updateEnPassant(Move move)
         if (move.origin / 8 == 6 && move.destiny / 8 == 4)
             position.EnPassant = move.destiny + 8;
     }
-}
-
-
-evaluation game::evaluate() const
-{
-   return evaluatePosition(position);
 }

@@ -176,5 +176,7 @@ std::pair<Move, evaluation> search(const game&, long long duration, int max_dept
 */
 std::pair<Move, evaluation> minimax(const game&, int, evaluation, evaluation);
 
+evaluation capturesMinimax(const game&, evaluation, evaluation);
+
 
 #endif

@@ -8,7 +8,7 @@
 #ifndef EVALUATION_H
 #define EVALUATION_H
 
-#include "position.h"
+#include "types.h"
 #include <string>
 #include <limits>
 
@@ -42,7 +42,11 @@ class evaluation
 
             One evaluation X  is smaller than another Y if it is better for black than Y.
 		 */
-		bool operator<(const evaluation&);
+		bool operator<(const evaluation&) const;
+
+		void add(double delta);
+
+		void subtract(double delta);
 
 		/**
             Function that updates the number of moves until mate by augmenting it by one.
@@ -54,21 +58,21 @@ class evaluation
 
             \return         The resulting score
         */
-		double toScore();
+		double toScore() const;
 
 		/**
             Function that converts the evaluation to a string
 
             \return         The resulting string
         */
-		string toString();
+		string toString() const;
 
 		/**
             Function that returns whether the game is over or not
 
             \return         Whether the game is over or not
         */
-		bool endOfGame();
+		bool endOfGame() const;
 
     private:
         /** The color which will be delivering the mate (i.e. who wins) */

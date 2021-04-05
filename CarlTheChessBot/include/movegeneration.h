@@ -23,11 +23,9 @@
 */
 int generateAllMoves(const Position&, Move*);
 
+int generateAllCaptures(const Position&, Move*);
+
 /**
-    Eu sou capaz de ter tirado isto e substituído por um macro....
-
-
-
     Function that generates all the pseudo legal moves all the pieces of a certain color and type (e.g. white rooks, black pawns) can make.
 
     \param position The given position
@@ -37,6 +35,9 @@ int generateAllMoves(const Position&, Move*);
 //void generateAllPieceMoves(const Position&,Piece,Color);
 
 /**
+    Eu sou capaz de ter tirado isto e substituído por um macro....
+
+
     Function that vector of pseudo legals move a piece on the given square can make, given a bitboard in which all the set bits correspond to squares said piece can move to.
 
     \param bitBoard The given bitboard (the i-th bit is set if and only if the given piece can move to the corresponding square)
@@ -44,7 +45,7 @@ int generateAllMoves(const Position&, Move*);
     \param piece    The type of piece
     \return         The vector containing the requested moves
 */
-void convertBitBoardToMoves(BitBoard, Square, Piece, Move*&);
+//void convertBitBoardToMoves(BitBoard, Square, Piece, Move*&);
 
 
 /**

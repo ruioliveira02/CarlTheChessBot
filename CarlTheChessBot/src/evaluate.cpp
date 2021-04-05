@@ -5,7 +5,7 @@
 
 evaluation evaluatePosition(const Position& position)
 {
-    return pieceLocations(position, Color::White) - pieceLocations(position, Color::Black);
+    return pieceLocations(position, Color::White) + pieceLocations(position, Color::Black);
 }
 
 /*
@@ -30,15 +30,16 @@ double pieceLocations(const Position& position, Color color)
     double res = 0.0;
 
     for (int i = 0; i < 6; i++)
-    {
         FORBIT(pos, position.PieceBitBoards[i][color])
-        {
-            if(color == Color::Black)
-                res += pieceSquaresTable[i][pos];
-            else
-                res += pieceSquaresTable[i][(7 - (pos / 8)) * 8 + (pos % 8)];
-        }
-    }
+            res += value((Piece)i, color, pos);
 
-    return (res / 100.0);
+    return res;
+}
+
+double value(Piece piece, Color color, Square position)
+{
+    if (color == Color::White)
+        return pieceSquaresTable[piece][(7 - (position / 8)) * 8 + (position % 8)];
+    else
+        return -pieceSquaresTable[piece][position];
 }

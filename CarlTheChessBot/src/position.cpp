@@ -5,6 +5,8 @@
 #include <sstream>
 #include <cstring>
 
+evaluation evaluatePosition(const Position&); //definido em evaluate.cpp (nao posso incluir o header pq isso dava dependencia circular)
+
 char pieceChar(Piece piece, Color color)
 {
     char c;
@@ -163,6 +165,10 @@ Position::Position(const char* fen)
         WhiteOccupancy |= PieceBitBoards[i][Color::White];
         BlackOccupancy |= PieceBitBoards[i][Color::Black];
     }
+
+    WhiteControl = calculateControl(Color::White);
+    BlackControl = calculateControl(Color::Black);
+    currentEvaluation = evaluatePosition(*this);
 }
 
 
@@ -194,6 +200,10 @@ Position::Position(std::vector<Square> pieces [6][2],Color color,bool castling[2
         WhiteOccupancy |= PieceBitBoards[i][Color::White];
         BlackOccupancy |= PieceBitBoards[i][Color::Black];
     }
+
+    WhiteControl = calculateControl(Color::White);
+    BlackControl = calculateControl(Color::Black);
+    currentEvaluation = evaluatePosition(*this);
 }
 
 Position::Position(const Position& pos)
@@ -205,6 +215,9 @@ Position::Position(const Position& pos)
 
     WhiteOccupancy = pos.WhiteOccupancy;
     BlackOccupancy = pos.BlackOccupancy;
+    WhiteControl = pos.WhiteControl;
+    BlackControl = pos.BlackControl;
+    currentEvaluation = pos.currentEvaluation;
 
     Castling[0][0] = pos.Castling[0][0];
     Castling[0][1] = pos.Castling[0][1];
